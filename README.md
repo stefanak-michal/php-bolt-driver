@@ -14,6 +14,19 @@ all available versions and keep up with protocol messages architecture and speci
 
 [![image](https://github.com/neo4j-php/Bolt/assets/5502917/1aeb4e22-c9b1-4fe5-8956-1c2e784c4292)](https://awsmfoss.com/neo4j-bolt-php/)
 
+## :office: Professional Support and Consulting
+
+Need help with integrating communication with graph databases in your PHP project?  I offer professional support and consulting services related to graph databases.
+
+My services include:
+
+* Integration assistance
+* Performance tuning
+* Custom development
+* Training
+
+Website: https://stefanak.serv00.net/
+
 ## :label: Version support
 
 We are trying to keep up and this library supports **Bolt <= 5.8**.
