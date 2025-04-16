@@ -70,6 +70,10 @@ final class Bolt
             }
         }
 
+        if (empty($toSend)) {
+            return;
+        }
+
         //curl
         $curl = curl_init();
         curl_setopt_array($curl, [
