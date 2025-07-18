@@ -75,7 +75,7 @@ class StreamSocket extends AConnection
         while (0 < $size) {
             $sent = fwrite($this->stream, $buffer);
 
-            if ($sent === false) {
+            if ($sent === false || $sent === 0) {
                 if (microtime(true) - $time >= $this->timeout)
                     throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
                 else
