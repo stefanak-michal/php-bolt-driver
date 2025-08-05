@@ -73,7 +73,7 @@ class Vector implements IStructure
                 $packFormat = 'q';
             }
         } elseif ($allFloats) {
-            if ($minValue >= 1.18e-38 && $maxValue <= 3.40e+38) { // Single precision float (FLOAT_32)
+            if ($minValue >= 1.4e-45 && $maxValue <= 3.4028235e+38) { // Single precision float (FLOAT_32)
                 $marker = 0xC6;
                 $packFormat = 'G';
             } else { // Double precision float (FLOAT_64)
