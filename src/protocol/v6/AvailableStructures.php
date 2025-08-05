@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\protocol\v5;
+namespace Bolt\protocol\v6;
 
 use Bolt\protocol\v1\structures\{
     Date,

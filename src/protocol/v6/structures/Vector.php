@@ -134,8 +134,7 @@ class Vector implements IStructure
         
         $output = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
-        foreach(array_chunk($this->data, $size) as $chunk) {
-            $value = implode('', $chunk);
+        foreach(mb_str_split((string)$this->data, $size, '8bit') as $value) {
             $output[] = unpack($unpackFormat, in_array($unpackFormat, self::$formats) && $littleEndian ? strrev($value) : $value)[1];
         }
 

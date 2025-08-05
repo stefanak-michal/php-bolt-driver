@@ -36,8 +36,12 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
     }
 
     // todo ..also test encode and decode in Vector class
+    /**
+     * @depends testInit
+     */
     public function testVector(AProtocol $protocol)
     {
+        $this->markTestIncomplete('This test has not been implemented yet.');
         //unpack
         // $res = iterator_to_array(
         //     $protocol
