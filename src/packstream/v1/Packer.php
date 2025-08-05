@@ -131,8 +131,7 @@ class Packer implements IPacker
 
     private function packFloat(float $value): iterable
     {
-        $packed = pack('d', $value);
-        yield chr(0xC1) . ($this->littleEndian ? strrev($packed) : $packed);
+        yield chr(0xC1) . pack('E', $value);
     }
 
     /**
@@ -233,7 +232,7 @@ class Packer implements IPacker
             }
             $packerMethod = 'pack' . ucfirst($packerMethod);
 
-            yield from [$this, $packerMethod]($structure->{$parameter->getName()});
+            yield from call_user_func([$this, $packerMethod], $structure->{$parameter->getName()});
         }
     }
 
