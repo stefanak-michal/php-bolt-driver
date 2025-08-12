@@ -2,7 +2,7 @@
     "name": "stefanak-michal/bolt",
     "description": "PHP library to provide connectivity to graph database over TCP socket with Bolt specification",
     "keywords": ["neo4j", "bolt", "socket", "database"],
-    "homepage": "https://github.com/neo4j-php/Bolt",
+    "homepage": "https://github.com/stefanak-michal/php-bolt-driver",
     "type": "library",
     "readme": "README.md",
     "license": "MIT",
@@ -17,8 +17,8 @@
         "phpunit/phpunit": "^9"
     },
     "support": {
-        "issues": "https://github.com/neo4j-php/Bolt/issues",
-        "source": "https://github.com/neo4j-php/Bolt",
+        "issues": "https://github.com/stefanak-michal/php-bolt-driver/issues",
+        "source": "https://github.com/stefanak-michal/php-bolt-driver",
 		"docs": "https://www.neo4j.com/docs/bolt/current/"
     },
     "funding": [
