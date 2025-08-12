@@ -29,7 +29,7 @@ Website: https://stefanak.serv00.net/
 
 ## :label: Version support
 
-We are trying to keep up and this library supports **Bolt <= 5.8**.
+We are trying to keep up and this library supports **Bolt <= 6**.
 
 ## :books: Supported ecosystems
 
@@ -198,7 +198,7 @@ foreach ($protocol->getResponses() as $response) {
 }
 ```
 
-:information_source: Default settings for bolt protocol version is 4.3, 4.4 and 5.0 to 5.8. If you are within this list you can ommit calling `$bolt->setProtocolVersions();`.
+:information_source: Default settings for bolt protocol version is 4.3, 4.4, 5.0 to 5.8 and 6. If you are within this list you can ommit calling `$bolt->setProtocolVersions();`.
 
 ### Autoload
 
