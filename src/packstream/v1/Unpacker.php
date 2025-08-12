@@ -103,7 +103,7 @@ class Unpacker implements IUnpacker
         if ($output !== null) {
             return $output;
         }
-        $output = $this->unpackStruct($marker);
+        $output = $this->unpackStructure($marker);
         if ($output !== null) {
             return $output;
         }
@@ -120,7 +120,7 @@ class Unpacker implements IUnpacker
      * @return array|IStructure|null
      * @throws UnpackException
      */
-    private function unpackStruct(int $marker): array|IStructure|null
+    private function unpackStructure(int $marker): array|IStructure|null
     {
         if ($marker >> 4 == 0b1011) { //TINY_STRUCT
             $size = 0b10110000 ^ $marker;
@@ -238,7 +238,7 @@ class Unpacker implements IUnpacker
     {
         if ($marker == 0xC1) {
             $value = $this->next(8);
-            return (float)unpack('d', $this->littleEndian ? strrev($value) : $value)[1];
+            return (float)unpack('E', $value)[1];
         } else {
             return null;
         }

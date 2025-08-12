@@ -44,12 +44,6 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         return $protocol;
     }
 
-    private string $expectedDateTimeClass = DateTime::class;
-    use DateTimeTrait;
-
-    private string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
-    use DateTimeZoneIdTrait;
-
     /**
      * @depends testInit
      */

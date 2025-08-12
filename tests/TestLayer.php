@@ -75,6 +75,8 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
 
         $neo4jVersion = $decoded['neo4j_version'];
 
+        if (version_compare($neo4jVersion, '2025.08', '>='))
+            return 6;
         if (version_compare($neo4jVersion, '5.26', '>='))
             return 5.8;
         if (version_compare($neo4jVersion, '5.23', '>='))
