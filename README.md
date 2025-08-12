@@ -171,7 +171,7 @@ as received data from database.
 $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
 // Create new Bolt instance and provide connection object.
 $bolt = new \Bolt\Bolt($conn);
-// Set requested protocol versions ..you can add up to 4 versions
+// If needed set requested protocol versions ..you can add up to 4 versions
 $bolt->setProtocolVersions(5.4);
 // Build and get protocol version instance which creates connection and executes handshake.
 $protocol = $bolt->build();
@@ -198,7 +198,7 @@ foreach ($protocol->getResponses() as $response) {
 }
 ```
 
-:information_source: Default settings for bolt protocol version is 4.3, 4.4 and 5.0 to 5.8. If you are within this list you can ommit calling `$bolt->setProtocolVersions(5.4);`.
+:information_source: Default settings for bolt protocol version is 4.3, 4.4 and 5.0 to 5.8. If you are within this list you can ommit calling `$bolt->setProtocolVersions();`.
 
 ### Autoload
 
@@ -244,7 +244,7 @@ $conn->setSslContextOptions();
 $bolt = new \Bolt\Bolt($conn);
 ```
 
-_For more informations about what argument can be passed to `setSslContextOptions` check out [php.net](https://www.php.net/manual/en/context.ssl.php) _
+_For more informations about what argument can be passed to `setSslContextOptions` check out [php.net](https://www.php.net/manual/en/context.ssl.php)_
 
 ### Example on localhost database with self-signed certificate:
 
