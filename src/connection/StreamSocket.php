@@ -16,7 +16,7 @@ use Bolt\error\ConnectionTimeoutException;
  */
 class StreamSocket extends AConnection
 {
-    protected array $sslContextOptions = [];
+    protected ?array $sslContextOptions = null;
 
     /**
      * @var resource
@@ -27,9 +27,11 @@ class StreamSocket extends AConnection
 
     /**
      * Set SSL Context options
+     * Just by calling this method without any argument, SSL will be enabled with default configuration
+     * @param ?array $options By passing null, SSL will be disabled
      * @link https://www.php.net/manual/en/context.ssl.php
      */
-    public function setSslContextOptions(array $options): void
+    public function setSslContextOptions(?array $options = []): void
     {
         $this->sslContextOptions = $options;
     }
@@ -40,7 +42,7 @@ class StreamSocket extends AConnection
             'socket' => [
                 'tcp_nodelay' => true,
             ],
-            'ssl' => $this->sslContextOptions
+            'ssl' => (array)$this->sslContextOptions
         ]);
 
         $this->stream = @stream_socket_client('tcp://' . $this->ip . ':' . $this->port, $errno, $errstr, $this->timeout, $this->connectionFlags, $context);
@@ -53,7 +55,7 @@ class StreamSocket extends AConnection
             throw new ConnectException('Cannot set socket into blocking mode');
         }
 
-        if (!empty($this->sslContextOptions)) {
+        if ($this->sslContextOptions !== null) {
             if (stream_socket_enable_crypto($this->stream, true, STREAM_CRYPTO_METHOD_ANY_CLIENT) !== true) {
                 throw new ConnectException('Enable encryption error');
             }

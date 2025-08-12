@@ -231,20 +231,20 @@ This class extends StreamSocket and adds support for persistent connections. Upo
 
 ## :lock: SSL
 
+Connection secured with SSL is available only with connection classes `StreamSocket` and `PStreamSocket`.
+
 ### Neo4j Aura
 
-Connecting to Aura requires encryption which is provided with SSL. To connect to Aura you have to use `StreamSocket` connection class and enable SSL.
+Connecting to Aura requires encrypted connection by default. To connect to Aura you have to use connection class with SSL support and enable SSL.
 
 ```php
 $conn = new \Bolt\connection\StreamSocket('helloworld.databases.neo4j.io');
 // enable SSL
-$conn->setSslContextOptions([
-    'verify_peer' => true
-]);
+$conn->setSslContextOptions();
 $bolt = new \Bolt\Bolt($conn);
 ```
 
-https://www.php.net/manual/en/context.ssl.php
+_For more informations about what argument can be passed to `setSslContextOptions` check out [php.net](https://www.php.net/manual/en/context.ssl.php) _
 
 ### Example on localhost database with self-signed certificate:
 
