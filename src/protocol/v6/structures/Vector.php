@@ -51,30 +51,31 @@ class Vector implements IStructure
 
         $minValue = count($data) ? min($data) : 0;
         $maxValue = count($data) ? max($data) : 0;
-        $packFormat = '';
 
-        if ($anyFloat) {
-            if ($minValue >= 1.4e-45 && $maxValue <= 3.4028235e+38) { // Single precision float (FLOAT_32)
-                if ($type === null) $type = TypeMarker::FLOAT_32;
+        if ($type === null) {
+            $type = self::detectTypeMarker($anyFloat, $minValue, $maxValue);
+        }
+
+        $packFormat = '';
+        switch ($type) {
+            case TypeMarker::FLOAT_32:
                 $packFormat = 'G';
-            } else { // Double precision float (FLOAT_64)
-                if ($type === null) $type = TypeMarker::FLOAT_64;
+                break;
+            case TypeMarker::FLOAT_64:
                 $packFormat = 'E';
-            }
-        } else {
-            if ($minValue >= -128 && $maxValue <= 127) { // INT_8
-                if ($type === null) $type = TypeMarker::INT_8;
+                break;
+            case TypeMarker::INT_8:
                 $packFormat = 'c';
-            } elseif ($minValue >= -32768 && $maxValue <= 32767) { // INT_16
-                if ($type === null) $type = TypeMarker::INT_16;
+                break;
+            case TypeMarker::INT_16:
                 $packFormat = 's';
-            } elseif ($minValue >= -2147483648 && $maxValue <= 2147483647) { // INT_32
-                if ($type === null) $type = TypeMarker::INT_32;
+                break;
+            case TypeMarker::INT_32:
                 $packFormat = 'l';
-            } else { // INT_64
-                if ($type === null) $type = TypeMarker::INT_64;
+                break;
+            case TypeMarker::INT_64:
                 $packFormat = 'q';
-            }
+                break;
         }
 
         // Pack the data
@@ -86,6 +87,27 @@ class Vector implements IStructure
         }
 
         return new self(new Bytes([chr($type->value)]), new Bytes($packed));
+    }
+
+    private static function detectTypeMarker(bool $anyFloat, int|float $minValue, int|float $maxValue): TypeMarker
+    {
+        if ($anyFloat) {
+            if ($minValue >= -3.4028235e+38 && $maxValue <= 3.4028235e+38) { // Single precision float (FLOAT_32)
+                return TypeMarker::FLOAT_32;
+            } else { // Double precision float (FLOAT_64)
+                return TypeMarker::FLOAT_64;
+            }
+        } else {
+            if ($minValue >= -128 && $maxValue <= 127) { // INT_8
+                return TypeMarker::INT_8;
+            } elseif ($minValue >= -32768 && $maxValue <= 32767) { // INT_16
+                return TypeMarker::INT_16;
+            } elseif ($minValue >= -2147483648 && $maxValue <= 2147483647) { // INT_32
+                return TypeMarker::INT_32;
+            } else { // INT_64
+                return TypeMarker::INT_64;
+            }
+        }
     }
 
     /**
