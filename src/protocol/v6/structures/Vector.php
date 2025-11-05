@@ -49,11 +49,8 @@ class Vector implements IStructure
             }
         }
 
-        $minValue = count($data) ? min($data) : 0;
-        $maxValue = count($data) ? max($data) : 0;
-
         if ($type === null) {
-            $type = self::detectTypeMarker($anyFloat, $minValue, $maxValue);
+            $type = self::detectTypeMarker($anyFloat, count($data) ? min($data) : 0, count($data) ? max($data) : 0);
         }
 
         $packFormat = '';
