@@ -44,21 +44,21 @@ class Vector implements IStructure
             throw new \InvalidArgumentException('Vector cannot have more than 4096 elements');
         }
 
-        $allIntegers = array_reduce($data, fn($carry, $item) => $carry && is_int($item), true);
-        $allFloats = array_reduce($data, fn($carry, $item) => $carry && is_float($item), true);
-
-        // Check if all values are integer or float
-        if (!$allIntegers && !$allFloats) {
-            throw new \InvalidArgumentException('All values in the vector must be integer xor float');
-        }
-        
+        $anyFloat = in_array(true, array_map('is_float', $data));
         $minValue = min($data);
         $maxValue = max($data);
         $marker = 0;
-        $packed = [];
         $packFormat = '';
 
-        if ($allIntegers) {
+        if ($anyFloat) {
+            if ($minValue >= 1.4e-45 && $maxValue <= 3.4028235e+38) { // Single precision float (FLOAT_32)
+                $marker = 0xC6;
+                $packFormat = 'G';
+            } else { // Double precision float (FLOAT_64)
+                $marker = 0xC1;
+                $packFormat = 'E';
+            }
+        } else {
             if ($minValue >= -128 && $maxValue <= 127) { // INT_8
                 $marker = 0xC8;
                 $packFormat = 'c';
@@ -72,14 +72,6 @@ class Vector implements IStructure
                 $marker = 0xCB;
                 $packFormat = 'q';
             }
-        } elseif ($allFloats) {
-            if ($minValue >= 1.4e-45 && $maxValue <= 3.4028235e+38) { // Single precision float (FLOAT_32)
-                $marker = 0xC6;
-                $packFormat = 'G';
-            } else { // Double precision float (FLOAT_64)
-                $marker = 0xC1;
-                $packFormat = 'E';
-            }
         }
 
         if ($marker === 0) {
@@ -87,6 +79,7 @@ class Vector implements IStructure
         }
 
         // Pack the data
+        $packed = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
         foreach ($data as $entry) {
             $value = pack($packFormat, $entry);
