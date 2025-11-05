@@ -43,13 +43,16 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         //unpack
         $res = iterator_to_array(
             $protocol
-                ->run('CYPHER 25 RETURN vector([1.05, 0.123, 5], 3, FLOAT),
+                ->run(
+                    'CYPHER 25 RETURN vector([1.05, 0.123, 5], 3, FLOAT),
                     vector([1.05, 0.123, 5], 3, FLOAT32),
                     vector([5, 543, 342765], 3, INTEGER),
                     vector([5, -60, 120], 3, INTEGER8),
                     vector([5, -20000, 30000], 3, INTEGER16),
                     vector([5, -2000000000, 2000000000], 3, INTEGER32)',
-                [], ['mode' => 'r'])
+                    [],
+                    ['mode' => 'r']
+                )
                 ->pull()
                 ->getResponses(),
             false
@@ -106,8 +109,6 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
     public function testVectorExceptions()
     {
         $this->expectException(\InvalidArgumentException::class);
-        Vector::encode([]);
-        $this->expectException(\InvalidArgumentException::class);
-        Vector::encode(range(1, 5000));
+        Vector::encode(['abc', 'def']);
     }
 }
