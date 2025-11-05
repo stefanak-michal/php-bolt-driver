@@ -4,6 +4,7 @@ namespace Bolt\protocol\v6\structures;
 
 use Bolt\packstream\Bytes;
 use Bolt\protocol\IStructure;
+use Bolt\protocol\v6\structures\TypeMarker;
 
 /**
  * Class Vector
@@ -136,14 +137,4 @@ class Vector implements IStructure
 
         return $output;
     }
-}
-
-enum TypeMarker: int
-{
-    case INT_8 = 0xC8;
-    case INT_16 = 0xC9;
-    case INT_32 = 0xCA;
-    case INT_64 = 0xCB;
-    case FLOAT_32 = 0xC6;
-    case FLOAT_64 = 0xC1;
 }
