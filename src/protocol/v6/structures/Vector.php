@@ -20,8 +20,7 @@ class Vector implements IStructure
     public function __construct(
         public readonly Bytes $type_marker,
         public readonly Bytes $data
-    ) {
-    }
+    ) {}
 
     public function __toString(): string
     {
@@ -78,10 +77,6 @@ class Vector implements IStructure
             }
         }
 
-        if ($type === null) {
-            throw new \InvalidArgumentException('Unsupported data type for vector');
-        }
-
         // Pack the data
         $packed = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
@@ -128,10 +123,10 @@ class Vector implements IStructure
             default:
                 throw new \InvalidArgumentException('Unknown vector type marker: ' . $this->type_marker[0]);
         }
-        
+
         $output = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
-        foreach(mb_str_split((string)$this->data, $size, '8bit') as $value) {
+        foreach (mb_str_split((string)$this->data, $size, '8bit') as $value) {
             $output[] = unpack($unpackFormat, in_array($unpackFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value)[1];
         }
 
