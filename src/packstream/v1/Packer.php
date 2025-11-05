@@ -131,8 +131,7 @@ class Packer implements IPacker
 
     private function packFloat(float $value): iterable
     {
-        $packed = pack('d', $value);
-        yield chr(0xC1) . ($this->littleEndian ? strrev($packed) : $packed);
+        yield chr(0xC1) . pack('E', $value);
     }
 
     /**
@@ -227,13 +226,7 @@ class Packer implements IPacker
                 throw new PackException('Undefined parameter type in structure ' . $structure);
             }
 
-            $packerMethod = $type->getName();
-            if ($packerMethod === 'int') {
-                $packerMethod = 'integer';
-            }
-            $packerMethod = 'pack' . ucfirst($packerMethod);
-
-            yield from [$this, $packerMethod]($structure->{$parameter->getName()});
+            yield from $this->p($structure->{$parameter->getName()});
         }
     }
 
@@ -242,7 +235,7 @@ class Packer implements IPacker
      */
     private function packByteArray(Bytes $bytes): iterable
     {
-        $size = count($bytes);
+        $size = mb_strlen($bytes, '8bit');
         if ($size < self::MEDIUM) {
             yield chr(0xCC) . pack('C', $size) . $bytes;
         } elseif ($size < self::LARGE) {

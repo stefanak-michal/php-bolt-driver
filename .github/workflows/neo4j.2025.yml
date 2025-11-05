@@ -1,0 +1,48 @@
+name: Tests with Neo4j^2025 on PHP^8
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  db-tests-2025-2204:
+    runs-on: ubuntu-22.04
+    name: "Running Integration tests for PHP ${{ matrix.php-version }} on Neo4j ${{ matrix.neo4j-version }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        neo4j-version: ['2025.09', '2025']
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+
+    services:
+      neo4j:
+        image: neo4j:${{ matrix.neo4j-version }}
+        env:
+          NEO4J_AUTH: neo4j/nothing123
+          NEO4J_PLUGINS: '["apoc"]'
+        ports:
+          - 7687:7687
+          - 7474:7474
+        options: >-
+          --health-cmd "wget http://localhost:7474 || exit 1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, sockets
+          coverage: xdebug
+          ini-values: max_execution_time=0
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Test with phpunit
+        env:
+          GDB_USERNAME: neo4j
+          GDB_PASSWORD: nothing123
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "Database"

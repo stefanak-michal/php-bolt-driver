@@ -26,6 +26,7 @@ use Bolt\protocol\v1\structures\{
     UnboundRelationship
 };
 use Bolt\enum\Signature;
+use Bolt\packstream\Bytes;
 
 /**
  * Class StructuresTest
@@ -405,5 +406,30 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         // neo4j returns fraction of seconds not padded with zeros ... zero timezone offset returns as Z
         $time = preg_replace(["/\.?0+(.\d{2}:\d{2})$/", "/\+00:00$/"], ['$1', 'Z'], $time);
         $this->assertEquals($time, $res[1]->content[0], 'pack ' . $time . ' != ' . $res[1]->content[0]);
+    }
+
+    /**
+     * @depends testInit
+     */
+    public function testBytes(AProtocol|V4_4|V4_3|V4_2|V3 $protocol): void
+    {
+        $bytes = new Bytes([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09]);
+        $res = iterator_to_array(
+            $protocol
+                ->begin()
+                ->run('CREATE (:Test { k: 123, b: $b })', [
+                    'b' => $bytes
+                ], ['mode' => 'w'])
+                ->run('MATCH (n:Test { k: 123 }) RETURN n.b')
+                ->pull()
+                ->rollback()
+                ->getResponses(),
+            false
+        );
+        $this->assertInstanceOf(Bytes::class, $res[3]->content[0]);
+        $this->assertEquals(
+            (string)$bytes,
+            (string)($res[3]->content[0])
+        );
     }
 }
