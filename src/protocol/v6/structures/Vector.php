@@ -27,7 +27,7 @@ class Vector implements IStructure
         return json_encode([(string)$this->type_marker, (string)$this->data]);
     }
 
-    private static array $endianesFormats = ['s', 'l', 'q'];
+    private static array $endiannessFormats = ['s', 'l', 'q'];
 
     /**
      * Encode array as vector structure
@@ -86,7 +86,7 @@ class Vector implements IStructure
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
         foreach ($data as $entry) {
             $value = pack($packFormat, $anyFloat ? (float)$entry : (int)$entry);
-            $packed[] = in_array($packFormat, self::$endianesFormats) && $littleEndian ? strrev($value) : $value;
+            $packed[] = in_array($packFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value;
         }
 
         return new self(new Bytes([chr($type->value)]), new Bytes($packed));
@@ -131,7 +131,7 @@ class Vector implements IStructure
         $output = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
         foreach(mb_str_split((string)$this->data, $size, '8bit') as $value) {
-            $output[] = unpack($unpackFormat, in_array($unpackFormat, self::$endianesFormats) && $littleEndian ? strrev($value) : $value)[1];
+            $output[] = unpack($unpackFormat, in_array($unpackFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value)[1];
         }
 
         return $output;
