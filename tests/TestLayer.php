@@ -66,7 +66,7 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
      * @return float|int
      * @link https://neo4j.com/docs/http-api/current/endpoints/#discovery-api
      */
-    protected function getCompatibleBoltVersion(string $url = null): float|int
+    protected function getCompatibleBoltVersion(?string $url = null): float|int
     {
         $json = file_get_contents($url ?? $GLOBALS['NEO_BROWSER'] ?? ('http://' . ($GLOBALS['NEO_HOST'] ?? 'localhost') . ':7474/'));
         $decoded = json_decode($json, true);
@@ -75,7 +75,7 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
 
         $neo4jVersion = $decoded['neo4j_version'];
 
-        if (version_compare($neo4jVersion, '2025.08', '>='))
+        if (version_compare($neo4jVersion, '2025.10', '>='))
             return 6;
         if (version_compare($neo4jVersion, '5.26', '>='))
             return 5.8;
