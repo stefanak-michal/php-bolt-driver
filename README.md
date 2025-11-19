@@ -37,6 +37,7 @@ We are trying to keep up and this library supports **Bolt <= 6**.
 - Neo4j [bolt compatibility](https://www.neo4j.com/docs/bolt/current/bolt-compatibility/)
 - Memgraph [bolt compatibility](https://memgraph.com/docs/client-libraries)
 - Amazon Neptune [bolt compatiblity](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-bolt.html#access-graph-opencypher-bolt-connections)
+- LadybugDB with wrapper [bolt4rs](https://github.com/LadybugDB/bolt4rs)
 - DozerDB
 - ONgDB
 
