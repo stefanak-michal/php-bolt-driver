@@ -45,4 +45,4 @@ jobs:
         env:
           GDB_USERNAME: neo4j
           GDB_PASSWORD: nothing
-        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "Database"
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "Neo4j"

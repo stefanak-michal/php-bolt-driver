@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd" bootstrap="src/autoload.php">
     <testsuites>
-        <testsuite name="Database">
+        <testsuite name="Neo4j">
             <file>./tests/BoltTest.php</file>
             <directory>./tests/connection</directory>
             <directory>./tests/error</directory>
@@ -12,6 +12,9 @@
         <testsuite name="NoDatabase">
             <directory>./tests/protocol</directory>
             <file>./tests/helpers/FileCacheTest.php</file>
+        </testsuite>
+        <testsuite name="Memgraph">
+            <file>./tests/MemgraphTest.php</file>
         </testsuite>
     </testsuites>
     <php>
