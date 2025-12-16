@@ -21,6 +21,7 @@ class Socket extends AConnection
     private $socket = false;
 
     private const POSSIBLE_TIMEOUTS_CODES = [11, 10060];
+    private const POSSIBLE_RETRY_CODES = [4, 10004];
 
     public function connect(): bool
     {
@@ -81,7 +82,7 @@ class Socket extends AConnection
                 throw new ConnectionTimeoutException('Read from connection reached timeout after ' . $this->timeout . ' seconds.');
             $readed = @socket_read($this->socket, $length - mb_strlen($output, '8bit'));
             if ($readed === false) {
-                if (socket_last_error($this->socket) === 10004)
+                if (in_array(socket_last_error($this->socket), self::POSSIBLE_RETRY_CODES, true))
                     continue;
                 $this->throwConnectException();
             }
