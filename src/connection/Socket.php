@@ -80,8 +80,11 @@ class Socket extends AConnection
             if (mb_strlen($output, '8bit') == 0 && $this->timeout > 0 && (microtime(true) - $t) >= $this->timeout)
                 throw new ConnectionTimeoutException('Read from connection reached timeout after ' . $this->timeout . ' seconds.');
             $readed = @socket_read($this->socket, $length - mb_strlen($output, '8bit'));
-            if ($readed === false)
+            if ($readed === false) {
+                if (socket_last_error($this->socket) === 10004)
+                    continue;
                 $this->throwConnectException();
+            }
             $output .= $readed;
         } while (mb_strlen($output, '8bit') < $length);
 
