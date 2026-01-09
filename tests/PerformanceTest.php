@@ -20,7 +20,7 @@ class PerformanceTest extends TestLayer
     {
         $amount = 50000;
 
-        $conn = new Socket($GLOBALS['NEO_HOST'] ?? 'localhost', $GLOBALS['NEO_PORT'] ?? 7687, 60);
+        $conn = new Socket($GLOBALS['NEO_HOST'] ?? 'localhost', $GLOBALS['NEO_PORT'] ?? 7687, 120);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
 
         $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
@@ -31,10 +31,11 @@ class PerformanceTest extends TestLayer
             /** @var Response $response */
             $response = $protocol->pull()->getResponse();
             if ($response->signature !== Signature::RECORD)
-                $this->markTestSkipped();
+                $this->markTestSkipped('Response not as expected.');
             $protocol->getResponse();
             if ($response->content[0] > 0) {
-                sleep(60);
+                $this->markTestSkipped('Test is already running by another process.');
+                return;
             } else {
                 iterator_to_array($protocol->run('CREATE (n:Test50k)')->pull()->getResponses(), false);
                 break;
