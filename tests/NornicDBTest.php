@@ -37,7 +37,8 @@ class NornicDBTest extends TestCase
         $protocol = $bolt->setProtocolVersions('4.4.4')->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        $protocol->hello(['scheme' => 'none'])->getResponse();
+        $response = $protocol->hello(['scheme' => 'none'])->getResponse();
+        $this->assertEquals(Signature::SUCCESS, $response->signature);
 
         return $protocol;
     }
