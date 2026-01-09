@@ -38,8 +38,9 @@ We are trying to keep up and this library supports **Bolt <= 6**.
 - Memgraph [bolt compatibility](https://memgraph.com/docs/client-libraries)
 - Amazon Neptune [bolt compatiblity](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-bolt.html#access-graph-opencypher-bolt-connections)
 - LadybugDB with wrapper [bolt4rs](https://github.com/LadybugDB/bolt4rs)
-- DozerDB
-- ONgDB
+- [DozerDB](https://dozerdb.org/)
+- [ONgDB](https://graphfoundation.org/ongdb/)
+- [NornicDB](https://github.com/orneryd/NornicDB)
 
 ## :white_check_mark: Requirements
 

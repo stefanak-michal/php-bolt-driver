@@ -18,10 +18,18 @@ class StructureLayer extends TestLayer
      */
     public static int $iterations = 50;
 
+    /**
+     * @var array<int> List of already generated timestamps to avoid duplicates
+     */
+    private array $generatedTimestamps = [];
+
     public function providerTimestamp(): \Generator
     {
         for ($i = 0; $i < self::$iterations; $i++) {
-            $ts = $this->randomTimestamp();
+            do {
+                $ts = $this->randomTimestamp();
+            } while (in_array($ts, $this->generatedTimestamps, true));
+            $this->generatedTimestamps[] = $ts;
             yield 'ts: ' . $ts => [$ts];
         }
     }
@@ -30,7 +38,10 @@ class StructureLayer extends TestLayer
     {
         for ($i = 0; $i < self::$iterations; $i++) {
             $tz = \DateTimeZone::listIdentifiers()[array_rand(\DateTimeZone::listIdentifiers())];
-            $ts = $this->randomTimestamp($tz);
+            do {
+                $ts = $this->randomTimestamp($tz);
+            } while (in_array($ts, $this->generatedTimestamps, true));
+            $this->generatedTimestamps[] = $ts;
             yield 'ts: ' . $ts . ' tz: ' . $tz => [$ts, $tz];
         }
     }
