@@ -16,6 +16,9 @@
         <testsuite name="Memgraph">
             <file>./tests/MemgraphTest.php</file>
         </testsuite>
+        <testsuite name="NornicDB">
+            <file>./tests/NornicDBTest.php</file>
+        </testsuite>
     </testsuites>
     <php>
         <var name="NEO_USER" value="neo4j"/>
