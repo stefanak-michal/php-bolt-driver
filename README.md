@@ -13,7 +13,7 @@ all available versions and keep up with protocol messages architecture and speci
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z5ABMLW)
 
-[![image](https://github.com/neo4j-php/Bolt/assets/5502917/1aeb4e22-c9b1-4fe5-8956-1c2e784c4292)](https://awsmfoss.com/neo4j-bolt-php/)
+[<img width="223" height="48" alt="image" src="https://github.com/user-attachments/assets/5d74f0e4-23e5-467b-a68c-7dbe9a49de3c" />](https://awsmfoss.com/neo4j-bolt-php/)
 
 ## :office: Professional Support and Consulting
 
