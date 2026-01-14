@@ -2,7 +2,6 @@
 
 namespace Bolt\tests;
 
-use Bolt\protocol\IStructure;
 use Bolt\Bolt;
 use Bolt\protocol\AProtocol;
 use Bolt\protocol\v1\structures\{
@@ -80,6 +79,9 @@ class NornicDBTest extends TestCase
      */
     public function testTransaction(AProtocol $protocol): void
     {
+        $this->clean($protocol);
+
+        // create node inside transaction and rollback
         $res = iterator_to_array(
             $protocol
                 ->begin()
@@ -91,7 +93,10 @@ class NornicDBTest extends TestCase
         );
 
         $this->assertInstanceOf(\Bolt\protocol\v1\structures\Node::class, $res[2]->content[0]);
+        // check if rollback was successful
+        $this->assertEquals(Signature::SUCCESS, $res[4]->signature);
 
+        // double check if creation of node was rolled back
         $res = iterator_to_array(
             $protocol
                 ->run('MATCH (a:Test) WHERE ID(a) = $a RETURN COUNT(a)', [
@@ -106,31 +111,62 @@ class NornicDBTest extends TestCase
     }
 
     /**
-     * Test additional data types
+     * Test relationship structure
      * @depends testConnection
-     * @dataProvider structureProvider
-     * @param IStructure $structure
      * @param AProtocol $protocol
      */
-    public function testStructure(IStructure $structure, AProtocol $protocol): void
+    public function testRelationship(AProtocol $protocol): void
     {
-        $this->markTestSkipped('I don\'t know yet what structures NornicDB supports.');
-        $responses = iterator_to_array(
+        // clean up previous test data
+        $this->clean($protocol);
+
+        // create relationship
+        $res = iterator_to_array(
             $protocol
-                ->run('RETURN $s', [
-                    's' => $structure
-                ])
+                ->run('CREATE (:A)-[r:RELATES_TO]->(:B) RETURN r')
                 ->pull()
                 ->getResponses(),
             false
         );
 
-        $this->assertInstanceOf(get_class($structure), $responses[1]->content[0]);
-        $this->assertEquals((string)$structure, (string)$responses[1]->content[0]);
+        $this->assertInstanceOf(\Bolt\protocol\v1\structures\Relationship::class, $res[1]->content[0]);
     }
 
-    public function structureProvider(): \Generator
+    /**
+     * Test path structure
+     * @depends testConnection
+     * @param AProtocol $protocol
+     */
+    public function testPath(AProtocol $protocol): void
     {
-        yield 'Duration' => [new Duration(0, 4, 3, 2)];
+        $this->clean($protocol);
+
+        // create path
+        $res = iterator_to_array(
+            $protocol
+                ->run('CREATE p=(:A)-[:RELATES_TO]->(:B) RETURN p')
+                ->pull()
+                ->getResponses(),
+            false
+        );
+
+        $this->assertInstanceOf(\Bolt\protocol\v1\structures\Path::class, $res[1]->content[0]);
+        $this->assertCount(2, $res[1]->content[0]->nodes);
+        $this->assertCount(1, $res[1]->content[0]->relationships);
+    }
+
+    /**
+     * Clean up database
+     * @param AProtocol $protocol
+     */
+    private function clean(AProtocol $protocol): void
+    {
+        iterator_to_array(
+            $protocol
+                ->run('MATCH (n) DETACH DELETE n')
+                ->pull()
+                ->getResponses(),
+            false
+        );
     }
 }
