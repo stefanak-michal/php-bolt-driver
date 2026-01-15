@@ -4,9 +4,6 @@ namespace Bolt\tests;
 
 use Bolt\Bolt;
 use Bolt\protocol\AProtocol;
-use Bolt\protocol\v1\structures\{
-    Duration,
-};
 use Bolt\enum\Signature;
 use PHPUnit\Framework\TestCase;
 
