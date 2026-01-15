@@ -94,7 +94,7 @@ final class Bolt
         ]);
 
         if (curl_exec($curl) !== false) {
-            curl_close($curl);
+            unset($curl);
             
             // clean sent analytics data
             if (method_exists(CacheProvider::get(), 'lock')) {
