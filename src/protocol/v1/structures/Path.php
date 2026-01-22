@@ -16,16 +16,30 @@ use Bolt\protocol\IStructure;
 class Path implements IStructure
 {
     /**
-     * @param Node[] $nodes
-     * @param UnboundRelationship[] $rels list of unbound relationships
-     * @param int[] $ids relationship id and node id to represent the path
+     * List of integers describing how to construct the path from nodes and rels
+     * @var int[]
+     */
+    public readonly array $indices;
+
+    /**
+     * @deprecated use $indices instead. For some reason originally I named it ids, but the correct name is indices.
+     * @var int[]
+     */
+    public readonly array $ids;
+
+    /**
+     * @param Node[] $nodes List of nodes
+     * @param UnboundRelationship[] $rels List of unbound relationships
+     * @param int[] $indices Relationship id and node id to represent the path
      */
     public function __construct(
         public readonly array $nodes,
         public readonly array $rels,
-        public readonly array $ids
+        array $indices
     )
     {
+        $this->ids = $indices;
+        $this->indices = $indices;
     }
 
     public function __toString(): string
@@ -34,7 +48,7 @@ class Path implements IStructure
             'start' => json_decode(reset($this->nodes), true),
             'end' => json_decode(end($this->nodes), true),
             'segments' => [],
-            'length' => count($this->ids) - 1
+            'length' => count($this->indices) - 1
         ];
 
         for ($i = 0; $i < count($this->nodes) - 1; $i++) {
