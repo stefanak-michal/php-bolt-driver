@@ -132,4 +132,10 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
 
         $protocol->rollback()->getResponse();
     }
+
+    private string $expectedDateTimeClass = DateTime::class;
+    use DateTimeTrait;
+
+    private string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
+    use DateTimeZoneIdTrait;
 }

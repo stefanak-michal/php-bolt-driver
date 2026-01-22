@@ -151,6 +151,9 @@ class NornicDBTest extends TestCase
         $this->assertCount(2, $res[1]->content[0]->nodes);
         $this->assertCount(1, $res[1]->content[0]->rels);
         $this->assertCount(2, $res[1]->content[0]->indices);
+        $this->assertInstanceOf(\Bolt\protocol\v1\structures\UnboundRelationship::class, $res[1]->content[0]->rels[0]);
+        $this->assertInstanceOf(\Bolt\protocol\v1\structures\Node::class, $res[1]->content[0]->nodes[0]);
+        $this->assertInstanceOf(\Bolt\protocol\v1\structures\Node::class, $res[1]->content[0]->nodes[1]);
         $this->assertEquals(['A'], $res[1]->content[0]->nodes[0]->labels);
         $this->assertEquals(['B'], $res[1]->content[0]->nodes[$res[1]->content[0]->indices[1]]->labels);
         $this->assertEquals('RELATES_TO', $res[1]->content[0]->rels[$res[1]->content[0]->indices[0] - 1]->type);
