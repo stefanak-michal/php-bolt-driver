@@ -2,10 +2,12 @@ name: Tests with NornicDB on PHP 8.5
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [ master ]
 
 jobs:
   nornicdb-tests:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     name: "Running Integration tests for PHP on NornicDB"
 
