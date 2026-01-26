@@ -20,21 +20,23 @@ class Socket extends AConnection
      */
     private $socket = false;
 
-    private const POSSIBLE_TIMEOUTS_CODES = [11, 10060];
-    private const POSSIBLE_RETRY_CODES = [4, 10004];
-    private const POSSIBLE_CONNECT_IN_PROGRESS_CODES = [
-        11,     // EAGAIN/EWOULDBLOCK (common on *nix)
-        115,    // EINPROGRESS
-        114,    // EALREADY
-        10035,  // WSAEWOULDBLOCK
-        10036,  // WSAEINPROGRESS
-    ];
-
     /**
-     * You can set socket into blocking or non-blocking mode - default is blocking
      * @var bool
      */
-    public bool $blocking = true;
+    private bool $blocking = true;
+
+    private const POSSIBLE_TIMEOUTS_CODES = [
+        SOCKET_ETIMEDOUT
+    ];
+    private const POSSIBLE_RETRY_CODES = [
+        SOCKET_EINTR,
+        SOCKET_EAGAIN
+    ];
+    private const POSSIBLE_CONNECT_IN_PROGRESS_CODES = [
+        SOCKET_EAGAIN,
+        SOCKET_EINPROGRESS,
+        SOCKET_EALREADY,
+    ];
 
     public function __construct(string $ip = '127.0.0.1', int $port = 7687, float $timeout = 15)
     {
@@ -42,6 +44,22 @@ class Socket extends AConnection
             throw new ConnectException('PHP Extension sockets not enabled');
         }
         parent::__construct($ip, $port, $timeout);
+    }
+
+    /**
+     * Set blocking or non-blocking mode for the socket.
+     * Allowed only before connection is established.
+     * Default is blocking. 
+     * @param bool $blocking true - blocking, false - non-blocking
+     * @throws ConnectException
+     */
+    public function setBlocking(bool $blocking): void
+    {
+        if ($this->socket === false) {
+            $this->blocking = $blocking;
+        } else {
+            throw new ConnectException('Cannot change blocking mode on established connection');
+        }
     }
 
     public function connect(): bool
@@ -163,9 +181,12 @@ class Socket extends AConnection
 
             $sent = @socket_write($this->socket, $buffer, $size);
             if ($sent === false || $sent === 0) {
+                if (in_array(socket_last_error($this->socket), self::POSSIBLE_RETRY_CODES, true)) {
+                    continue;
+                }
                 $this->throwConnectException($start);
             }
-            
+
             $buffer = mb_strcut($buffer, $sent, null, '8bit');
             $size -= $sent;
         }
@@ -180,20 +201,19 @@ class Socket extends AConnection
         $output = '';
         $start = microtime(true);
         do {
-            // this will be handled in throwConnectException
-            // if (mb_strlen($output, '8bit') == 0 && $this->timeout > 0 && (microtime(true) - $start) >= $this->timeout)
-            //     throw new ConnectionTimeoutException('Read from connection reached timeout after ' . $this->timeout . ' seconds.');
-
             if (!$this->blocking) {
                 $this->waitForReadable($start);
             }
 
-            $readed = @socket_read($this->socket, $length - mb_strlen($output, '8bit'));
-            if ($readed === false || mb_strlen($readed, '8bit') === 0) {
+            $readed = '';
+            $result = @socket_recv($this->socket, $readed, $length - mb_strlen($output, '8bit'), 0);
+            if ($result === false) {
                 if (in_array(socket_last_error($this->socket), self::POSSIBLE_RETRY_CODES, true)) {
                     continue;
                 }
                 $this->throwConnectException($start);
+            } elseif ($result === 0) {
+                throw new ConnectException('Connection closed by remote host');
             }
             $output .= $readed;
         } while (mb_strlen($output, '8bit') < $length);

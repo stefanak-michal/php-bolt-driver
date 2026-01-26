@@ -6,6 +6,7 @@ use Bolt\Bolt;
 use Bolt\tests\TestLayer;
 use Bolt\connection\{
     IConnection,
+    PStreamSocket,
     Socket,
     StreamSocket
 };
