@@ -25,9 +25,6 @@ class Socket extends AConnection
      */
     private bool $blocking = true;
 
-    private const POSSIBLE_TIMEOUTS_CODES = [
-        SOCKET_ETIMEDOUT
-    ];
     private const POSSIBLE_RETRY_CODES = [
         SOCKET_EINTR,
         SOCKET_EAGAIN
@@ -124,11 +121,14 @@ class Socket extends AConnection
 
         $readArr = null;
         $writeArr = [$this->socket];
-        $exceptArr = [$this->socket];
+        $exceptArr = null;
         $selectResult = @socket_select($readArr, $writeArr, $exceptArr, $seconds, $microseconds);
-
-        if ($selectResult === false || $selectResult === 0) {
-            $this->throwConnectException($startTime);
+        if ($selectResult === 0) {
+            throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
+        }
+        if ($selectResult === false) {
+            $code = socket_last_error($this->socket);
+            throw new ConnectException(socket_strerror($code), $code);
         }
     }
 
@@ -156,9 +156,12 @@ class Socket extends AConnection
         $writeArr = null;
         $exceptArr = null;
         $selectResult = @socket_select($readArr, $writeArr, $exceptArr, $seconds, $microseconds);
-
-        if ($selectResult === false || $selectResult === 0) {
-            $this->throwConnectException($startTime);
+        if ($selectResult === 0) {
+            throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
+        }
+        if ($selectResult === false) {
+            $code = socket_last_error($this->socket);
+            throw new ConnectException(socket_strerror($code), $code);
         }
     }
 
@@ -260,7 +263,7 @@ class Socket extends AConnection
     private function throwConnectException(float|null $start = null): void
     {
         $code = socket_last_error($this->socket);
-        if (in_array($code, self::POSSIBLE_TIMEOUTS_CODES, true)) {
+        if ($code === SOCKET_ETIMEDOUT) {
             throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
         } elseif ($code !== 0) {
             throw new ConnectException(socket_strerror($code), $code);

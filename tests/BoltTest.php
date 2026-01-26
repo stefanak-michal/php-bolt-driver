@@ -21,7 +21,7 @@ class BoltTest extends TestLayer
         if (!extension_loaded('sockets'))
             $this->markTestSkipped('Sockets extension not available');
 
-        $conn = new \Bolt\connection\Socket($GLOBALS['NEO_HOST'] ?? '127.0.0.1', $GLOBALS['NEO_PORT'] ?? 7687, 3);
+        $conn = new \Bolt\connection\Socket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT'], 3);
         $this->assertInstanceOf(\Bolt\connection\Socket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -58,7 +58,7 @@ class BoltTest extends TestLayer
 
     public function testHello(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'] ?? '127.0.0.1', $GLOBALS['NEO_PORT'] ?? 7687);
+        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -150,7 +150,7 @@ class BoltTest extends TestLayer
         if (version_compare($protocol->getVersion(), 4.3, '>=')) {
             $response = $protocol
                 ->route([
-                    'address' => ($GLOBALS['NEO_HOST'] ?? '127.0.0.1') . ':' . ($GLOBALS['NEO_PORT'] ?? 7687)
+                    'address' => $GLOBALS['NEO_HOST'] . ':' . $GLOBALS['NEO_PORT']
                 ])
                 ->getResponse();
             $this->assertEquals(Signature::SUCCESS, $response->signature);
