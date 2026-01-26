@@ -2,6 +2,7 @@ name: Tests with Neo4j 4.4 on PHP^8
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [ master ]
 
 jobs:
