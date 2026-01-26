@@ -6,6 +6,7 @@ on:
 
 jobs:
   nornicdb-tests:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     name: "Running Integration tests for PHP on NornicDB"
 

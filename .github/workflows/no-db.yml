@@ -6,6 +6,7 @@ on:
 
 jobs:
   no-db-tests-2204:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-22.04
     name: "Running Tests for PHP ${{ matrix.php-version }}"
     strategy:

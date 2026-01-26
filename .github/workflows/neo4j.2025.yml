@@ -6,6 +6,7 @@ on:
 
 jobs:
   db-tests-2025-2204:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-22.04
     name: "Running Integration tests for PHP ${{ matrix.php-version }} on Neo4j ${{ matrix.neo4j-version }}"
     strategy:
