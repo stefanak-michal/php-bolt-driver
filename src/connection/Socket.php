@@ -91,6 +91,9 @@ class Socket extends AConnection
         $output = '';
         $start = microtime(true);
         do {
+            if ($this->timeout > 0 && (microtime(true) - $start) >= $this->timeout) {
+                $this->throwConnectException($start);
+            }
             $readed = '';
             $result = @socket_recv($this->socket, $readed, $length - mb_strlen($output, '8bit'), 0);
             if ($result === false) {
