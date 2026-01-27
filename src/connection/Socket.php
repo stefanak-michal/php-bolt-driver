@@ -22,7 +22,7 @@ class Socket extends AConnection
 
     private const POSSIBLE_RETRY_CODES = [
         SOCKET_EINTR,
-        SOCKET_EAGAIN
+        SOCKET_EWOULDBLOCK
     ];
 
     public function __construct(string $ip = '127.0.0.1', int $port = 7687, float $timeout = 15)
