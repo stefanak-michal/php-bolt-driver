@@ -151,10 +151,10 @@ class Socket extends AConnection
         $code = socket_last_error($this->socket);
         if ($code === SOCKET_ETIMEDOUT) {
             throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
-        } elseif ($code !== 0) {
-            throw new ConnectException(socket_strerror($code), $code);
         } elseif ($start !== null && $this->timeout > 0 && (microtime(true) - $start) >= $this->timeout) {
             throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
+        } elseif ($code !== 0) {
+            throw new ConnectException(socket_strerror($code), $code);
         }
     }
 }
