@@ -120,6 +120,6 @@ final class ConnectionTest extends TestLayer
 
     private function getConnection(string $class): IConnection
     {
-        return new $class($GLOBALS['NEO_HOST'] ?? '127.0.0.1', (int)($GLOBALS['NEO_PORT'] ?? 7687), 1);
+        return new $class($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT'], 1);
     }
 }

@@ -23,9 +23,13 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
         $host = getenv('GDB_HOST');
         if (!empty($host))
             $GLOBALS['NEO_HOST'] = $host;
+        if (!isset($GLOBALS['NEO_HOST']))
+            $GLOBALS['NEO_HOST'] = '127.0.0.1';
         $port = getenv('GDB_PORT');
         if (!empty($port))
-            $GLOBALS['NEO_PORT'] = $port;
+            $GLOBALS['NEO_PORT'] = (int)$port;
+        if (!isset($GLOBALS['NEO_PORT']))
+            $GLOBALS['NEO_PORT'] = 7687;
     }
 
     /**
