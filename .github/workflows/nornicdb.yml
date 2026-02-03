@@ -16,7 +16,10 @@ jobs:
           - 7687:7687
           - 7474:7474
         options: >-
-          --health-cmd "curl http://localhost:7474/health || exit 1"
+          --health-cmd "curl -fsS http://localhost:7474/health || exit 1"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 30
 
     steps:
       - name: Checkout
