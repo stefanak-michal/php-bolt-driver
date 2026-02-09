@@ -18,15 +18,8 @@ use Exception;
  */
 abstract class DateTimeUpdate extends StructureLayer
 {
-    abstract protected string $expectedDateTimeClass {
-        get; 
-        set; 
-    }
-
-    abstract protected string $expectedDateTimeZoneIdClass {
-        get; 
-        set; 
-    }
+    protected string $expectedDateTimeClass;
+    protected string $expectedDateTimeZoneIdClass;
 
     /**
      * @depends testInit
