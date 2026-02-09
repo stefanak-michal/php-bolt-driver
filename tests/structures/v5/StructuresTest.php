@@ -10,9 +10,8 @@ use Bolt\protocol\v5\structures\{
     Node,
     Relationship,
     UnboundRelationship
-    };
+};
 use Bolt\protocol\v1\structures\Path;
-use Bolt\tests\structures\v1\{ DateTimeTrait, DateTimeZoneIdTrait };
 
 /**
  * Class StructuresTest
@@ -21,8 +20,11 @@ use Bolt\tests\structures\v1\{ DateTimeTrait, DateTimeZoneIdTrait };
  * @link https://github.com/neo4j-php/Bolt
  * @package Bolt\tests\protocol\v5
  */
-class StructuresTest extends \Bolt\tests\structures\StructureLayer
+class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
+    protected string $expectedDateTimeClass = DateTime::class;
+    protected string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
+
     public function testInit(): AProtocol
     {
         $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'] ?? '127.0.0.1', $GLOBALS['NEO_PORT'] ?? 7687);
@@ -34,20 +36,14 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $protocol = $bolt->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        if (version_compare($protocol->getVersion(), '5', '<')) {
-            $this->markTestSkipped('Tests available only for version 5 and higher.');
+        if (version_compare($protocol->getVersion(), '5', '!=')) {
+            $this->markTestSkipped('Tests available only for version 5.');
         }
 
         $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
 
         return $protocol;
     }
-
-    private string $expectedDateTimeClass = DateTime::class;
-    use DateTimeTrait;
-
-    private string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
-    use DateTimeZoneIdTrait;
 
     /**
      * @depends testInit

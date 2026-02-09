@@ -26,8 +26,8 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $protocol = $bolt->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        if (version_compare($protocol->getVersion(), '6', '<')) {
-            $this->markTestSkipped('Tests available only for version 6 and higher.');
+        if (version_compare($protocol->getVersion(), '6', '!=')) {
+            $this->markTestSkipped('Tests available only for version 6.');
         }
 
         $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);

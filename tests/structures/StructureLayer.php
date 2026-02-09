@@ -11,7 +11,7 @@ use Exception;
  * @link https://github.com/neo4j-php/Bolt
  * @package Bolt\tests\protocol
  */
-class StructureLayer extends TestLayer
+abstract class StructureLayer extends TestLayer
 {
     /**
      * How many iterations do for each date/time test
