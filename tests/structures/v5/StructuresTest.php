@@ -4,16 +4,15 @@ namespace Bolt\tests\structures\v5;
 
 use Bolt\Bolt;
 use Bolt\protocol\AProtocol;
-use Bolt\tests\structures\v1\DateTimeTrait;
-use Bolt\tests\structures\v1\DateTimeZoneIdTrait;
 use Bolt\protocol\v5\structures\{
     DateTime,
     DateTimeZoneId,
     Node,
     Relationship,
     UnboundRelationship
-};
+    };
 use Bolt\protocol\v1\structures\Path;
+use Bolt\tests\structures\v1\{ DateTimeTrait, DateTimeZoneIdTrait };
 
 /**
  * Class StructuresTest
