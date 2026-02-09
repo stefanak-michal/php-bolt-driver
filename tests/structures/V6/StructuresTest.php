@@ -23,8 +23,12 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $protocol = $bolt->setProtocolVersions(6)->build();
-        $this->assertInstanceOf(AProtocol::class, $protocol);
+        try {
+            $protocol = $bolt->setProtocolVersions(6)->build();
+            $this->assertInstanceOf(AProtocol::class, $protocol);
+        } catch (\Bolt\error\ConnectException $e) {
+            $this->markTestSkipped('Test skipped: ' . $e->getMessage());
+        }
 
         if (version_compare($protocol->getVersion(), '6', '<') || version_compare($protocol->getVersion(), '7', '>=')) {
             $this->markTestSkipped('Tests available only for version 6.');

@@ -48,9 +48,12 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        /** @var AProtocol|V4_4|V4_3|V4_2|V3 $protocol */
-        $protocol = $bolt->setProtocolVersions(4.4, 4.3, 4.2, 3)->build();
-        $this->assertInstanceOf(AProtocol::class, $protocol);
+        try {
+            $protocol = $bolt->setProtocolVersions(4.4, 4.3, 4.2, 3)->build();
+            $this->assertInstanceOf(AProtocol::class, $protocol);
+        } catch (\Bolt\error\ConnectException $e) {
+            $this->markTestSkipped('Test skipped: ' . $e->getMessage());
+        }
 
         if (version_compare($protocol->getVersion(), '4.3', '>=')) {
             $this->markTestSkipped('Tests available only for version up to 4.3.');

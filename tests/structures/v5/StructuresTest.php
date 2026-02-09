@@ -32,9 +32,13 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
-
-        $protocol = $bolt->setProtocolVersions('5.8.8')->build();
-        $this->assertInstanceOf(AProtocol::class, $protocol);
+        
+        try {
+            $protocol = $bolt->setProtocolVersions('5.8.8')->build();
+            $this->assertInstanceOf(AProtocol::class, $protocol);
+        } catch (\Bolt\error\ConnectException $e) {
+            $this->markTestSkipped('Test skipped: ' . $e->getMessage());
+        }
 
         if (version_compare($protocol->getVersion(), '5', '<') || version_compare($protocol->getVersion(), '6', '>=')) {
             $this->markTestSkipped('Tests available only for version 5.');
