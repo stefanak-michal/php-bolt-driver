@@ -20,7 +20,7 @@ use Bolt\enum\Signature;
 *
 * @author Michal Stefanak
 * @link https://github.com/neo4j-php/Bolt
-* @package Bolt\tests\protocol\v4_3
+* @package Bolt\tests\structures\v4_3
 */
 class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
@@ -35,9 +35,8 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $bolt->setProtocolVersions(4.4, 4.3);
         /** @var AProtocol|V4_4|V4_3 $protocol */
-        $protocol = $bolt->build();
+        $protocol = $bolt->setProtocolVersions(4.4, 4.3)->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
         /** @var Response $helloResponse */

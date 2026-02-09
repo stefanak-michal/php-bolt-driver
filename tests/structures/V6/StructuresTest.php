@@ -11,7 +11,7 @@ use Bolt\protocol\v6\structures\Vector;
  *
  * @author Michal Stefanak
  * @link https://github.com/neo4j-php/Bolt
- * @package Bolt\tests\protocol\v6
+ * @package Bolt\tests\structures\v6
  */
 class StructuresTest extends \Bolt\tests\structures\StructureLayer
 {
@@ -23,10 +23,10 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $protocol = $bolt->build();
+        $protocol = $bolt->setProtocolVersions(6)->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        if (version_compare($protocol->getVersion(), '6', '!=')) {
+        if (version_compare($protocol->getVersion(), '6', '<') || version_compare($protocol->getVersion(), '7', '>=')) {
             $this->markTestSkipped('Tests available only for version 6.');
         }
 

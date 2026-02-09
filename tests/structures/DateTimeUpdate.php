@@ -2,19 +2,15 @@
 
 namespace Bolt\tests\structures;
 
-use Bolt\protocol\{
-    AProtocol,
-    V1,
-    V5
-};
+use Bolt\protocol\AProtocol;
 use Bolt\enum\Signature;
 use Exception;
 
 /**
- * Class AStructures
+ * Class DateTimeUpdate
  * @author Michal Stefanak
  * @link https://github.com/neo4j-php/Bolt
- * @package Bolt\tests\protocol
+ * @package Bolt\tests\structures
  */
 abstract class DateTimeUpdate extends StructureLayer
 {
@@ -25,7 +21,7 @@ abstract class DateTimeUpdate extends StructureLayer
      * @depends testInit
      * @dataProvider providerTimestampTimezone
      */
-    public function testDateTime(int $timestamp, string $timezone, AProtocol|V1|V5 $protocol): void
+    public function testDateTime(int $timestamp, string $timezone, AProtocol $protocol): void
     {
         $timestamp .= '.' . rand(0, 9e5);
         $datetime = \DateTime::createFromFormat('U.u', $timestamp, new \DateTimeZone($timezone))
@@ -65,7 +61,7 @@ abstract class DateTimeUpdate extends StructureLayer
      * @depends      testInit
      * @dataProvider providerTimestampTimezone
      */
-    public function testDateTimeZoneId(int $timestamp, string $timezone, AProtocol|V1|V5 $protocol): void
+    public function testDateTimeZoneId(int $timestamp, string $timezone, AProtocol $protocol): void
     {
         try {
             $timestamp .= '.' . rand(0, 9e5);

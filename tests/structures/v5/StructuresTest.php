@@ -18,7 +18,7 @@ use Bolt\protocol\v1\structures\Path;
  *
  * @author Michal Stefanak
  * @link https://github.com/neo4j-php/Bolt
- * @package Bolt\tests\protocol\v5
+ * @package Bolt\tests\structures\v5
  */
 class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
@@ -33,10 +33,10 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $protocol = $bolt->build();
+        $protocol = $bolt->setProtocolVersions('5.8.8')->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        if (version_compare($protocol->getVersion(), '5', '!=')) {
+        if (version_compare($protocol->getVersion(), '5', '<') || version_compare($protocol->getVersion(), '6', '>=')) {
             $this->markTestSkipped('Tests available only for version 5.');
         }
 

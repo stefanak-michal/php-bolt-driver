@@ -33,7 +33,7 @@ use Bolt\packstream\Bytes;
  *
  * @author Michal Stefanak
  * @link https://github.com/neo4j-php/Bolt
- * @package Bolt\tests
+ * @package Bolt\tests\structures\v1
  */
 class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
@@ -48,9 +48,8 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $bolt->setProtocolVersions(4.4, 4.3, 4.2, 3);
         /** @var AProtocol|V4_4|V4_3|V4_2|V3 $protocol */
-        $protocol = $bolt->build();
+        $protocol = $bolt->setProtocolVersions(4.4, 4.3, 4.2, 3)->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
         if (version_compare($protocol->getVersion(), '4.3', '>=')) {
