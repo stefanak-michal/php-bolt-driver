@@ -13,21 +13,20 @@ use Bolt\protocol\v5\structures\{
     DateTime,
     DateTimeZoneId
 };
-use Bolt\tests\structures\v1\{
-    DateTimeTrait,
-    DateTimeZoneIdTrait
-};
 use Bolt\enum\Signature;
 
 /**
  * Class StructuresTest
- *
- * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
- * @package Bolt\tests\protocol\v4_3
- */
-class StructuresTest extends \Bolt\tests\structures\StructureLayer
+*
+* @author Michal Stefanak
+* @link https://github.com/neo4j-php/Bolt
+* @package Bolt\tests\structures\v4_3
+*/
+class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
+    protected string $expectedDateTimeClass = DateTime::class;
+    protected string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
+
     public function testInit(): AProtocol|V4_4|V4_3
     {
         $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
@@ -36,10 +35,12 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $bolt->setProtocolVersions(4.4, 4.3);
-        /** @var AProtocol|V4_4|V4_3 $protocol */
-        $protocol = $bolt->build();
-        $this->assertInstanceOf(AProtocol::class, $protocol);
+        try {
+            $protocol = $bolt->setProtocolVersions(4.4, 4.3)->build();
+            $this->assertInstanceOf(AProtocol::class, $protocol);
+        } catch (\Bolt\error\ConnectException $e) {
+            $this->markTestSkipped('Test skipped: ' . $e->getMessage());
+        }
 
         /** @var Response $helloResponse */
         $helloResponse = $protocol->hello([
@@ -62,9 +63,4 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         return $protocol;
     }
 
-    private string $expectedDateTimeClass = DateTime::class;
-    use DateTimeTrait;
-
-    private string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
-    use DateTimeZoneIdTrait;
 }

@@ -33,10 +33,13 @@ use Bolt\packstream\Bytes;
  *
  * @author Michal Stefanak
  * @link https://github.com/neo4j-php/Bolt
- * @package Bolt\tests
+ * @package Bolt\tests\structures\v1
  */
-class StructuresTest extends \Bolt\tests\structures\StructureLayer
+class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
+    protected string $expectedDateTimeClass = DateTime::class;
+    protected string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
+
     public function testInit(): AProtocol|V4_4|V4_3|V4_2|V3
     {
         $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
@@ -45,10 +48,16 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $bolt->setProtocolVersions(4.4, 4.3, 4.2, 3);
-        /** @var AProtocol|V4_4|V4_3|V4_2|V3 $protocol */
-        $protocol = $bolt->build();
-        $this->assertInstanceOf(AProtocol::class, $protocol);
+        try {
+            $protocol = $bolt->setProtocolVersions(4.4, 4.3, 4.2, 3)->build();
+            $this->assertInstanceOf(AProtocol::class, $protocol);
+        } catch (\Bolt\error\ConnectException $e) {
+            $this->markTestSkipped('Test skipped: ' . $e->getMessage());
+        }
+
+        if (version_compare($protocol->getVersion(), '4.4', '>')) {
+            $this->markTestSkipped('Tests available only for version up to 4.4.');
+        }
 
         $this->assertEquals(Signature::SUCCESS, $protocol->hello([
             'user_agent' => 'bolt-php',
@@ -95,12 +104,6 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         );
         $this->assertEquals($date, $res[1]->content[0], 'pack ' . $date . ' != ' . $res[1]->content[0]);
     }
-
-    private string $expectedDateTimeClass = DateTime::class;
-    use DateTimeTrait;
-
-    private string $expectedDateTimeZoneIdClass = DateTimeZoneId::class;
-    use DateTimeZoneIdTrait;
 
     /**
      * @depends      testInit
