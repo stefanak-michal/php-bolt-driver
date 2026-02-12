@@ -55,8 +55,8 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
             $this->markTestSkipped('Test skipped: ' . $e->getMessage());
         }
 
-        if (version_compare($protocol->getVersion(), '4.3', '>=')) {
-            $this->markTestSkipped('Tests available only for version up to 4.3.');
+        if (version_compare($protocol->getVersion(), '4.4', '>')) {
+            $this->markTestSkipped('Tests available only for version up to 4.4.');
         }
 
         $this->assertEquals(Signature::SUCCESS, $protocol->hello([
