@@ -5,6 +5,8 @@ namespace Bolt\tests\structures\v5;
 use Bolt\Bolt;
 use Bolt\protocol\AProtocol;
 use Bolt\protocol\v5\structures\{
+    DateTime,
+    DateTimeZoneId,
     Node,
     Relationship,
     UnboundRelationship
