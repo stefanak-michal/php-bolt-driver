@@ -2,10 +2,12 @@ name: Tests without a database PHP^8
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [ master ]
 
 jobs:
   no-db-tests-2204:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-22.04
     name: "Running Tests for PHP ${{ matrix.php-version }}"
     strategy:
