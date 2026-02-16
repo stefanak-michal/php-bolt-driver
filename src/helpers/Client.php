@@ -19,7 +19,7 @@ use Exception;
 class Client
 {
     private function __construct() {}
-    
+
     private static $logHandler = null;
     private static $errorHandler = null;
     private static array $statistics = [];
@@ -36,7 +36,7 @@ class Client
 
     /**
      * Assigned handler is called every time query is executed
-     * @var callable|null (string $query, array $params, array $statistics)
+     * @param callable|null $handler (string $query, array $params, array $statistics)
      */
     public static function setLogHandler(?callable $handler = null): void
     {
@@ -45,7 +45,7 @@ class Client
 
     /**
      * Provided handler is invoked on Exception instead of trigger_error
-     * @var callable|null (Exception $e)
+     * @param callable|null $handler (Exception $e)
      */
     public static function setErrorHandler(?callable $handler = null): void
     {
@@ -54,9 +54,9 @@ class Client
 
     /**
      * Format failure response into exception message and throw it
-      *
-      * @param Response $response
-      * @throws Exception
+     *
+     * @param Response $response
+     * @throws Exception
      */
     private static function failureAsException(Response $response): void
     {
@@ -248,11 +248,11 @@ class Client
      */
     public static function begin(array $extra = []): bool
     {
-        if (version_compare(self::getProtocol()->getVersion(), '3', '<')) {
-            return false;
-        }
-
         try {
+            if (version_compare(self::getProtocol()->getVersion(), '3', '<')) {
+                return false;
+            }
+
             /** @var Response $response */
             $response = self::getProtocol()->begin($extra)->getResponse();
             if ($response->signature != Signature::SUCCESS) {
@@ -276,11 +276,11 @@ class Client
      */
     public static function commit(): bool
     {
-        if (version_compare(self::getProtocol()->getVersion(), '3', '<')) {
-            return false;
-        }
-
         try {
+            if (version_compare(self::getProtocol()->getVersion(), '3', '<')) {
+                return false;
+            }
+
             /** @var Response $response */
             $response = self::getProtocol()->commit()->getResponse();
             if ($response->signature != Signature::SUCCESS) {
@@ -304,11 +304,11 @@ class Client
      */
     public static function rollback(): bool
     {
-        if (version_compare(self::getProtocol()->getVersion(), '3', '<')) {
-            return false;
-        }
-        
         try {
+            if (version_compare(self::getProtocol()->getVersion(), '3', '<')) {
+                return false;
+            }
+
             /** @var Response $response */
             $response = self::getProtocol()->rollback()->getResponse();
             if ($response->signature != Signature::SUCCESS) {

@@ -64,7 +64,7 @@ class ClientTest extends TestCase
 
     public function testErrorHandler(): void
     {
-        $testsuite = self::getTestSuite();
+        $testsuite = $this->getTestSuite();
         if ($testsuite !== 'Neo4j') {
             $this->markTestSkipped('This test is only executed with Neo4j, skipping.');
         }
