@@ -5,6 +5,13 @@ namespace Bolt\tests\helpers;
 use PHPUnit\Framework\TestCase;
 use Bolt\helpers\FileCache;
 
+/**
+ * Class FileCacheTest
+ *
+ * @author Michal Stefanak
+ * @link https://github.com/stefanak-michal/php-bolt-driver
+ * @package Bolt\tests\helpers
+ */
 class FileCacheTest extends TestCase
 {
     private FileCache $cache;

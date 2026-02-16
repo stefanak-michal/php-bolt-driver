@@ -10,7 +10,7 @@ use Bolt\tests\TestLayer;
  * Class PackerTest
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\packstream\v1
  */
 class PackerTest extends TestLayer

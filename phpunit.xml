@@ -8,6 +8,7 @@
             <directory>./tests/packstream</directory>
             <directory>./tests/structures</directory>
             <file>./tests/PerformanceTest.php</file>
+            <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
         <testsuite name="NoDatabase">
             <directory>./tests/protocol</directory>
@@ -15,9 +16,11 @@
         </testsuite>
         <testsuite name="Memgraph">
             <file>./tests/MemgraphTest.php</file>
+            <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
         <testsuite name="NornicDB">
             <file>./tests/NornicDBTest.php</file>
+            <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
     </testsuites>
     <php>

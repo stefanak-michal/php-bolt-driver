@@ -8,7 +8,7 @@ use Bolt\protocol\V5;
  * Class V5Test
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\protocol
  */
 class V5Test extends ProtocolLayer

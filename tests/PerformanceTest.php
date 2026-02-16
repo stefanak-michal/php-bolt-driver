@@ -11,7 +11,7 @@ use Bolt\tests\packstream\v1\generators\RandomDataGenerator;
 /**
  * Class PerformanceTest
  * @author Ghlen Nagels
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
  */
 class PerformanceTest extends TestLayer

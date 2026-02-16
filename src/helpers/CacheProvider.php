@@ -8,7 +8,7 @@ use Psr\SimpleCache\CacheInterface;
  * Class CacheProvider
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\helpers
  */
 class CacheProvider 

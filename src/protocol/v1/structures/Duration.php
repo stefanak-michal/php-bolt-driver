@@ -11,7 +11,7 @@ use Bolt\protocol\IStructure;
  * A temporal amount. This captures the difference in time between two instants. It only captures the amount of time between two instants, it does not capture a start time and end time. A unit capturing the start time and end time would be a Time Interval and is out of scope for this proposal.
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-duration
  * @package Bolt\protocol\v1\structures
  */

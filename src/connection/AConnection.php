@@ -6,7 +6,7 @@ namespace Bolt\connection;
  * Class AConnection
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\connection
  */
 abstract class AConnection implements IConnection

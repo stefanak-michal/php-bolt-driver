@@ -15,7 +15,8 @@ use Bolt\enum\Signature;
 /**
  * Class ConnectionTest
  *
- * @link https://github.com/neo4j-php/Bolt
+ * @author Michal Stefanak
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\connection
  */
 final class ConnectionTest extends TestLayer

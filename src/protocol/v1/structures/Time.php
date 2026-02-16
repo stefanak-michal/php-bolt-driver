@@ -14,7 +14,7 @@ use Bolt\protocol\IStructure;
  * <pre> utc_nanoseconds = nanoseconds - (tz_offset_seconds * 1000000000) </pre>
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-time
  * @package Bolt\protocol\v1\structures
  */
