@@ -1,0 +1,39 @@
+name: Tests with FalkorDB on PHP 8.5
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ master ]
+
+jobs:
+  falkordb-tests:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-22.04
+    name: "Running Integration tests for PHP on FalkorDB"
+
+    services:
+      falkordb:
+        image: falkordb/falkordb-server
+        env:
+          REDIS_ARGS: --requirepass falkordb
+          FALKORDB_ARGS: BOLT_PORT=7687
+        ports:
+          - 7687:7687
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+          coverage: xdebug
+          ini-values: max_execution_time=0
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Test with phpunit
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "FalkorDB"
