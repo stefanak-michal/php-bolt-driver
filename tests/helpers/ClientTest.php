@@ -27,38 +27,34 @@ class ClientTest extends TestCase
         return '';
     }
 
-    private function setUpClient(): void
+    private function setUpClient($logHandler = null, $errorHandler = null): Client
     {
         $testsuite = $this->getTestSuite();
 
         $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
         $bolt = new \Bolt\Bolt($conn);
-        $protocol = $bolt->build();
-
-        Client::setProtocol($protocol, $testsuite === 'Neo4j' ? [
+        return new Client($bolt->build(), $testsuite === 'Neo4j' ? [
             'scheme' => 'basic',
             'principal' => $GLOBALS['NEO_USER'],
             'credentials' => $GLOBALS['NEO_PASS']
         ] : [
             'scheme' => 'none'
-        ]);
+        ], $logHandler, $errorHandler);
+
     }
 
     public function testQuery(): void
     {
-        Client::setLogHandler(null);
-        Client::setErrorHandler(null);
+        $client = $this->setUpClient();
 
-        $this->setUpClient();
-
-        $data = Client::query('RETURN 1 AS num, "Hello, World!" AS str');
+        $data = $client->query('RETURN 1 AS num, "Hello, World!" AS str');
         $this->assertEquals(1, $data[0]['num']);
         $this->assertEquals('Hello, World!', $data[0]['str']);
 
-        $data = Client::queryFirstField('RETURN 1 AS num');
+        $data = $client->queryFirstField('RETURN 1 AS num');
         $this->assertEquals(1, $data);
         
-        $data = Client::queryFirstColumn('UNWIND [1, 2, 3] AS num RETURN num');
+        $data = $client->queryFirstColumn('UNWIND [1, 2, 3] AS num RETURN num');
         $this->assertEquals([1, 2, 3], $data);
     }
 
@@ -69,51 +65,55 @@ class ClientTest extends TestCase
             $this->markTestSkipped('This test is only executed with Neo4j, skipping.');
         }
 
-        Client::setErrorHandler(function (Exception $exception) {
-            throw $exception;
-        });
-
         $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
         $bolt = new \Bolt\Bolt($conn);
-        $protocol = $bolt->build();
-
         $this->expectException(Exception::class);
-
-        Client::setProtocol($protocol);
+        $client = new Client($bolt->build(), [
+            'scheme' => 'none'
+        ], null, function (Exception $exception) {
+            throw $exception;
+        });
     }
 
     public function testLogHandler(): void
     {
-        Client::setLogHandler(null);
-        Client::setErrorHandler(null);
-
-        $this->setUpClient();
-
-        Client::setLogHandler(function (string $message, array $data, array $extra) {
-            $this->assertEquals('RETURN $num AS num, $str AS str', $message);
-            $this->assertEquals(['num' => 1, 'str' => 'Hello, World!'], $data);
-            $this->assertEquals(['rows' => 1], $extra);
+        $client = $this->setUpClient(function (string $message, array $data, array $extra) {
+            if ($message === 'RETURN $num AS num, $str AS str') {
+                $this->assertEquals('RETURN $num AS num, $str AS str', $message);
+                $this->assertEquals(['num' => 1, 'str' => 'Hello, World!'], $data);
+                $this->assertEquals(['rows' => 1], $extra);
+            }
         });
 
-        $data = Client::query('RETURN $num AS num, $str AS str', ['num' => 1, 'str' => 'Hello, World!']);
+        $data = $client->query('RETURN $num AS num, $str AS str', ['num' => 1, 'str' => 'Hello, World!']);
         $this->assertEquals(1, $data[0]['num']);
         $this->assertEquals('Hello, World!', $data[0]['str']);
     }
 
     public function testTransaction(): void
     {
-        Client::setLogHandler(null);
-        Client::setErrorHandler(null);
+        $client = $this->setUpClient();
 
-        $this->setUpClient();
-
-        Client::begin();
-        Client::query('CREATE (n:Test {name: "Transaction Test"})');
-        $data = Client::query('MATCH (n:Test {name: "Transaction Test"}) RETURN n');
+        $client->begin();
+        $client->query('CREATE (n:Test {name: "Transaction Test"})');
+        $data = $client->query('MATCH (n:Test {name: "Transaction Test"}) RETURN n');
         $this->assertEquals('Transaction Test', $data[0]['n']->properties['name']);
-        Client::rollback();
+        $client->rollback();
 
-        $data = Client::query('MATCH (n:Test {name: "Transaction Test"}) RETURN n');
+        $data = $client->query('MATCH (n:Test {name: "Transaction Test"}) RETURN n');
         $this->assertEmpty($data);
+    }
+
+    public function testFailure(): void
+    {
+        $client = $this->setUpClient(null, function (Exception $exception) {
+            $this->assertStringContainsString('SyntaxError', $exception->getMessage());
+        });
+
+        $client->query('This is not a query!');
+
+        // After the failure, the client should still be usable
+        $response = $client->query('RETURN 1 AS num');
+        $this->assertEquals(1, $response[0]['num']);
     }
 }
