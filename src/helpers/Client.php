@@ -6,6 +6,7 @@ use Bolt\protocol\AProtocol;
 use Bolt\protocol\Response;
 use Bolt\enum\Signature;
 use Exception;
+use Closure;
 
 /**
  * Class Client
@@ -26,14 +27,14 @@ class Client
      * 
      * @param AProtocol $protocol Protocol instance to use for communication. Must be already built via Bolt::build().
      * @param array $auth Authentication parameters. Default is ['scheme' => 'none'] for no authentication.
-     * @param callable|null $logHandler Optional handler for logging executed queries.
-     * @param callable|null $errorHandler Optional handler for exceptions. If not set, exceptions are thrown normally.
+     * @param Closure|null $logHandler Optional handler for logging executed queries.
+     * @param Closure|null $errorHandler Optional handler for exceptions. If not set, exceptions are thrown normally.
      */
     public function __construct(
-        private AProtocol $protocol, 
+        public readonly AProtocol $protocol, 
         private array $auth = ['scheme' => 'none'], 
-        private $logHandler = null, 
-        private $errorHandler = null
+        private ?Closure $logHandler = null, 
+        private ?Closure $errorHandler = null
     ) {
         try {
             $version = $protocol->getVersion();
@@ -66,7 +67,7 @@ class Client
                 call_user_func($this->logHandler, 'AUTH bolt v' . $version, [], []);
             }
         } catch (Exception $e) {
-            self::handleException($e);
+            $this->handleException($e);
         }
     }
 
