@@ -25,7 +25,7 @@ use Bolt\protocol\v6\structures\Vector;
  * Trait to set available structures
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @see https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/
  * @package Bolt\protocol
  */

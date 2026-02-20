@@ -8,7 +8,7 @@ use ArrayAccess, Countable, Stringable;
  * Class Bytes
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/packstream/#data-type-bytes
  * @package Bolt\packstream
  */

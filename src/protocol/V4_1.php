@@ -6,7 +6,7 @@ namespace Bolt\protocol;
  * Class Protocol version 4.1
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @see https://www.neo4j.com/docs/bolt/current/bolt/message/#messages-summary-41
  * @package Bolt\protocol
  */

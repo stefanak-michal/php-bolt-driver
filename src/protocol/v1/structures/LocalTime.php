@@ -11,7 +11,7 @@ use Bolt\protocol\IStructure;
  * An instant capturing the time of day, but not the date, nor the time zone
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-localtime
  * @package Bolt\protocol\v1\structures
  */

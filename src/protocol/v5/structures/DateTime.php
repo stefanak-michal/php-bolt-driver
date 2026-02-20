@@ -12,7 +12,7 @@ use Bolt\protocol\v1\structures\DateTime as v1_DateTime;
  * The time zone information is specified with a zone offset.
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-datetime
  * @package Bolt\protocol\v5\structures
  */
