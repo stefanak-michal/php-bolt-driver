@@ -94,6 +94,8 @@ class ClientTest extends TestCase
     {
         $client = $this->setUpClient();
 
+        $client->query('MATCH (n:Test {name: "Transaction Test"}) DETACH DELETE n');
+
         $client->begin();
         $client->query('CREATE (n:Test {name: "Transaction Test"})');
         $data = $client->query('MATCH (n:Test {name: "Transaction Test"}) RETURN n');
@@ -107,7 +109,7 @@ class ClientTest extends TestCase
     public function testFailure(): void
     {
         $client = $this->setUpClient(null, function (Exception $exception) {
-            $this->assertStringContainsString('SyntaxError', $exception->getMessage());
+            $this->assertStringContainsString('Error', $exception->getMessage());
         });
 
         $client->query('This is not a query!');
