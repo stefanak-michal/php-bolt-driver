@@ -210,32 +210,77 @@ directory. If you have installed this project with composer, you have to load `v
 
 ### Client helper class
 
-Library contains helper class `\Bolt\helpers\Client` for simplified interaction with a graph database. It wraps common operations (authentication, queries, transactions) into static methods so you don't have to manage protocol messages and responses manually.
+Library contains helper class `\Bolt\helpers\Client` for simplified interaction with a graph database. It wraps common operations (authentication, queries, and transactions) into a convenient object so you don't have to manage protocol messages and responses manually.
+
+**Constructor**
+
+```php
+new \Bolt\helpers\Client(
+    AProtocol $protocol,
+    array $auth = ['scheme' => 'none'],
+    ?Closure $logHandler = null,
+    ?Closure $errorHandler = null
+)
+```
+
+Authentication is performed automatically in the constructor based on the Bolt protocol version in use.
+
+- `$protocol` — Protocol instance obtained via `Bolt::build()`.
+- `$auth` — Authentication parameters (see [Authentication](#authentication)). Defaults to `['scheme' => 'none']`.
+- `$logHandler` — Optional `Closure(string $query, array $params, array $stats): void` called after every action.
+- `$errorHandler` — Optional `Closure(Exception $e): void`. If not set, exceptions are thrown normally.
+
+**Methods**
+
+| Method | Description | Return |
+|--------|-------------|--------|
+| `query(string $query, array $params = [], array $extra = [])` | Execute a query and return all rows as an array of associative arrays. | `array` |
+| `queryFirstField(string $query, array $params = [], array $extra = [])` | Execute a query and return the first value from the first row. | `mixed` |
+| `queryFirstColumn(string $query, array $params = [], array $extra = [])` | Execute a query and return the first column values from all rows. | `array` |
+| `begin(array $extra = [])` | Begin a transaction. Returns `false` for Bolt < 3. | `bool` |
+| `commit()` | Commit the current transaction. Returns `false` for Bolt < 3. | `bool` |
+| `rollback()` | Rollback the current transaction. Returns `false` for Bolt < 3. | `bool` |
+| `getStatistics()` | Return statistics from the last executed query (keys depend on the database). Always includes a `rows` key with the result row count. | `array` |
+
+**Example**
 
 ```php
 $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
 $bolt = new \Bolt\Bolt($conn);
 $protocol = $bolt->build();
 
-// If no error handler is set, exception is thrown.
-\Bolt\helpers\Client::setErrorHandler(function (Exception $e) {
-    error_log($e->getMessage());
-});
+$client = new \Bolt\helpers\Client(
+    $protocol,
+    ['scheme' => 'basic', 'principal' => 'neo4j', 'credentials' => 'neo4j'],
+    function (string $query, array $params, array $stats): void {
+        // optional: log every executed query
+        error_log($query);
+    },
+    function (Exception $e): void {
+        // optional: handle exceptions; if omitted they are thrown normally
+        error_log($e->getMessage());
+    }
+);
 
-\Bolt\helpers\Client::setProtocol($protocol, [
-    'scheme' => 'basic',
-    'principal' => 'neo4j',
-    'credentials' => 'neo4j'
-]);
-
-// Query example
-$rows = \Bolt\helpers\Client::query('MATCH (n:Person) RETURN n.name AS name, n.age AS age');
+// Returns all rows as associative arrays keyed by field name
+$rows = $client->query('MATCH (n:Person) RETURN n.name AS name, n.age AS age');
 // $rows = [['name' => 'Alice', 'age' => 30], ['name' => 'Bob', 'age' => 25]]
+
+// Returns only the first value from the first row
+$name = $client->queryFirstField('MATCH (n:Person) RETURN n.name LIMIT 1');
+
+// Returns the first column value from every row
+$names = $client->queryFirstColumn('MATCH (n:Person) RETURN n.name');
+
+// Transaction example
+$client->begin();
+$client->query('CREATE (n:Person {name: $name})', ['name' => 'Charlie']);
+$client->commit(); // or $client->rollback()
+
+// Statistics from the last executed query
+$stats = $client->getStatistics();
+// e.g. ['nodes-created' => 1, 'rows' => 0]
 ```
-
-By using method `setProtocol` you can switch between multiple connections you have opened. If you have only one you need to call this method once.
-
-Authentication is handled automatically inside `setProtocol()` based on the Bolt version. Already authenticated protocol instances are tracked and won't be re-authenticated.
 
 ## :chains: Connection
 
