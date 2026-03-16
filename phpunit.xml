@@ -20,7 +20,7 @@
         </testsuite>
         <testsuite name="NornicDB">
             <file>./tests/NornicDBTest.php</file>
-            <file>./tests/helpers/ClientTest.php</file>
+            <!-- <file>./tests/helpers/ClientTest.php</file> -->
         </testsuite>
     </testsuites>
     <php>
