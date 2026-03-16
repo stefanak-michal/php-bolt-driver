@@ -17,6 +17,9 @@ trait HelloMessage
      */
     public function hello(array $extra): static
     {
+        if (empty($extra['user_agent']))
+            $extra['user_agent'] = 'bolt-php';
+
         $this->write($this->packer->pack(0x01, $extra));
         $this->pipelinedMessages[] = Message::HELLO;
         return $this;

@@ -31,7 +31,7 @@ class ClientTest extends TestCase
     {
         $testsuite = $this->getTestSuite();
 
-        $conn = new \Bolt\connection\StreamSocket('127.0.0.1', 7687);
+        $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
         $bolt = new \Bolt\Bolt($conn);
         return new Client($bolt->build(), $testsuite === 'Neo4j' ? [
             'scheme' => 'basic',
@@ -65,7 +65,7 @@ class ClientTest extends TestCase
             $this->markTestSkipped('This test is only executed with Neo4j, skipping.');
         }
 
-        $conn = new \Bolt\connection\StreamSocket('127.0.0.1', 7687);
+        $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
         $bolt = new \Bolt\Bolt($conn);
         $this->expectException(Exception::class);
         $client = new Client($bolt->build(), [
