@@ -5,7 +5,7 @@ namespace Bolt\protocol\v6\structures;
 /**
  * Type markers for vector data
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-vector
  * @package Bolt\protocol\v6\structures
  */

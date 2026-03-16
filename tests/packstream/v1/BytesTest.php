@@ -9,6 +9,9 @@ use Bolt\tests\TestLayer;
 
 /**
  * Class BytesTest
+ * 
+ * @author Michal Stefanak
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\packstream\v1
  */
 class BytesTest extends TestLayer

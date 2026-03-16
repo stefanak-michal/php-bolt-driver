@@ -11,7 +11,7 @@ use Bolt\protocol\IStructure;
  * An instant capturing the date, but not the time, nor the time zone
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-date
  * @package Bolt\protocol\v1\structures
  */

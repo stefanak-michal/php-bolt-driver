@@ -9,7 +9,7 @@ use Bolt\packstream\v1\{Packer, Unpacker};
  * Class V2Test
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\protocol
  */
 class V2Test extends ProtocolLayer

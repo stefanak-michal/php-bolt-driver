@@ -10,7 +10,7 @@ use Bolt\protocol\IStructure;
  * Class Packer of PackStream version 1
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\packstream\v1
  */
 class Packer implements IPacker

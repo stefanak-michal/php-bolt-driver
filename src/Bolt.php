@@ -15,7 +15,7 @@ use Bolt\helpers\CacheProvider;
  * Acts as factory which provides protocol class by requested version
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt
  */
 final class Bolt

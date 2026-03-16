@@ -208,6 +208,35 @@ foreach ($protocol->getResponses() as $response) {
 Directory `src` contains autoload file which accepts only Bolt library namespaces. Main Bolt namespace points to this
 directory. If you have installed this project with composer, you have to load `vendor/autoload.php`.
 
+### Client helper class
+
+Library contains helper class `\Bolt\helpers\Client` for simplified interaction with a graph database. It wraps common operations (authentication, queries, transactions) into static methods so you don't have to manage protocol messages and responses manually.
+
+```php
+$conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
+$bolt = new \Bolt\Bolt($conn);
+$protocol = $bolt->build();
+
+// If no error handler is set, exception is thrown.
+\Bolt\helpers\Client::setErrorHandler(function (Exception $e) {
+    error_log($e->getMessage());
+});
+
+\Bolt\helpers\Client::setProtocol($protocol, [
+    'scheme' => 'basic',
+    'principal' => 'neo4j',
+    'credentials' => 'neo4j'
+]);
+
+// Query example
+$rows = \Bolt\helpers\Client::query('MATCH (n:Person) RETURN n.name AS name, n.age AS age');
+// $rows = [['name' => 'Alice', 'age' => 30], ['name' => 'Bob', 'age' => 25]]
+```
+
+By using method `setProtocol` you can switch between multiple connections you have opened. If you have only one you need to call this method once.
+
+Authentication is handled automatically inside `setProtocol()` based on the Bolt version. Already authenticated protocol instances are tracked and won't be re-authenticated.
+
 ## :chains: Connection
 
 Bolt class constructor accepts connection argument. This argument has to be instance of class which implements IConnection interface. Library offers few options.

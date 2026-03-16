@@ -6,7 +6,7 @@ use Bolt\protocol\V5_4;
  * Class V5_4Test
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\protocol
  */
 class V5_4Test extends \Bolt\tests\protocol\ProtocolLayer

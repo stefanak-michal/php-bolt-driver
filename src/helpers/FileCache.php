@@ -10,7 +10,7 @@ use Psr\SimpleCache\InvalidArgumentException;
  * implementation of PSR-16 Simple Cache Interface
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\helpers
  */
 class FileCache implements CacheInterface

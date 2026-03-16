@@ -1,7 +1,7 @@
 {
     "name": "stefanak-michal/bolt",
     "description": "PHP library to provide connectivity to graph database over TCP socket with Bolt specification",
-    "keywords": ["neo4j", "bolt", "socket", "database"],
+    "keywords": ["neo4j", "bolt", "socket", "database", "memgraph", "graph", "tcp", "driver"],
     "homepage": "https://github.com/stefanak-michal/php-bolt-driver",
     "type": "library",
     "readme": "README.md",
@@ -45,8 +45,6 @@
         }
     },
     "suggest": {
-        "laudis/neo4j-php-client": "Neo4j-PHP-Client is the most advanced PHP Client for Neo4j",
-        "stefanak-michal/neo4j-bolt-wrapper": "Wrapper for Neo4j PHP Bolt library to simplify usage.",
         "ext-sockets": "Needed when using Socket connection class",
         "ext-openssl": "Needed when using StreamSocket connection class with SSL"
     },
