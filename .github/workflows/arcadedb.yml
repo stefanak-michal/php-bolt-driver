@@ -19,7 +19,7 @@ jobs:
           - 2480:2480
           - 2424:2424
         env:
-            JAVA_OPTS: '-Darcadedb.server.rootPassword=playwithdata -Darcadedb.server.plugins=Bolt:com.arcadedb.bolt.BoltProtocolPlugin'
+            JAVA_OPTS: '-Darcadedb.server.rootPassword=playwithdata -Darcadedb.server.plugins=Bolt:com.arcadedb.bolt.BoltProtocolPlugin -Darcadedb.server.defaultDatabases=mydatabase[]'
 
     steps:
       - name: Checkout
@@ -38,6 +38,6 @@ jobs:
 
       - name: Test with phpunit
         env:
-            NEO_USER: root
-            NEO_PASS: playwithdata
+            GDB_USERNAME: root
+            GDB_PASSWORD: playwithdata
         run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "ArcadeDB"

@@ -21,7 +21,7 @@ class BoltTest extends TestLayer
         if (!extension_loaded('sockets'))
             $this->markTestSkipped('Sockets extension not available');
 
-        $conn = new \Bolt\connection\Socket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT'], 3);
+        $conn = new \Bolt\connection\Socket($_ENV['GDB_HOST'], $_ENV['GDB_PORT'], 3);
         $this->assertInstanceOf(\Bolt\connection\Socket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -30,7 +30,7 @@ class BoltTest extends TestLayer
         $protocol = $bolt->setProtocolVersions($this->getCompatibleBoltVersion())->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         if (method_exists($protocol, 'goodbye'))
             $protocol->goodbye();
@@ -58,7 +58,7 @@ class BoltTest extends TestLayer
 
     public function testHello(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -67,7 +67,7 @@ class BoltTest extends TestLayer
         $protocol = $bolt->setProtocolVersions($this->getCompatibleBoltVersion())->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         return $protocol;
     }
@@ -150,7 +150,7 @@ class BoltTest extends TestLayer
         if (version_compare($protocol->getVersion(), 4.3, '>=')) {
             $response = $protocol
                 ->route([
-                    'address' => $GLOBALS['NEO_HOST'] . ':' . $GLOBALS['NEO_PORT']
+                    'address' => $_ENV['GDB_HOST'] . ':' . $_ENV['GDB_PORT']
                 ])
                 ->getResponse();
             $this->assertEquals(Signature::SUCCESS, $response->signature);

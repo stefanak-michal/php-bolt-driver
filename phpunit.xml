@@ -20,15 +20,9 @@
         </testsuite>
         <testsuite name="NornicDB">
             <file>./tests/NornicDBTest.php</file>
-            <!-- <file>./tests/helpers/ClientTest.php</file> -->
         </testsuite>
         <testsuite name="ArcadeDB">
-            <!-- <file>./tests/ArcadeDBTest.php</file> -->
             <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
     </testsuites>
-    <php>
-        <var name="NEO_USER" value="neo4j"/>
-        <var name="NEO_PASS" value="nothing123"/>
-    </php>
 </phpunit>

@@ -17,22 +17,10 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        $user = getenv('GDB_USERNAME');
-        if (!empty($user))
-            $GLOBALS['NEO_USER'] = $user;
-        $pwd = getenv('GDB_PASSWORD');
-        if (!empty($pwd))
-            $GLOBALS['NEO_PASS'] = $pwd;
-        $host = getenv('GDB_HOST');
-        if (!empty($host))
-            $GLOBALS['NEO_HOST'] = $host;
-        if (!isset($GLOBALS['NEO_HOST']))
-            $GLOBALS['NEO_HOST'] = '127.0.0.1';
-        $port = getenv('GDB_PORT');
-        if (!empty($port))
-            $GLOBALS['NEO_PORT'] = (int)$port;
-        if (!isset($GLOBALS['NEO_PORT']))
-            $GLOBALS['NEO_PORT'] = 7687;
+        if (!isset($_ENV['GDB_HOST']))
+            $_ENV['GDB_HOST'] = '127.0.0.1';
+        if (!isset($_ENV['GDB_PORT']))
+            $_ENV['GDB_PORT'] = 7687;
     }
 
     /**
@@ -75,7 +63,7 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
      */
     protected function getCompatibleBoltVersion(?string $url = null): float|int
     {
-        $json = file_get_contents($url ?? $GLOBALS['NEO_BROWSER'] ?? ('http://' . ($GLOBALS['NEO_HOST'] ?? 'localhost') . ':7474/'));
+        $json = file_get_contents($url ?? $_ENV['NEO_BROWSER'] ?? ('http://' . ($_ENV['GDB_HOST'] ?? 'localhost') . ':7474/'));
         $decoded = json_decode($json, true);
         if (json_last_error() !== JSON_ERROR_NONE)
             $this->markTestIncomplete('Not able to obtain Neo4j version through HTTP');
