@@ -16,8 +16,10 @@ jobs:
         image: arcadedata/arcadedb
         ports:
           - 7687:7687
+          - 2480:2480
+          - 2424:2424
         env:
-            JAVA_OPTS: -Darcadedb.server.plugins=Bolt:com.arcadedb.bolt.BoltProtocolPlugin
+            JAVA_OPTS: '-Darcadedb.server.rootPassword=playwithdata -Darcadedb.server.plugins=Bolt:com.arcadedb.bolt.BoltProtocolPlugin'
 
     steps:
       - name: Checkout
@@ -35,4 +37,7 @@ jobs:
         run: composer install --no-progress
 
       - name: Test with phpunit
+        env:
+            NEO_USER: root
+            NEO_PASS: playwithdata
         run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "ArcadeDB"
