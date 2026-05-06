@@ -22,6 +22,10 @@
             <file>./tests/NornicDBTest.php</file>
             <!-- <file>./tests/helpers/ClientTest.php</file> -->
         </testsuite>
+        <testsuite name="ArcadeDB">
+            <!-- <file>./tests/ArcadeDBTest.php</file> -->
+            <file>./tests/helpers/ClientTest.php</file>
+        </testsuite>
     </testsuites>
     <php>
         <var name="NEO_USER" value="neo4j"/>
