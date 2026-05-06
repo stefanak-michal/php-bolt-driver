@@ -33,7 +33,7 @@ class ErrorsTest extends TestCase
 
     public function testPackException2(): void
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new \Bolt\Bolt($conn);

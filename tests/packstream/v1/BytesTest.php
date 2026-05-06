@@ -18,7 +18,7 @@ class BytesTest extends TestLayer
 {
     public function testInit(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -27,7 +27,7 @@ class BytesTest extends TestLayer
         $protocol = $bolt->setProtocolVersions($this->getCompatibleBoltVersion())->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         return $protocol;
     }

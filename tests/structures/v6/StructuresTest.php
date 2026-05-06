@@ -17,7 +17,7 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
 {
     public function testInit(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -34,7 +34,7 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
             $this->markTestSkipped('Tests available only for version 6.');
         }
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         return $protocol;
     }

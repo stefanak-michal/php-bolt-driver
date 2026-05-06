@@ -33,11 +33,11 @@ class ClientTest extends TestCase
         $bolt = new \Bolt\Bolt($conn);
 
         $credentials = ['scheme' => 'none'];
-        if (array_key_exists('NEO_USER', $GLOBALS) && array_key_exists('NEO_PASS', $GLOBALS)) {
+        if (array_key_exists('GDB_USERNAME', $_ENV) && array_key_exists('GDB_PASSWORD', $_ENV)) {
             $credentials = [
                 'scheme' => 'basic',
-                'principal' => $GLOBALS['NEO_USER'],
-                'credentials' => $GLOBALS['NEO_PASS']
+                'principal' => $_ENV['GDB_USERNAME'],
+                'credentials' => $_ENV['GDB_PASSWORD']
             ];
         }
 
