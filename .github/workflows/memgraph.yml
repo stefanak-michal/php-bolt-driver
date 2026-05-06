@@ -27,7 +27,7 @@ jobs:
           php-version: '8.5'
           extensions: mbstring, sockets
           coverage: xdebug
-          ini-values: max_execution_time=0
+          ini-values: max_execution_time=0, variables_order="EGPCS"
 
       - name: Install dependencies
         run: composer install --no-progress
