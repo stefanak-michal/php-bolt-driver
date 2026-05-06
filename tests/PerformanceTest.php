@@ -20,10 +20,10 @@ class PerformanceTest extends TestLayer
     {
         $amount = 50000;
 
-        $conn = new Socket($GLOBALS['NEO_HOST'] ?? 'localhost', $GLOBALS['NEO_PORT'] ?? 7687, 120);
+        $conn = new Socket($_ENV['GDB_HOST'] ?? 'localhost', $_ENV['GDB_PORT'] ?? 7687, 120);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         //prevent multiple runs at once
         while (true) {

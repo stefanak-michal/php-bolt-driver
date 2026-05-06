@@ -37,7 +37,7 @@ final class ConnectionTest extends TestLayer
         $conn = $this->getConnection($alias);
         $conn->setTimeout(1.5);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
         $this->expectException(ConnectionTimeoutException::class);
         $protocol
             ->run('FOREACH ( i IN range(1,10000) | MERGE (d:Day {day: i}) )')
@@ -51,7 +51,7 @@ final class ConnectionTest extends TestLayer
     {
         $conn = $this->getConnection($alias);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
         $conn->setTimeout(200);
         $protocol
             ->run('CALL apoc.util.sleep(150000)', [], ['mode' => 'r', 'tx_timeout' => 120000])
@@ -66,7 +66,7 @@ final class ConnectionTest extends TestLayer
         $conn = $this->getConnection($alias);
         $conn->setTimeout(1);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
         $this->expectException(ConnectionTimeoutException::class);
         $protocol
             ->run('FOREACH ( i IN range(1,10000) | MERGE (d:Day {day: i}) )')
@@ -80,7 +80,7 @@ final class ConnectionTest extends TestLayer
     {
         $conn = $this->getConnection($alias);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         $conn->setTimeout(1.5);
         $time = microtime(true);
@@ -104,7 +104,7 @@ final class ConnectionTest extends TestLayer
 
         $this->assertEquals(Signature::FAILURE, $response->signature);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         $conn->setTimeout(1.5);
         $time = microtime(true);
@@ -121,6 +121,6 @@ final class ConnectionTest extends TestLayer
 
     private function getConnection(string $class): IConnection
     {
-        return new $class($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT'], 1);
+        return new $class($_ENV['GDB_HOST'], $_ENV['GDB_PORT'], 1);
     }
 }

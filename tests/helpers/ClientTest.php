@@ -29,18 +29,19 @@ class ClientTest extends TestCase
 
     private function setUpClient($logHandler = null, $errorHandler = null): Client
     {
-        $testsuite = $this->getTestSuite();
-
         $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
         $bolt = new \Bolt\Bolt($conn);
-        return new Client($bolt->build(), $testsuite === 'Neo4j' ? [
-            'scheme' => 'basic',
-            'principal' => $GLOBALS['NEO_USER'],
-            'credentials' => $GLOBALS['NEO_PASS']
-        ] : [
-            'scheme' => 'none'
-        ], $logHandler, $errorHandler);
 
+        $credentials = ['scheme' => 'none'];
+        if (array_key_exists('GDB_USERNAME', $_ENV) && array_key_exists('GDB_PASSWORD', $_ENV)) {
+            $credentials = [
+                'scheme' => 'basic',
+                'principal' => $_ENV['GDB_USERNAME'],
+                'credentials' => $_ENV['GDB_PASSWORD']
+            ];
+        }
+
+        return new Client($bolt->build(), $credentials, $logHandler, $errorHandler);
     }
 
     public function testQuery(): void

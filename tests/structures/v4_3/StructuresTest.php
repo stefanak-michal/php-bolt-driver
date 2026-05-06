@@ -29,7 +29,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 
     public function testInit(): AProtocol|V4_4|V4_3
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -46,8 +46,8 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $helloResponse = $protocol->hello([
             'user_agent' => 'bolt-php',
             'scheme' => 'basic',
-            'principal' => $GLOBALS['NEO_USER'],
-            'credentials' => $GLOBALS['NEO_PASS'],
+            'principal' => $_ENV['GDB_USERNAME'],
+            'credentials' => $_ENV['GDB_PASSWORD'],
             'patch_bolt' => ['utc']
         ])->getResponse();
         $this->assertEquals(Signature::SUCCESS, $helloResponse->signature);
