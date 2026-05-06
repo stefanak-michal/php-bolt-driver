@@ -1,0 +1,44 @@
+name: Tests with PuppyGraph on PHP 8.5
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ master ]
+
+jobs:
+  puppygraph-tests:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    name: "Running Integration tests for PHP on PuppyGraph"
+
+    services:
+      puppygraph:
+        image: puppygraph/puppygraph:stable
+        env:
+          PUPPYGRAPH_PASSWORD: puppygraph123
+        ports:
+          - 7687:7687
+          - 8081:8081
+        options: >-
+          --health-cmd "curl -f http://localhost:8081/healthz || exit 1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+          coverage: xdebug
+          ini-values: max_execution_time=0, variables_order="EGPCS"
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Test with phpunit
+        env:
+          GDB_USERNAME: puppygraph
+          GDB_PASSWORD: puppygraph123
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "PuppyGraph"
