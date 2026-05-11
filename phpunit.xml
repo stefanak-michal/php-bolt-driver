@@ -22,5 +22,8 @@
             <file>./tests/NornicDBTest.php</file>
             <!-- <file>./tests/helpers/ClientTest.php</file> -->
         </testsuite>
+        <testsuite name="Grafeo">
+            <file>./tests/helpers/ClientTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
