@@ -34,13 +34,14 @@ We are trying to keep up and this library supports **Bolt <= 6**.
 
 ## :books: Supported ecosystems
 
-- Neo4j [bolt compatibility](https://www.neo4j.com/docs/bolt/current/bolt-compatibility/)
-- Memgraph [bolt compatibility](https://memgraph.com/docs/client-libraries)
-- Amazon Neptune [bolt compatiblity](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-bolt.html#access-graph-opencypher-bolt-connections)
-- LadybugDB with wrapper [bolt4rs](https://github.com/LadybugDB/bolt4rs)
+- [Neo4j](https://www.neo4j.com/)
+- [Memgraph](https://memgraph.com/)
+- [Amazon Neptune](https://docs.aws.amazon.com/neptune/)
+- [LadybugDB](https://github.com/LadybugDB/bolt4rs)
+- [NornicDB](https://github.com/orneryd/NornicDB)
+- [ArcadeDB](https://arcadedb.com/)
 - [DozerDB](https://dozerdb.org/)
 - [ONgDB](https://graphfoundation.org/ongdb/)
-- [NornicDB](https://github.com/orneryd/NornicDB)
 
 ## :white_check_mark: Requirements
 
