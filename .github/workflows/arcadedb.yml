@@ -1,0 +1,43 @@
+name: Tests with ArcadeDB on PHP 8.5
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ master ]
+
+jobs:
+  arcadedb-tests:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    name: "Running Integration tests for PHP on ArcadeDB"
+
+    services:
+      arcadedb:
+        image: arcadedata/arcadedb
+        ports:
+          - 7687:7687
+          - 2480:2480
+          - 2424:2424
+        env:
+            JAVA_OPTS: '-Darcadedb.server.rootPassword=playwithdata -Darcadedb.server.plugins=Bolt:com.arcadedb.bolt.BoltProtocolPlugin -Darcadedb.server.defaultDatabases=mydatabase[]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+          coverage: xdebug
+          ini-values: max_execution_time=0, variables_order="EGPCS"
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Test with phpunit
+        env:
+            GDB_USERNAME: root
+            GDB_PASSWORD: playwithdata
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "ArcadeDB"
