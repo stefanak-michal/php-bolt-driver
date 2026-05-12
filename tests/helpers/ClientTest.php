@@ -61,16 +61,11 @@ class ClientTest extends TestCase
 
     public function testErrorHandler(): void
     {
-        $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
-        $bolt = new \Bolt\Bolt($conn);
-        $this->expectException(Exception::class);
-        new Client($bolt->build(), [
-            'scheme' => 'basic',
-            'principal' => 'invalid_user',
-            'credentials' => 'invalid_password'
-        ], null, function (Exception $exception) {
+        $client = $this->setUpClient(null, function (Exception $exception) {
             throw $exception;
         });
+        $this->expectException(Exception::class);
+        $client->query('This is not a query!');
     }
 
     public function testLogHandler(): void
