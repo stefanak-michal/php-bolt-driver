@@ -7,9 +7,9 @@ all available versions and keep up with protocol messages architecture and speci
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/stefanak-michal/php-bolt-driver)
 [![](https://img.shields.io/packagist/dt/stefanak-michal/bolt)](https://packagist.org/packages/stefanak-michal/bolt/stats)
-[![](https://img.shields.io/github/v/release/stefanak-michal/bolt)](https://github.com/neo4j-php/Bolt/releases)
-[![](https://img.shields.io/github/commits-since/stefanak-michal/bolt/latest)](https://github.com/neo4j-php/Bolt/releases/latest)
-[![](https://img.shields.io/github/stars/stefanak-michal/Bolt)](https://github.com/neo4j-php/Bolt/stargazers)
+[![](https://img.shields.io/github/v/release/stefanak-michal/bolt)](https://github.com/stefanak-michal/Bolt/releases)
+[![](https://img.shields.io/github/commits-since/stefanak-michal/bolt/latest)](https://github.com/stefanak-michal/Bolt/releases/latest)
+[![](https://img.shields.io/github/stars/stefanak-michal/Bolt)](https://github.com/stefanak-michal/Bolt/stargazers)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z5ABMLW)
 
