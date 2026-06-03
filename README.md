@@ -78,7 +78,6 @@ meta informations.
 | setProtocolVersions  | Set allowed protocol versions for connection                                                      | public        | int/float/string ...$v  | Bolt      |
 | setPackStreamVersion | Set PackStream version                                                                            | public        | int $version = 1        | Bolt      |
 | build                | Create protocol instance. Method creates connection, executes handshake and do a version request. | public        |                         | AProtocol |
-| $debug               | Print binary communication (as hex)                                                               | public static | bool                    |           |
 
 **Protocol class**
 

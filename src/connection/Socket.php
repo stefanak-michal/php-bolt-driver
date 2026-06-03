@@ -62,9 +62,7 @@ class Socket extends AConnection
             throw new ConnectException('Not initialized socket');
         }
 
-        if (Bolt::$debug) {
-            $this->printHex($buffer);
-        }
+        $this->logger->debug($buffer, ['prefix' => 'C: ']);
 
         $start = microtime(true);
         $size = mb_strlen($buffer, '8bit');
@@ -108,7 +106,7 @@ class Socket extends AConnection
         } while (mb_strlen($output, '8bit') < $length);
 
         if (Bolt::$debug) {
-            $this->printHex($output, 'S: ');
+            $this->logger->debug($output, ['prefix' => 'S: ']);
         }
 
         return $output;
