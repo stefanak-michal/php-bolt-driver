@@ -33,7 +33,7 @@ class UnsupportedType implements IStructure
 
     public function __toString(): string
     {
-        return json_encode([
+        return (string)json_encode([
             'name' => $this->name,
             'minimum_protocol_major' => $this->minimum_protocol_major,
             'minimum_protocol_minor' => $this->minimum_protocol_minor,
