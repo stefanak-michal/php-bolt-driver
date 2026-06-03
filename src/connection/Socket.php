@@ -105,9 +105,7 @@ class Socket extends AConnection
             $output .= $readed;
         } while (mb_strlen($output, '8bit') < $length);
 
-        if (Bolt::$debug) {
-            $this->logger->debug($output, ['prefix' => 'S: ']);
-        }
+        $this->logger->debug($output, ['prefix' => 'S: ']);
 
         return $output;
     }
