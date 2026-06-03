@@ -20,6 +20,7 @@ use Bolt\protocol\v5\structures\{
     UnboundRelationship
 };
 use Bolt\protocol\v6\structures\Vector;
+use Bolt\protocol\v6\structures\UnsupportedType;
 
 /**
  * Trait to set available structures
@@ -59,5 +60,6 @@ trait AvailableStructures
         0x58 => Point2D::class,
         0x59 => Point3D::class,
         0x56 => Vector::class,
+        0x3F => UnsupportedType::class,
     ];
 }
