@@ -23,9 +23,9 @@ class DevLogger extends AbstractLogger
         $this->printHex($message, $context['prefix'] ?? 'C: ');
     }
 
-    protected function printHex(string $str, string $prefix = 'C: '): void
+    protected function printHex(string|\Stringable $str, string $prefix = 'C: '): void
     {
-        $str = implode(unpack('H*', $str));
+        $str = implode(unpack('H*', (string) $str));
         echo '<pre>' . $prefix;
         foreach (str_split($str, 8) as $chunk) {
             echo implode(' ', str_split($chunk, 2));
