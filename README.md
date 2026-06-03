@@ -29,6 +29,7 @@ We are trying to keep up and this library supports **Bolt <= 6**.
 - [ArcadeDB](https://arcadedb.com/)
 - [DozerDB](https://dozerdb.org/)
 - [ONgDB](https://graphfoundation.org/ongdb/)
+- [TuGraph](https://tugraph.tech/?lang=en-US)
 
 ## :white_check_mark: Requirements
 

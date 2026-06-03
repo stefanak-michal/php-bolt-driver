@@ -25,5 +25,8 @@
         <testsuite name="ArcadeDB">
             <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
+        <testsuite name="TuGraph">
+            <file>./tests/TuGraphTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
