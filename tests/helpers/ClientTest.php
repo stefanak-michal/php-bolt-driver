@@ -57,6 +57,9 @@ class ClientTest extends TestCase
         
         $data = $client->queryFirstColumn('UNWIND [1, 2, 3] AS num RETURN num');
         $this->assertEquals([1, 2, 3], $data);
+
+        $data = $client->queryFirstRow('UNWIND [1, 2, 3] AS num RETURN num');
+        $this->assertEquals(['num' => 1], $data);
     }
 
     public function testErrorHandler(): void
