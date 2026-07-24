@@ -22,6 +22,12 @@ class Client
     private array $statistics = [];
 
     /**
+     * This property is public to make it available for updating last bookmark if there is external bolt communication (outside of this client)
+     * @var string
+     */
+    public string $lastBookmark = '';
+
+    /**
      * Client constructor.
      * Authentication is performed automatically based on protocol version.
      * 
@@ -29,12 +35,14 @@ class Client
      * @param array $auth Authentication parameters. Default is ['scheme' => 'none'] for no authentication.
      * @param Closure|null $logHandler Optional handler for logging executed queries.
      * @param Closure|null $errorHandler Optional handler for exceptions. If not set, exceptions are thrown normally.
+     * @param bool $manageBookmarks Enable automatic handling of bookmarks
      */
     public function __construct(
         public readonly AProtocol $protocol, 
         private array $auth = ['scheme' => 'none'], 
         private ?Closure $logHandler = null, 
-        private ?Closure $errorHandler = null
+        private ?Closure $errorHandler = null,
+        private bool $manageBookmarks = false
     ) {
         try {
             $version = $protocol->getVersion();
@@ -71,6 +79,13 @@ class Client
         }
     }
 
+    private function extraBookmark(array &$extra): void
+    {
+        if ($this->manageBookmarks && !array_key_exists('bookmarks', $extra) && !empty($this->lastBookmark)) {
+            $extra['bookmarks'] = [$this->lastBookmark];
+        }
+    }
+
     /**
      * Query the database and return full output as array
      *
@@ -83,6 +98,7 @@ class Client
     {
         $run = $all = [];
         try {
+            $this->extraBookmark($extra);
             /** @var Response $runResponse */
             $runResponse = $this->protocol->run($query, $params, $extra)->getResponse();
             if ($runResponse->signature === Signature::FAILURE) {
@@ -108,6 +124,10 @@ class Client
         }
 
         $last = array_pop($all);
+
+        if ($this->manageBookmarks && array_key_exists('bookmark', $last)) {
+            $this->lastBookmark = $last['bookmark'];
+        }
 
         $this->statistics = $last['stats'] ?? [];
         $this->statistics['rows'] = count($all);
@@ -159,6 +179,19 @@ class Client
     }
 
     /**
+     * Query the database and get first row, or false in case there is no row(s)
+     * @param string $query
+     * @param array $params
+     * @param array $extra
+     * @return array|false
+     */
+    public function queryFirstRow(string $query, array $params = [], array $extra = []): array|false
+    {
+        $data = $this->query($query, $params, $extra);
+        return count($data) > 0 ? reset($data) : false;
+    }
+
+    /**
      * Begin transaction
      *
      * @param array $extra
@@ -171,6 +204,7 @@ class Client
                 return false;
             }
 
+            $this->extraBookmark($extra);
             /** @var Response $response */
             $response = $this->protocol->begin($extra)->getResponse();
             if ($response->signature === Signature::FAILURE) {
@@ -206,6 +240,9 @@ class Client
             }
             if (is_callable($this->logHandler)) {
                 call_user_func($this->logHandler, 'COMMIT TRANSACTION', [], []);
+            }
+            if ($this->manageBookmarks && array_key_exists('bookmark', $response->content)) {
+                $this->lastBookmark = $response->content['bookmark'];
             }
             return true;
         } catch (Exception $e) {
