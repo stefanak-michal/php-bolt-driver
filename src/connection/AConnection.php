@@ -2,6 +2,10 @@
 
 namespace Bolt\connection;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+use Psr\Log\LoggerAwareInterface;
+
 /**
  * Class AConnection
  *
@@ -9,8 +13,10 @@ namespace Bolt\connection;
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\connection
  */
-abstract class AConnection implements IConnection
+abstract class AConnection implements IConnection, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         protected string $ip = '127.0.0.1',
         protected int    $port = 7687,
@@ -23,20 +29,7 @@ abstract class AConnection implements IConnection
                 $this->ip = str_replace($scheme . '://', '', $this->ip);
             }
         }
-    }
-
-    /**
-     * Print buffer as HEX
-     */
-    protected function printHex(string $str, string $prefix = 'C: '): void
-    {
-        $str = implode(unpack('H*', $str));
-        echo '<pre>' . $prefix;
-        foreach (str_split($str, 8) as $chunk) {
-            echo implode(' ', str_split($chunk, 2));
-            echo '    ';
-        }
-        echo '</pre>' . PHP_EOL;
+        $this->logger = new NullLogger();
     }
 
     public function getIp(): string

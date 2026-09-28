@@ -57,23 +57,18 @@ class ClientTest extends TestCase
         
         $data = $client->queryFirstColumn('UNWIND [1, 2, 3] AS num RETURN num');
         $this->assertEquals([1, 2, 3], $data);
+
+        $data = $client->queryFirstRow('UNWIND [1, 2, 3] AS num RETURN num');
+        $this->assertEquals(['num' => 1], $data);
     }
 
     public function testErrorHandler(): void
     {
-        $testsuite = $this->getTestSuite();
-        if ($testsuite !== 'Neo4j') {
-            $this->markTestSkipped('This test is only executed with Neo4j, skipping.');
-        }
-
-        $conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
-        $bolt = new \Bolt\Bolt($conn);
-        $this->expectException(Exception::class);
-        $client = new Client($bolt->build(), [
-            'scheme' => 'none'
-        ], null, function (Exception $exception) {
+        $client = $this->setUpClient(null, function (Exception $exception) {
             throw $exception;
         });
+        $this->expectException(Exception::class);
+        $client->query('This is not a query!');
     }
 
     public function testLogHandler(): void

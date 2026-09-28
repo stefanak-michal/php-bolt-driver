@@ -7,26 +7,13 @@ all available versions and keep up with protocol messages architecture and speci
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/stefanak-michal/php-bolt-driver)
 [![](https://img.shields.io/packagist/dt/stefanak-michal/bolt)](https://packagist.org/packages/stefanak-michal/bolt/stats)
-[![](https://img.shields.io/github/v/release/stefanak-michal/bolt)](https://github.com/neo4j-php/Bolt/releases)
-[![](https://img.shields.io/github/commits-since/stefanak-michal/bolt/latest)](https://github.com/neo4j-php/Bolt/releases/latest)
-[![](https://img.shields.io/github/stars/stefanak-michal/Bolt)](https://github.com/neo4j-php/Bolt/stargazers)
+[![](https://img.shields.io/github/v/release/stefanak-michal/bolt)](https://github.com/stefanak-michal/Bolt/releases)
+[![](https://img.shields.io/github/commits-since/stefanak-michal/bolt/latest)](https://github.com/stefanak-michal/Bolt/releases/latest)
+[![](https://img.shields.io/github/stars/stefanak-michal/Bolt)](https://github.com/stefanak-michal/Bolt/stargazers)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z5ABMLW)
 
 [<img width="223" height="48" alt="image" src="https://github.com/user-attachments/assets/5d74f0e4-23e5-467b-a68c-7dbe9a49de3c" />](https://awsmfoss.com/neo4j-bolt-php/)
-
-## :office: Professional Support and Consulting
-
-Need help with integrating communication with graph databases in your PHP project?  I offer professional support and consulting services related to graph databases.
-
-My services include:
-
-* Integration assistance
-* Performance tuning
-* Custom development
-* Training
-
-Website: https://stefanak.serv00.net/
 
 ## :label: Version support
 
@@ -34,13 +21,15 @@ We are trying to keep up and this library supports **Bolt <= 6**.
 
 ## :books: Supported ecosystems
 
-- Neo4j [bolt compatibility](https://www.neo4j.com/docs/bolt/current/bolt-compatibility/)
-- Memgraph [bolt compatibility](https://memgraph.com/docs/client-libraries)
-- Amazon Neptune [bolt compatiblity](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-bolt.html#access-graph-opencypher-bolt-connections)
-- LadybugDB with wrapper [bolt4rs](https://github.com/LadybugDB/bolt4rs)
+- [Neo4j](https://www.neo4j.com/)
+- [Memgraph](https://memgraph.com/)
+- [Amazon Neptune](https://docs.aws.amazon.com/neptune/)
+- [LadybugDB](https://github.com/LadybugDB/bolt4rs)
+- [NornicDB](https://github.com/orneryd/NornicDB)
+- [ArcadeDB](https://arcadedb.com/)
 - [DozerDB](https://dozerdb.org/)
 - [ONgDB](https://graphfoundation.org/ongdb/)
-- [NornicDB](https://github.com/orneryd/NornicDB)
+- [TuGraph](https://tugraph.tech/?lang=en-US)
 
 ## :white_check_mark: Requirements
 
@@ -90,7 +79,6 @@ meta informations.
 | setProtocolVersions  | Set allowed protocol versions for connection                                                      | public        | int/float/string ...$v  | Bolt      |
 | setPackStreamVersion | Set PackStream version                                                                            | public        | int $version = 1        | Bolt      |
 | build                | Create protocol instance. Method creates connection, executes handshake and do a version request. | public        |                         | AProtocol |
-| $debug               | Print binary communication (as hex)                                                               | public static | bool                    |           |
 
 **Protocol class**
 

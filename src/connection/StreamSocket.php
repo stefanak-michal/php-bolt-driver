@@ -3,7 +3,6 @@
 
 namespace Bolt\connection;
 
-use Bolt\Bolt;
 use Bolt\error\ConnectException;
 use Bolt\error\ConnectionTimeoutException;
 
@@ -68,8 +67,7 @@ class StreamSocket extends AConnection
 
     public function write(string $buffer): void
     {
-        if (Bolt::$debug)
-            $this->printHex($buffer);
+        $this->logger->debug($buffer, ['prefix' => 'C: ']);
 
         $size = mb_strlen($buffer, '8bit');
 
@@ -107,8 +105,7 @@ class StreamSocket extends AConnection
             $output .= $readed;
         } while (mb_strlen($output, '8bit') < $length);
 
-        if (Bolt::$debug)
-            $this->printHex($output, 'S: ');
+        $this->logger->debug($output, ['prefix' => 'S: ']);
 
         return $output;
     }
