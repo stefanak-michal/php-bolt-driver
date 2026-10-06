@@ -30,6 +30,7 @@ We are trying to keep up and this library supports **Bolt <= 6**.
 - [DozerDB](https://dozerdb.org/)
 - [ONgDB](https://graphfoundation.org/ongdb/)
 - [TuGraph](https://tugraph.tech/?lang=en-US)
+- [Grafeo](https://grafeo.dev/) 
 
 ## :white_check_mark: Requirements
 
