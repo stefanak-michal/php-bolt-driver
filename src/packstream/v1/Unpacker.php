@@ -3,7 +3,6 @@
 namespace Bolt\packstream\v1;
 
 use Bolt\error\UnpackException;
-use Bolt\packstream\Bytes;
 use Bolt\packstream\IUnpacker;
 use Bolt\protocol\IStructure;
 
@@ -38,7 +37,7 @@ class Unpacker implements IUnpacker
         $this->offset = 0;
         $this->message = $msg;
 
-        return $this->u();
+        return $this->unpackValue($this->getMarker());
     }
 
     /**
@@ -52,7 +51,7 @@ class Unpacker implements IUnpacker
     /**
      * Get next bytes from message
      */
-    private function next(int $length): string
+    protected function next(int $length): string
     {
         $str = '';
         if (mb_strlen($this->message, '8bit') > $this->offset) {
@@ -62,16 +61,23 @@ class Unpacker implements IUnpacker
         return $str;
     }
 
-    /**
-     * @throws UnpackException
-     */
-    private function u(): mixed
+    protected function getMarker(): ?int
     {
         $str = $this->next(1);
         if (mb_strlen($str, '8bit') !== 1) {
             return null;
         }
-        $marker = ord($str);
+        return ord($str);
+    }
+
+    /**
+     * @throws UnpackException
+     */
+    protected function unpackValue(?int $marker): mixed
+    {
+        if ($marker === null) {
+            return null;
+        }
 
         if ($marker == 0xC3) {
             return true;
@@ -137,7 +143,7 @@ class Unpacker implements IUnpacker
         if (array_key_exists($signature, $this->structuresLt)) {
             $values = [];
             for ($i = 0; $i < $size; $i++) {
-                $values[] = $this->u();
+                $values[] = $this->unpackValue($this->getMarker());
             }
 
             $class = $this->structuresLt[$signature];
@@ -151,7 +157,7 @@ class Unpacker implements IUnpacker
             return new $class(...$values);
         } else {
             $this->signature = $signature;
-            return $this->u() ?? [];
+            return $this->unpackValue($this->getMarker()) ?? [];
         }
     }
 
@@ -176,7 +182,7 @@ class Unpacker implements IUnpacker
 
         $output = [];
         for ($i = 0; $i < $size; $i++) {
-            $output[$this->u()] = $this->u();
+            $output[$this->unpackValue($this->getMarker())] = $this->unpackValue($this->getMarker());
         }
         return $output;
     }
@@ -265,7 +271,7 @@ class Unpacker implements IUnpacker
 
         $output = [];
         for ($i = 0; $i < $size; $i++) {
-            $output[] = $this->u();
+            $output[] = $this->unpackValue($this->getMarker());
         }
 
         return $output;

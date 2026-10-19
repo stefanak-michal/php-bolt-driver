@@ -2,9 +2,8 @@
 
 namespace Bolt\protocol\v6\structures;
 
-use Bolt\packstream\Bytes;
+use Bolt\packstream\v1\Bytes;
 use Bolt\protocol\IStructure;
-use Bolt\protocol\v6\structures\TypeMarker;
 
 /**
  * Class Vector

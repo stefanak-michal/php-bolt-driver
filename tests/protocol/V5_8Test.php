@@ -13,7 +13,7 @@ class V5_8Test extends \Bolt\tests\protocol\ProtocolLayer
 {
     public function test__construct(): V5_8
     {
-        $cls = new V5_8(1, $this->mockConnection());
+        $cls = new V5_8($this->mockConnection());
         $this->assertInstanceOf(V5_8::class, $cls);
         return $cls;
     }

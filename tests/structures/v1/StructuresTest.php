@@ -3,15 +3,10 @@
 namespace Bolt\tests\structures\v1;
 
 use Bolt\Bolt;
-use Bolt\protocol\{
-    AProtocol,
-    V3,
-    V4_2,
-    V4_3,
-    V4_4
-};
-use Bolt\protocol\v1\structures\{
-    Date,
+use Bolt\enum\Signature;
+use Bolt\packstream\v1\Bytes;
+use Bolt\protocol\{AProtocol, V3, V4_2, V4_3, V4_4};
+use Bolt\protocol\v1\structures\{Date,
     DateTime,
     DateTimeZoneId,
     Duration,
@@ -23,10 +18,7 @@ use Bolt\protocol\v1\structures\{
     Point3D,
     Relationship,
     Time,
-    UnboundRelationship
-};
-use Bolt\enum\Signature;
-use Bolt\packstream\Bytes;
+    UnboundRelationship};
 
 /**
  * Class StructuresTest

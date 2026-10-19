@@ -3,7 +3,7 @@
 namespace Bolt\packstream\v1;
 
 use Bolt\error\PackException;
-use Bolt\packstream\{Bytes, IPackDictionaryGenerator, IPackListGenerator, IPacker};
+use Bolt\packstream\{IPackDictionaryGenerator, IPacker, IPackListGenerator};
 use Bolt\protocol\IStructure;
 
 /**
@@ -47,7 +47,7 @@ class Packer implements IPacker
         yield pack('n', 1) . chr($signature);
 
         foreach ($params as $param) {
-            foreach ($this->p($param) as $packed) {
+            foreach ($this->packValue($param) as $packed) {
                 $totalLength = mb_strlen($packed, '8bit');
                 $offset = 0;
                 while ($offset < $totalLength) {
@@ -65,7 +65,7 @@ class Packer implements IPacker
     /**
      * @throws PackException
      */
-    private function p(mixed $param): iterable
+    protected function packValue(mixed $param): iterable
     {
         switch (gettype($param)) {
             case 'integer':
@@ -177,8 +177,8 @@ class Packer implements IPacker
         }
 
         foreach ($param as $k => $v) {
-            yield from $this->p((string)$k); // The key names in a map must be of type String.
-            yield from $this->p($v);
+            yield from $this->packValue((string)$k); // The key names in a map must be of type String.
+            yield from $this->packValue($v);
         }
     }
 
@@ -202,7 +202,7 @@ class Packer implements IPacker
         }
 
         foreach ($param as $v) {
-            yield from $this->p($v);
+            yield from $this->packValue($v);
         }
     }
 
@@ -226,7 +226,7 @@ class Packer implements IPacker
                 throw new PackException('Undefined parameter type in structure ' . $structure);
             }
 
-            yield from $this->p($structure->{$parameter->getName()});
+            yield from $this->packValue($structure->{$parameter->getName()});
         }
     }
 

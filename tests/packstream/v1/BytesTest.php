@@ -3,7 +3,7 @@
 namespace Bolt\tests\packstream\v1;
 
 use Bolt\Bolt;
-use Bolt\packstream\Bytes;
+use Bolt\packstream\v1\Bytes;
 use Bolt\protocol\AProtocol;
 use Bolt\tests\TestLayer;
 

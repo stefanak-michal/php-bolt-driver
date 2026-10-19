@@ -43,10 +43,11 @@ abstract class AProtocol
      * @throws PackException
      */
     public function __construct(
-        int                   $packStreamVersion,
         protected IConnection $connection,
     )
     {
+        $packStreamVersion = $this->getPackStreamVersion();
+
         $packerClass = "\\Bolt\\packstream\\v" . $packStreamVersion . "\\Packer";
         if (!class_exists($packerClass)) {
             throw new PackException('Requested PackStream version (' . $packStreamVersion . ') not yet implemented');
@@ -58,6 +59,16 @@ abstract class AProtocol
             throw new UnpackException('Requested PackStream version (' . $packStreamVersion . ') not yet implemented');
         }
         $this->unpacker = new $unpackerClass($this->unpackStructuresLt ?? []);
+    }
+
+    /**
+     * PackStream version is coupled to Protocol version
+     *
+     * @return string
+     */
+    protected function getPackStreamVersion(): string
+    {
+        return '1';
     }
 
     /**

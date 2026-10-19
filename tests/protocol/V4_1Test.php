@@ -16,7 +16,7 @@ class V4_1Test extends ProtocolLayer
 {
     public function test__construct(): V4_1
     {
-        $cls = new V4_1(1, $this->mockConnection());
+        $cls = new V4_1($this->mockConnection());
         $this->assertInstanceOf(V4_1::class, $cls);
         return $cls;
     }
