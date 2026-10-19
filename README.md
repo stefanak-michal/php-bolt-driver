@@ -17,7 +17,7 @@ all available versions and keep up with protocol messages architecture and speci
 
 ## :label: Version support
 
-We are trying to keep up and this library supports **Bolt <= 6**.
+We are trying to keep up and this library supports **Bolt <= 6.1**.
 
 ## :books: Supported ecosystems
 
@@ -78,7 +78,6 @@ meta informations.
 |----------------------|---------------------------------------------------------------------------------------------------|---------------|-------------------------|-----------|
 | __construct          | Bolt constructor                                                                                  | public        | IConnection $connection | Bolt      |
 | setProtocolVersions  | Set allowed protocol versions for connection                                                      | public        | int/float/string ...$v  | Bolt      |
-| setPackStreamVersion | Set PackStream version                                                                            | public        | int $version = 1        | Bolt      |
 | build                | Create protocol instance. Method creates connection, executes handshake and do a version request. | public        |                         | AProtocol |
 
 **Protocol class**
