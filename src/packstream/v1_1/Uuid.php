@@ -2,6 +2,8 @@
 
 namespace Bolt\packstream\v1_1;
 
+use Bolt\error\PackException;
+
 /**
  * Class Uuid
  *
@@ -12,7 +14,13 @@ namespace Bolt\packstream\v1_1;
  */
 class Uuid
 {
-    public function __construct(public readonly string $value)
+    public readonly string $value;
+
+    public function __construct(string $value)
     {
+        if (preg_match("/^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i", $value) !== 1) {
+            throw new PackException('UUID has invalid format');
+        }
+        $this->value = $value;
     }
 }
