@@ -2,7 +2,6 @@
 
 namespace Bolt\tests\protocol;
 
-use Bolt\packstream\v1_1\Uuid;
 use Bolt\protocol\V6_1;
 
 /**
