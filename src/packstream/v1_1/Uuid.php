@@ -16,6 +16,9 @@ class Uuid
 {
     public readonly string $value;
 
+    /**
+     * @throws PackException In case of invalid UUID format
+     */
     public function __construct(string $value)
     {
         if (preg_match("/^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i", $value) !== 1) {
