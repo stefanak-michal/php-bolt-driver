@@ -13,11 +13,12 @@ class Packer extends \Bolt\packstream\v1\Packer
 {
     protected function packValue(mixed $param): iterable
     {
+        var_dump('Packing', $param);
         if ($param instanceof Uuid) {
-            yield from $this->packUuid($param);
-        } else {
-            parent::packValue($param);
+            return yield from $this->packUuid($param);
         }
+
+        yield from parent::packValue($param);
     }
 
     private function packUuid(Uuid $uuid): iterable

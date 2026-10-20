@@ -191,11 +191,6 @@ foreach ($protocol->getResponses() as $response) {
 
 :information_source: Default settings for bolt protocol version is 4.3, 4.4, 5.0 to 5.8 and 6. If you are within this list you can ommit calling `$bolt->setProtocolVersions();`.
 
-### Autoload
-
-Directory `src` contains autoload file which accepts only Bolt library namespaces. Main Bolt namespace points to this
-directory. If you have installed this project with composer, you have to load `vendor/autoload.php`.
-
 ### Client helper class
 
 Library contains helper class `\Bolt\helpers\Client` for simplified interaction with a graph database. It wraps common operations (authentication, queries, and transactions) into a convenient object so you don't have to manage protocol messages and responses manually.
