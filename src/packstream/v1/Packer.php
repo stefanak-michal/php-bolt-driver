@@ -3,14 +3,14 @@
 namespace Bolt\packstream\v1;
 
 use Bolt\error\PackException;
-use Bolt\packstream\{Bytes, IPackDictionaryGenerator, IPackListGenerator, IPacker};
+use Bolt\packstream\{IPackDictionaryGenerator, IPacker, IPackListGenerator};
 use Bolt\protocol\IStructure;
 
 /**
  * Class Packer of PackStream version 1
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\packstream\v1
  */
 class Packer implements IPacker
@@ -47,7 +47,7 @@ class Packer implements IPacker
         yield pack('n', 1) . chr($signature);
 
         foreach ($params as $param) {
-            foreach ($this->p($param) as $packed) {
+            foreach ($this->packValue($param) as $packed) {
                 $totalLength = mb_strlen($packed, '8bit');
                 $offset = 0;
                 while ($offset < $totalLength) {
@@ -65,48 +65,40 @@ class Packer implements IPacker
     /**
      * @throws PackException
      */
-    private function p(mixed $param): iterable
+    protected function packValue(mixed $param): iterable
     {
         switch (gettype($param)) {
             case 'integer':
-                yield from $this->packInteger($param);
-                break;
+                return yield from $this->packInteger($param);
             case 'double':
-                yield from $this->packFloat($param);
-                break;
+                return yield from $this->packFloat($param);
             case 'boolean':
-                yield chr($param ? 0xC3 : 0xC2);
-                break;
+                return yield chr($param ? 0xC3 : 0xC2);
             case 'NULL':
-                yield chr(0xC0);
-                break;
+                return yield chr(0xC0);
             case 'string':
-                yield from $this->packString($param);
-                break;
+                return yield from $this->packString($param);
             case 'array':
                 if (array_is_list($param)) {
-                    yield from $this->packList($param);
+                    return yield from $this->packList($param);
                 } else {
-                    yield from $this->packDictionary($param);
+                    return yield from $this->packDictionary($param);
                 }
-                break;
             case 'object':
                 if ($param instanceof IStructure) {
-                    yield from $this->packStructure($param);
+                    return yield from $this->packStructure($param);
                 } elseif ($param instanceof Bytes) {
-                    yield from $this->packByteArray($param);
+                    return yield from $this->packByteArray($param);
                 } elseif ($param instanceof IPackListGenerator) {
-                    yield from $this->packList($param);
+                    return yield from $this->packList($param);
                 } elseif ($param instanceof IPackDictionaryGenerator) {
-                    yield from $this->packDictionary($param);
+                    return yield from $this->packDictionary($param);
                 } else {
-                    yield from $this->packDictionary((array)$param);
+                    return yield from $this->packDictionary((array)$param);
                 }
-                break;
-
-            default:
-                throw new PackException('Not recognized type of parameter');
         }
+
+        throw new PackException('Not recognized type of parameter');
     }
 
     /**
@@ -177,8 +169,8 @@ class Packer implements IPacker
         }
 
         foreach ($param as $k => $v) {
-            yield from $this->p((string)$k); // The key names in a map must be of type String.
-            yield from $this->p($v);
+            yield from $this->packValue((string)$k); // The key names in a map must be of type String.
+            yield from $this->packValue($v);
         }
     }
 
@@ -202,7 +194,7 @@ class Packer implements IPacker
         }
 
         foreach ($param as $v) {
-            yield from $this->p($v);
+            yield from $this->packValue($v);
         }
     }
 
@@ -226,7 +218,7 @@ class Packer implements IPacker
                 throw new PackException('Undefined parameter type in structure ' . $structure);
             }
 
-            yield from $this->p($structure->{$parameter->getName()});
+            yield from $this->packValue($structure->{$parameter->getName()});
         }
     }
 

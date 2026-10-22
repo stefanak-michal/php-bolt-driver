@@ -10,7 +10,7 @@ use Bolt\error\ConnectionTimeoutException;
  * Socket class
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\connection
  */
 class Socket extends AConnection
@@ -62,9 +62,7 @@ class Socket extends AConnection
             throw new ConnectException('Not initialized socket');
         }
 
-        if (Bolt::$debug) {
-            $this->printHex($buffer);
-        }
+        $this->logger->debug($buffer, ['prefix' => 'C: ']);
 
         $start = microtime(true);
         $size = mb_strlen($buffer, '8bit');
@@ -107,9 +105,7 @@ class Socket extends AConnection
             $output .= $readed;
         } while (mb_strlen($output, '8bit') < $length);
 
-        if (Bolt::$debug) {
-            $this->printHex($output, 'S: ');
-        }
+        $this->logger->debug($output, ['prefix' => 'S: ']);
 
         return $output;
     }

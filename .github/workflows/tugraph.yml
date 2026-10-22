@@ -1,0 +1,38 @@
+name: Tests with TuGraph on PHP 8.5
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ master ]
+
+jobs:
+  tugraph-tests:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    name: "Running Integration tests for PHP on TuGraph"
+
+    services:
+      tugraph:
+        image: tugraph/tugraph-runtime-centos7
+        ports:
+          - 7687:7687
+          - 7070:7070
+          - 9090:9090
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+          coverage: xdebug
+          ini-values: max_execution_time=0, variables_order="EGPCS"
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Test with phpunit
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "TuGraph"

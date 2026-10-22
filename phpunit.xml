@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd" bootstrap="src/autoload.php">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd">
     <testsuites>
         <testsuite name="Neo4j">
             <file>./tests/BoltTest.php</file>
@@ -8,6 +8,7 @@
             <directory>./tests/packstream</directory>
             <directory>./tests/structures</directory>
             <file>./tests/PerformanceTest.php</file>
+            <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
         <testsuite name="NoDatabase">
             <directory>./tests/protocol</directory>
@@ -15,16 +16,23 @@
         </testsuite>
         <testsuite name="Memgraph">
             <file>./tests/MemgraphTest.php</file>
+            <file>./tests/helpers/ClientTest.php</file>
         </testsuite>
         <testsuite name="NornicDB">
             <file>./tests/NornicDBTest.php</file>
+            <!-- <file>./tests/helpers/ClientTest.php</file> -->
+        </testsuite>
+        <testsuite name="Grafeo">
+            <file>./tests/helpers/ClientTest.php</file>
+        </testsuite>
+        <testsuite name="ArcadeDB">
+            <file>./tests/helpers/ClientTest.php</file>
+        </testsuite>
+        <testsuite name="TuGraph">
+            <file>./tests/TuGraphTest.php</file>
         </testsuite>
         <testsuite name="FalkorDB">
             <file>./tests/FalkorDBTest.php</file>
         </testsuite>
     </testsuites>
-    <php>
-        <var name="NEO_USER" value="neo4j"/>
-        <var name="NEO_PASS" value="nothing123"/>
-    </php>
 </phpunit>

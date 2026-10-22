@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  * Class MemgraphTest
  * 
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
  */
 class MemgraphTest extends TestCase

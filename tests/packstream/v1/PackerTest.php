@@ -10,14 +10,14 @@ use Bolt\tests\TestLayer;
  * Class PackerTest
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\packstream\v1
  */
 class PackerTest extends TestLayer
 {
     public function testInit(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -26,7 +26,7 @@ class PackerTest extends TestLayer
         $protocol = $bolt->setProtocolVersions($this->getCompatibleBoltVersion())->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         return $protocol;
     }

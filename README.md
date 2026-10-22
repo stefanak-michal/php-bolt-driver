@@ -2,49 +2,42 @@
 
 # Bolt
 
-PHP library for communication with graph database over TCP socket with Bolt protocol specification. Bolt protocol was created by [Neo4j](https://neo4j.com/) and documentation is available at [https://www.neo4j.com/](https://www.neo4j.com/docs/bolt/current/). This library is aimed to be low level, support
+PHP library for communication with graph database over TCP socket with Bolt protocol specification. Bolt protocol was
+created by [Neo4j](https://neo4j.com/) and documentation is available
+at [https://www.neo4j.com/](https://www.neo4j.com/docs/bolt/current/). This library is aimed to be low level, support
 all available versions and keep up with protocol messages architecture and specifications.
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/stefanak-michal/php-bolt-driver)
 [![](https://img.shields.io/packagist/dt/stefanak-michal/bolt)](https://packagist.org/packages/stefanak-michal/bolt/stats)
-[![](https://img.shields.io/github/v/release/stefanak-michal/bolt)](https://github.com/neo4j-php/Bolt/releases)
-[![](https://img.shields.io/github/commits-since/stefanak-michal/bolt/latest)](https://github.com/neo4j-php/Bolt/releases/latest)
-[![](https://img.shields.io/github/stars/stefanak-michal/Bolt)](https://github.com/neo4j-php/Bolt/stargazers)
+[![](https://img.shields.io/github/v/release/stefanak-michal/bolt)](https://github.com/stefanak-michal/Bolt/releases)
+[![](https://img.shields.io/github/commits-since/stefanak-michal/bolt/latest)](https://github.com/stefanak-michal/Bolt/releases/latest)
+[![](https://img.shields.io/github/stars/stefanak-michal/Bolt)](https://github.com/stefanak-michal/Bolt/stargazers)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z5ABMLW)
 
 [<img width="223" height="48" alt="image" src="https://github.com/user-attachments/assets/5d74f0e4-23e5-467b-a68c-7dbe9a49de3c" />](https://awsmfoss.com/neo4j-bolt-php/)
 
-## :office: Professional Support and Consulting
-
-Need help with integrating communication with graph databases in your PHP project?  I offer professional support and consulting services related to graph databases.
-
-My services include:
-
-* Integration assistance
-* Performance tuning
-* Custom development
-* Training
-
-Website: https://stefanak.serv00.net/
-
 ## :label: Version support
 
-We are trying to keep up and this library supports **Bolt <= 6**.
+We are trying to keep up and this library supports **Bolt <= 6.1**.
 
 ## :books: Supported ecosystems
 
-- Neo4j [bolt compatibility](https://www.neo4j.com/docs/bolt/current/bolt-compatibility/)
-- Memgraph [bolt compatibility](https://memgraph.com/docs/client-libraries)
-- Amazon Neptune [bolt compatiblity](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-bolt.html#access-graph-opencypher-bolt-connections)
-- LadybugDB with wrapper [bolt4rs](https://github.com/LadybugDB/bolt4rs)
+- [Neo4j](https://www.neo4j.com/)
+- [Memgraph](https://memgraph.com/)
+- [Amazon Neptune](https://docs.aws.amazon.com/neptune/)
+- [LadybugDB](https://github.com/LadybugDB/bolt4rs)
+- [NornicDB](https://github.com/orneryd/NornicDB)
+- [ArcadeDB](https://arcadedb.com/)
 - [DozerDB](https://dozerdb.org/)
 - [ONgDB](https://graphfoundation.org/ongdb/)
-- [NornicDB](https://github.com/orneryd/NornicDB)
+- [TuGraph](https://tugraph.tech/?lang=en-US)
+- [Grafeo](https://grafeo.dev/)
 
 ## :white_check_mark: Requirements
 
-This library keep up with [PHP supported versions](https://www.php.net/supported-versions.php) what means it is at **PHP^8.1**.
+This library keep up with [PHP supported versions](https://www.php.net/supported-versions.php) what means it is at *
+*PHP^8.1**.
 
 ### PHP Extensions
 
@@ -73,9 +66,15 @@ Run the following command in your project to install the latest applicable versi
 
 ## :desktop_computer: Usage
 
-Concept of usage is based on Bolt messages. Bolt messages are mapped 1:1 as protocol methods. Available protocol methods depends on Bolt version. Communication works in [pipeline](https://www.neo4j.com/docs/bolt/current/bolt/message/#pipelining) and you can chain multiple Bolt messages before consuming response from the server.
+Concept of usage is based on Bolt messages. Bolt messages are mapped 1:1 as protocol methods. Available protocol methods
+depends on Bolt version. Communication works
+in [pipeline](https://www.neo4j.com/docs/bolt/current/bolt/message/#pipelining) and you can chain multiple Bolt messages
+before consuming response from the server.
 
-Main `Bolt` class serves as Factory design pattern and it returns instance of protocol class by requested Bolt version. Basic usage consist of query execution and fetching response which is split in two methods. First message `run` is for sending queries. Second message `pull` is for fetching response from executed query on database. Response from database for Bolt message `pull` always contains n+1 rows because last entry is `success` message with
+Main `Bolt` class serves as Factory design pattern and it returns instance of protocol class by requested Bolt version.
+Basic usage consist of query execution and fetching response which is split in two methods. First message `run` is for
+sending queries. Second message `pull` is for fetching response from executed query on database. Response from database
+for Bolt message `pull` always contains n+1 rows because last entry is `success` message with
 meta informations.
 
 :information_source: More info about available Bolt messages: https://www.neo4j.com/docs/bolt/current/bolt/message/
@@ -84,13 +83,11 @@ meta informations.
 
 **Bolt class**
 
-| Method / Property    | Description                                                                                       | Type          | Parameters              | Return    |
-|----------------------|---------------------------------------------------------------------------------------------------|---------------|-------------------------|-----------|
-| __construct          | Bolt constructor                                                                                  | public        | IConnection $connection | Bolt      |
-| setProtocolVersions  | Set allowed protocol versions for connection                                                      | public        | int/float/string ...$v  | Bolt      |
-| setPackStreamVersion | Set PackStream version                                                                            | public        | int $version = 1        | Bolt      |
-| build                | Create protocol instance. Method creates connection, executes handshake and do a version request. | public        |                         | AProtocol |
-| $debug               | Print binary communication (as hex)                                                               | public static | bool                    |           |
+| Method / Property   | Description                                                                                       | Type   | Parameters              | Return    |
+|---------------------|---------------------------------------------------------------------------------------------------|--------|-------------------------|-----------|
+| __construct         | Bolt constructor                                                                                  | public | IConnection $connection | Bolt      |
+| setProtocolVersions | Set allowed protocol versions for connection                                                      | public | int/float/string ...$v  | Bolt      |
+| build               | Create protocol instance. Method creates connection, executes handshake and do a version request. | public |                         | AProtocol |
 
 **Protocol class**
 
@@ -120,12 +117,14 @@ argument was extended during Neo4j development which means the content of it cha
 version you are working with when using this argument. You can read more about extra parameter in Bolt documentation
 where you can look into your version and bolt message.
 
-:information_source: Annotation of methods in protocol classes contains direct link to specific version and message from mentioned
+:information_source: Annotation of methods in protocol classes contains direct link to specific version and message from
+mentioned
 documentation website.
 
 ### Authentication
 
-Method logon expects `$auth` array. This array has to contain up to these three keys: scheme, principal and credentials. It depends on chosen scheme, as content for the other keys. Look at following table to choose the right structure.
+Method logon expects `$auth` array. This array has to contain up to these three keys: scheme, principal and credentials.
+It depends on chosen scheme, as content for the other keys. Look at following table to choose the right structure.
 
 | scheme   | principal | credentials |
 |----------|-----------|-------------|
@@ -146,17 +145,18 @@ _`run` executes query in auto-commit transaction if explicit transaction was not
 
 ### Cypher query parameters
 
-| Neo4j      | PHP                                                                                                                                                             |
-|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Null       | null                                                                                                                                                            |
-| Boolean    | boolean                                                                                                                                                         |
-| Integer    | integer                                                                                                                                                         |
-| Float      | float                                                                                                                                                           |
-| Bytes      | [Bytes class](https://github.com/stefanak-michal/php-bolt-driver/blob/master/src/packstream/Bytes.php)                                                          |
-| String     | string                                                                                                                                                          |
-| List       | array with consecutive numeric keys from 0                                                                                                                      |
-| Dictionary | object or array which is not considered as list                                                                                                                 |
-| Structure  | Classes implementing `IStructure` by protocol version ([docs](https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/))                               |
+| Neo4j      | PHP                                                                                                                               |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Null       | null                                                                                                                              |
+| Boolean    | boolean                                                                                                                           |
+| Integer    | integer                                                                                                                           |
+| Float      | float                                                                                                                             |
+| Bytes      | [Bytes class](https://github.com/stefanak-michal/php-bolt-driver/blob/master/src/packstream/v1/Bytes.php)                         |
+| String     | string                                                                                                                            |
+| List       | array with consecutive numeric keys from 0                                                                                        |
+| Dictionary | object or array which is not considered as list                                                                                   |
+| Structure  | Classes implementing `IStructure` by protocol version ([docs](https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/)) |
+| Uuid       | [Uuid class](https://github.com/stefanak-michal/php-bolt-driver/blob/master/src/packstream/v1_1/Uuid.php)                         |
 
 List or dictionary can be also provided as instance of class implementing `Bolt\packstream\IPackListGenerator`
 or `Bolt\PackStream\IPackDictionaryGenerator`. This approach helps with memory management while working with big amount
@@ -164,7 +164,8 @@ of data. To learn more you can
 check [performance test](https://github.com/neo4j-php/Bolt/blob/master/tests/PerformanceTest.php)
 or [packer test](https://github.com/neo4j-php/Bolt/blob/master/tests/PackStream/v1/PackerTest.php).
 
-:warning: Structures `Node`, `Relationship`, `UnboundRelationship` and `Path` cannot be used as parameter. They are available only
+:warning: Structures `Node`, `Relationship`, `UnboundRelationship` and `Path` cannot be used as parameter. They are
+available only
 as received data from database.
 
 ### Example
@@ -201,16 +202,89 @@ foreach ($protocol->getResponses() as $response) {
 }
 ```
 
-:information_source: Default settings for bolt protocol version is 4.3, 4.4, 5.0 to 5.8 and 6. If you are within this list you can ommit calling `$bolt->setProtocolVersions();`.
+:information_source: Default settings for bolt protocol version is 4.3, 4.4, 5.0 to 5.8 and 6. If you are within this
+list you can ommit calling `$bolt->setProtocolVersions();`.
 
-### Autoload
+### Client helper class
 
-Directory `src` contains autoload file which accepts only Bolt library namespaces. Main Bolt namespace points to this
-directory. If you have installed this project with composer, you have to load `vendor/autoload.php`.
+Library contains helper class `\Bolt\helpers\Client` for simplified interaction with a graph database. It wraps common
+operations (authentication, queries, and transactions) into a convenient object so you don't have to manage protocol
+messages and responses manually.
+
+**Constructor**
+
+```php
+new \Bolt\helpers\Client(
+    AProtocol $protocol,
+    array $auth = ['scheme' => 'none'],
+    ?Closure $logHandler = null,
+    ?Closure $errorHandler = null
+)
+```
+
+Authentication is performed automatically in the constructor based on the Bolt protocol version in use.
+
+- `$protocol` — Protocol instance obtained via `Bolt::build()`.
+- `$auth` — Authentication parameters (see [Authentication](#authentication)). Defaults to `['scheme' => 'none']`.
+- `$logHandler` — Optional `Closure(string $query, array $params, array $stats): void` called after every action.
+- `$errorHandler` — Optional `Closure(Exception $e): void`. If not set, exceptions are thrown normally.
+
+**Methods**
+
+| Method                                                                   | Description                                                                                                                           | Return  |
+|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `query(string $query, array $params = [], array $extra = [])`            | Execute a query and return all rows as an array of associative arrays.                                                                | `array` |
+| `queryFirstField(string $query, array $params = [], array $extra = [])`  | Execute a query and return the first value from the first row.                                                                        | `mixed` |
+| `queryFirstColumn(string $query, array $params = [], array $extra = [])` | Execute a query and return the first column values from all rows.                                                                     | `array` |
+| `begin(array $extra = [])`                                               | Begin a transaction. Returns `false` for Bolt < 3.                                                                                    | `bool`  |
+| `commit()`                                                               | Commit the current transaction. Returns `false` for Bolt < 3.                                                                         | `bool`  |
+| `rollback()`                                                             | Rollback the current transaction. Returns `false` for Bolt < 3.                                                                       | `bool`  |
+| `getStatistics()`                                                        | Return statistics from the last executed query (keys depend on the database). Always includes a `rows` key with the result row count. | `array` |
+
+**Example**
+
+```php
+$conn = new \Bolt\connection\Socket('127.0.0.1', 7687);
+$bolt = new \Bolt\Bolt($conn);
+$protocol = $bolt->build();
+
+$client = new \Bolt\helpers\Client(
+    $protocol,
+    ['scheme' => 'basic', 'principal' => 'neo4j', 'credentials' => 'neo4j'],
+    function (string $query, array $params, array $stats): void {
+        // optional: log every executed query
+        error_log($query);
+    },
+    function (Exception $e): void {
+        // optional: handle exceptions; if omitted they are thrown normally
+        error_log($e->getMessage());
+    }
+);
+
+// Returns all rows as associative arrays keyed by field name
+$rows = $client->query('MATCH (n:Person) RETURN n.name AS name, n.age AS age');
+// $rows = [['name' => 'Alice', 'age' => 30], ['name' => 'Bob', 'age' => 25]]
+
+// Returns only the first value from the first row
+$name = $client->queryFirstField('MATCH (n:Person) RETURN n.name LIMIT 1');
+
+// Returns the first column value from every row
+$names = $client->queryFirstColumn('MATCH (n:Person) RETURN n.name');
+
+// Transaction example
+$client->begin();
+$client->query('CREATE (n:Person {name: $name})', ['name' => 'Charlie']);
+$client->commit(); // or $client->rollback()
+
+// Statistics from the last executed query
+$stats = $client->getStatistics();
+// e.g. ['nodes-created' => 1, 'rows' => 0]
+```
 
 ## :chains: Connection
 
-Bolt class constructor accepts connection argument. This argument has to be instance of class which implements IConnection interface. Library offers few options.
+Bolt class constructor accepts connection argument. This argument has to be instance of class which implements
+IConnection interface. Library offers few options.
 
 **\Bolt\connection\Socket**
 
@@ -222,15 +296,20 @@ here: [https://www.php.net/manual/en/book.sockets.php](https://www.php.net/manua
 This class uses php stream functions. Which is a part of php and there is no extensions needed. More informations
 here: [https://www.php.net/manual/en/ref.stream.php](https://www.php.net/manual/en/ref.stream.php)
 
-StreamSocket besides of implemented methods from interface has method to configure SSL. SSL option requires php extension openssl. When you want to activate SSL
+StreamSocket besides of implemented methods from interface has method to configure SSL. SSL option requires php
+extension openssl. When you want to activate SSL
 you have to call method `setSslContextOptions`. This method accept array by php specification available
 here: [https://www.php.net/manual/en/context.ssl.php](https://www.php.net/manual/en/context.ssl.php).
 
 **\Bolt\connection\PStreamSocket**
 
-This class extends StreamSocket and adds support for persistent connections. Upon reuse of connection remaining buffer is consumed and message RESET is automatically sent. PHP is stateless therefore using this connection class requires storing meta information about active TCP connection. These informations are stored in [PSR-16 cache](#minidisc-psr-16-cache).
+This class extends StreamSocket and adds support for persistent connections. Upon reuse of connection remaining buffer
+is consumed and message RESET is automatically sent. PHP is stateless therefore using this connection class requires
+storing meta information about active TCP connection. These informations are stored
+in [PSR-16 cache](#minidisc-psr-16-cache).
 
-:warning: If your system reuse persistent connection and meta information about it was lost for some reason, your attempt to connect will end with ConnectionTimeoutException. Repeated attempt to connect will succeed.
+:warning: If your system reuse persistent connection and meta information about it was lost for some reason, your
+attempt to connect will end with ConnectionTimeoutException. Repeated attempt to connect will succeed.
 
 ## :lock: SSL
 
@@ -238,7 +317,8 @@ Connection secured with SSL is available only with connection classes `StreamSoc
 
 ### Neo4j Aura
 
-Connecting to Aura requires encrypted connection by default. To connect to Aura you have to use connection class with SSL support and enable SSL.
+Connecting to Aura requires encrypted connection by default. To connect to Aura you have to use connection class with
+SSL support and enable SSL.
 
 ```php
 $conn = new \Bolt\connection\StreamSocket('helloworld.databases.neo4j.io');
@@ -247,7 +327,8 @@ $conn->setSslContextOptions();
 $bolt = new \Bolt\Bolt($conn);
 ```
 
-_For more informations about what argument can be passed to `setSslContextOptions` check out [php.net](https://www.php.net/manual/en/context.ssl.php)_
+_For more informations about what argument can be passed to `setSslContextOptions` check
+out [php.net](https://www.php.net/manual/en/context.ssl.php)_
 
 ### Example on localhost database with self-signed certificate:
 
@@ -277,16 +358,21 @@ environments for security reasons._
 
 ## :vertical_traffic_light: Server state
 
-Server state is not reported by server but it is evaluated by received response. You can access current state through property `$protocol->serverState`. This property is updated with every call `getResponse(s)`.
+Server state is not reported by server but it is evaluated by received response. You can access current state through
+property `$protocol->serverState`. This property is updated with every call `getResponse(s)`.
 
 ## :minidisc: PSR-16 cache
 
-This library contains own PSR-16 cache implementation `\Bolt\helpers\FileCache`. It stores files in temporary directory. Obtaining cache instance throughout the project is secured with `\Bolt\helpers\CacheProvider::get()`. You can set own implementation by calling `\Bolt\helpers\CacheProvider::set($cache)`.
+This library contains own PSR-16 cache implementation `\Bolt\helpers\FileCache`. It stores files in temporary directory.
+Obtaining cache instance throughout the project is secured with `\Bolt\helpers\CacheProvider::get()`. You can set own
+implementation by calling `\Bolt\helpers\CacheProvider::set($cache)`.
 
 [PSR-16 specification](https://www.php-fig.org/psr/psr-16/)
 
 ## :bar_chart: Analytics
 
-Bolt does collect anonymous analytics data. These data are just aggregated counts of executed queries and sessions. They are stored in [cache](#minidisc-psr-16-cache) and submitted once a day after midnight. You can opt out with environment variable `BOLT_ANALYTICS_OPTOUT`.
+Bolt does collect anonymous analytics data. These data are just aggregated counts of executed queries and sessions. They
+are stored in [cache](#minidisc-psr-16-cache) and submitted once a day after midnight. You can opt out with environment
+variable `BOLT_ANALYTICS_OPTOUT`.
 
 Analytics data are public and available at [Mixpanel](https://eu.mixpanel.com/p/7ttVKqvjdqJtGCjLCFgdeC).

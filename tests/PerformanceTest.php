@@ -11,7 +11,7 @@ use Bolt\tests\packstream\v1\generators\RandomDataGenerator;
 /**
  * Class PerformanceTest
  * @author Ghlen Nagels
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
  */
 class PerformanceTest extends TestLayer
@@ -20,10 +20,10 @@ class PerformanceTest extends TestLayer
     {
         $amount = 50000;
 
-        $conn = new Socket($GLOBALS['NEO_HOST'] ?? 'localhost', $GLOBALS['NEO_PORT'] ?? 7687, 120);
+        $conn = new Socket($_ENV['GDB_HOST'] ?? 'localhost', $_ENV['GDB_PORT'] ?? 7687, 120);
         $protocol = (new Bolt($conn))->setProtocolVersions($this->getCompatibleBoltVersion())->build();
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         //prevent multiple runs at once
         while (true) {

@@ -1,0 +1,50 @@
+name: Check for new Bolt protocol versions
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Run daily at 06:00 UTC (runs only on default branch)
+  workflow_dispatch:     # Allow manual trigger from GitHub Actions tab
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+
+      - name: Check Bolt compatibility page
+        id: check
+        run: php .github/scripts/check-bolt-version.php
+
+      - name: Create issues for new versions
+        if: steps.check.outputs.new_versions != '' && steps.check.outputs.new_versions != '[]'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSIONS: ${{ steps.check.outputs.new_versions }}
+        run: |
+          echo "Processing detected new versions: $NEW_VERSIONS"
+          for version in $(echo "$NEW_VERSIONS" | jq -r '.[]'); do
+            echo "Checking if issue already exists for Bolt version $version..."
+            EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --search "New Bolt protocol version: $version in:title" | head -n 1)
+            
+            if [ -n "$EXISTING" ]; then
+              echo "Issue already exists: \"$EXISTING\". Skipping."
+            else
+              echo "Creating issue for Bolt version $version..."
+              BODY=$(printf "A new Bolt protocol version **%s** was detected on the [Bolt Compatibility](https://neo4j.com/docs/bolt/current/bolt-compatibility/) documentation page.\n\nPlease review the specification and implement support for Bolt %s." "$version" "$version")
+              gh issue create \
+                --repo "$GITHUB_REPOSITORY" \
+                --title "New Bolt protocol version: $version" \
+                --body "$BODY" \
+                --assignee "stefanak-michal"
+            fi
+          done

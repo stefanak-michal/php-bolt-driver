@@ -9,14 +9,14 @@ use Bolt\enum\{Signature, ServerState};
  * Class V5_1Test
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\protocol
  */
 class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
 {
     public function test__construct(): V5_1
     {
-        $cls = new V5_1(1, $this->mockConnection());
+        $cls = new V5_1($this->mockConnection());
         $this->assertInstanceOf(V5_1::class, $cls);
         return $cls;
     }

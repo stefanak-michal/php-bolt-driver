@@ -17,7 +17,7 @@ use Bolt\protocol\v1\structures\Path;
  * Class StructuresTest
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\structures\v5
  */
 class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
@@ -27,7 +27,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 
     public function testInit(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -44,7 +44,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
             $this->markTestSkipped('Tests available only for version 5.');
         }
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         return $protocol;
     }

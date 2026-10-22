@@ -9,14 +9,14 @@ use Bolt\protocol\V1;
  * Class V1Test
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\protocol
  */
 class V1Test extends ProtocolLayer
 {
     public function test__construct(): V1
     {
-        $cls = new V1(1, $this->mockConnection());
+        $cls = new V1($this->mockConnection());
         $this->assertInstanceOf(V1::class, $cls);
         return $cls;
     }

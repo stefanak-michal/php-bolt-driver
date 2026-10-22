@@ -15,14 +15,17 @@ use Bolt\helpers\CacheProvider;
  * Acts as factory which provides protocol class by requested version
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt
  */
 final class Bolt
 {
     private array $protocolVersions = [];
-    private int $packStreamVersion = 1;
 
+    /**
+     * Debug mode - print sent and received buffers as HEX
+     * @deprecated Use PSR-3 compatible logger instead
+     */
     public static bool $debug = false;
 
     public function __construct(private IConnection $connection)
@@ -34,7 +37,7 @@ final class Bolt
             $this->track();
         }
 
-        $this->setProtocolVersions(6, '5.8.8', '4.4.4');
+        $this->setProtocolVersions('6.1.1', '5.8.8', '4.4.4');
     }
 
     private function track(): void
@@ -151,7 +154,7 @@ final class Bolt
             throw new ConnectException('Requested Protocol version (' . $version . ') not yet implemented');
         }
 
-        $protocol = new $protocolClass($this->packStreamVersion, $this->connection);
+        $protocol = new $protocolClass($this->connection);
         $protocol->serverState = version_compare($version, '5.1', '>=') ? ServerState::NEGOTIATION : ServerState::CONNECTED;
         return $protocol;
     }
@@ -170,7 +173,7 @@ final class Bolt
             }
 
             /** @var AProtocol $protocol */
-            $protocol = new $protocolClass($this->packStreamVersion, $this->connection);
+            $protocol = new $protocolClass($this->connection);
             $protocol->serverState = ServerState::INTERRUPTED;
 
             if ($protocol->reset()->getResponse()->signature != Signature::SUCCESS) {
@@ -192,9 +195,9 @@ final class Bolt
         return $this;
     }
 
+    #[\Deprecated]
     public function setPackStreamVersion(int $version = 1): Bolt
     {
-        $this->packStreamVersion = $version;
         return $this;
     }
 
@@ -204,9 +207,6 @@ final class Bolt
      */
     private function handshake(): string
     {
-        if (self::$debug)
-            echo 'HANDSHAKE';
-
         $this->connection->write(chr(0x60) . chr(0x60) . chr(0xb0) . chr(0x17) . $this->packProtocolVersions());
 
         $bytes = $this->connection->read(4);

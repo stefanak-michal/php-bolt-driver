@@ -3,15 +3,10 @@
 namespace Bolt\tests\structures\v1;
 
 use Bolt\Bolt;
-use Bolt\protocol\{
-    AProtocol,
-    V3,
-    V4_2,
-    V4_3,
-    V4_4
-};
-use Bolt\protocol\v1\structures\{
-    Date,
+use Bolt\enum\Signature;
+use Bolt\packstream\v1\Bytes;
+use Bolt\protocol\{AProtocol, V3, V4_2, V4_3, V4_4};
+use Bolt\protocol\v1\structures\{Date,
     DateTime,
     DateTimeZoneId,
     Duration,
@@ -23,16 +18,13 @@ use Bolt\protocol\v1\structures\{
     Point3D,
     Relationship,
     Time,
-    UnboundRelationship
-};
-use Bolt\enum\Signature;
-use Bolt\packstream\Bytes;
+    UnboundRelationship};
 
 /**
  * Class StructuresTest
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\structures\v1
  */
 class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
@@ -42,7 +34,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 
     public function testInit(): AProtocol|V4_4|V4_3|V4_2|V3
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -62,8 +54,8 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $this->assertEquals(Signature::SUCCESS, $protocol->hello([
             'user_agent' => 'bolt-php',
             'scheme' => 'basic',
-            'principal' => $GLOBALS['NEO_USER'],
-            'credentials' => $GLOBALS['NEO_PASS'],
+            'principal' => $_ENV['GDB_USERNAME'],
+            'credentials' => $_ENV['GDB_PASSWORD'],
         ])->getResponse()->signature);
 
         return $protocol;

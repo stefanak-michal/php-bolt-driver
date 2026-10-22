@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * Class ErrorsTest
  *
  * @author Michal Stefanak
- * @link https://github.com/neo4j-php/Bolt
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
  */
 class ErrorsTest extends TestCase
@@ -21,7 +21,7 @@ class ErrorsTest extends TestCase
         $conn->connect();
     }
 
-    public function testPackException1(): void
+    public function testPackException(): void
     {
         $packer = new \Bolt\packstream\v1\Packer();
         $this->assertInstanceOf(\Bolt\packstream\v1\Packer::class, $packer);
@@ -29,18 +29,5 @@ class ErrorsTest extends TestCase
         foreach ($packer->pack(0x00, fopen('php://input', 'r')) as $chunk) {
             $this->markTestIncomplete();
         }
-    }
-
-    public function testPackException2(): void
-    {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
-        $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
-
-        $bolt = new \Bolt\Bolt($conn);
-        $this->assertInstanceOf(\Bolt\Bolt::class, $bolt);
-
-        $this->expectException(\Bolt\error\PackException::class);
-        $bolt->setPackStreamVersion(2);
-        $bolt->build();
     }
 }

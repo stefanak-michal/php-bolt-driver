@@ -3,19 +3,22 @@
 namespace Bolt\tests\packstream\v1;
 
 use Bolt\Bolt;
-use Bolt\packstream\Bytes;
+use Bolt\packstream\v1\Bytes;
 use Bolt\protocol\AProtocol;
 use Bolt\tests\TestLayer;
 
 /**
  * Class BytesTest
+ * 
+ * @author Michal Stefanak
+ * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\packstream\v1
  */
 class BytesTest extends TestLayer
 {
     public function testInit(): AProtocol
     {
-        $conn = new \Bolt\connection\StreamSocket($GLOBALS['NEO_HOST'], $GLOBALS['NEO_PORT']);
+        $conn = new \Bolt\connection\StreamSocket($_ENV['GDB_HOST'], $_ENV['GDB_PORT']);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
@@ -24,7 +27,7 @@ class BytesTest extends TestLayer
         $protocol = $bolt->setProtocolVersions($this->getCompatibleBoltVersion())->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
-        $this->sayHello($protocol, $GLOBALS['NEO_USER'], $GLOBALS['NEO_PASS']);
+        $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
         return $protocol;
     }
