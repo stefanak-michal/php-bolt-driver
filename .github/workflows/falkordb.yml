@@ -15,8 +15,8 @@ jobs:
       falkordb:
         image: falkordb/falkordb-server
         env:
-          REDIS_ARGS: --requirepass falkordb
-          FALKORDB_ARGS: BOLT_PORT=7687
+          REDIS_ARGS: "--requirepass Notfd124#"
+          FALKORDB_ARGS: "BOLT_PORT 7687"
         ports:
           - 7687:7687
 
@@ -36,4 +36,7 @@ jobs:
         run: composer install --no-progress
 
       - name: Test with phpunit
+        env:
+          GDB_USERNAME: "falkordb"
+          GDB_PASSWORD: "Notfd124#"
         run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "FalkorDB"
