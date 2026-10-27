@@ -26,10 +26,10 @@ class Unpacker extends \Bolt\packstream\v1\Unpacker
             $hex = bin2hex($this->next(16));
             return new Uuid(
                 substr($hex, 0, 8)
-                . substr($hex, 8, 4)
-                . substr($hex, 12, 4)
-                . substr($hex, 16, 4)
-                . substr($hex, 20, 12)
+                . '-' . substr($hex, 8, 4)
+                . '-' . substr($hex, 12, 4)
+                . '-' . substr($hex, 16, 4)
+                . '-' . substr($hex, 20, 12)
             );
         }
 
