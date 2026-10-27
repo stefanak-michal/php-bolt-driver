@@ -79,6 +79,12 @@ class Unpacker implements IUnpacker
             return null;
         }
 
+        // UUID (marker 0xE0) exists only in PackStream 1.1 / Bolt 6.1.
+        // PackStream reserved markers must be treated as an error.
+        if ($marker === 0xE0) {
+            throw new UnpackException('Unknown PackStream marker 0xe0');
+        }
+
         if ($marker == 0xC3) {
             return true;
         }
