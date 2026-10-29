@@ -30,4 +30,13 @@ class ErrorsTest extends TestCase
             $this->markTestIncomplete();
         }
     }
+
+    public function testUnpackException(): void
+    {
+        $unpacker = new \Bolt\packstream\v1\Unpacker();
+        $this->assertInstanceOf(\Bolt\packstream\v1\Unpacker::class, $unpacker);
+        // 0xE0 is reserved in PackStream 1.0 (UUID exists only in PackStream 1.1)
+        $this->expectException(\Bolt\error\UnpackException::class);
+        $unpacker->unpack(chr(0xE0) . str_repeat("\0", 16));
+    }
 }
