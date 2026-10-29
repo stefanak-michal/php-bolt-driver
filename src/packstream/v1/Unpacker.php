@@ -118,8 +118,6 @@ class Unpacker implements IUnpacker
             return $output;
         }
 
-        // Reserved / unsupported markers must be treated as an error
-        // @link https://neo4j.com/docs/bolt/current/packstream/
         throw new UnpackException(sprintf('Unknown PackStream marker 0x%02x', $marker));
     }
 
