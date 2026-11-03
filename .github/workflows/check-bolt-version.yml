@@ -35,16 +35,18 @@ jobs:
           for version in $(echo "$NEW_VERSIONS" | jq -r '.[]'); do
             echo "Checking if issue already exists for Bolt version $version..."
             EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --search "New Bolt protocol version: $version in:title" | head -n 1)
-            
+
             if [ -n "$EXISTING" ]; then
               echo "Issue already exists: \"$EXISTING\". Skipping."
             else
               echo "Creating issue for Bolt version $version..."
-              BODY=$(printf "A new Bolt protocol version **%s** was detected on the [Bolt Compatibility](https://neo4j.com/docs/bolt/current/bolt-compatibility/) documentation page.\n\nPlease review the specification and implement support for Bolt %s." "$version" "$version")
+              BODY=$(awk 'BEGIN{c=0} /^---$/{c++; next} c>=2' .github/ISSUE_TEMPLATE/new_bolt_version.md \
+                | sed "s/<!-- e.g. 6.2 -->/$version/g")
               gh issue create \
                 --repo "$GITHUB_REPOSITORY" \
                 --title "New Bolt protocol version: $version" \
                 --body "$BODY" \
+                --label "enhancement" \
                 --assignee "stefanak-michal"
             fi
           done
