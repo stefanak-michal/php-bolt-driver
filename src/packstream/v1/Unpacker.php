@@ -118,7 +118,7 @@ class Unpacker implements IUnpacker
             return $output;
         }
 
-        return null;
+        throw new UnpackException(sprintf('Unknown PackStream marker 0x%02x', $marker));
     }
 
     /**
