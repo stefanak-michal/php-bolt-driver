@@ -14,6 +14,8 @@ jobs:
     services:
       grafeo:
         image: grafeo/grafeo-server:bolt
+        env:
+          GRAFEO_ALLOW_UNAUTHENTICATED: true
         ports:
           - 7687:7687
 
