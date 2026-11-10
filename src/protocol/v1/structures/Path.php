@@ -45,8 +45,8 @@ class Path implements IStructure
     public function __toString(): string
     {
         $obj = [
-            'start' => json_decode(reset($this->nodes), true),
-            'end' => json_decode(end($this->nodes), true),
+            'start' => json_decode(count($this->nodes) ? $this->nodes[array_key_first($this->nodes)] : [], true),
+            'end' => json_decode(count($this->nodes) ? $this->nodes[array_key_last($this->nodes)] : [], true),
             'segments' => [],
             'length' => count($this->indices) - 1
         ];
@@ -54,7 +54,7 @@ class Path implements IStructure
         for ($i = 0; $i < count($this->nodes) - 1; $i++) {
             $obj['segments'][] = [
                 'start' => json_decode($this->nodes[$i], true),
-                'relationship' => array_merge(json_decode($this->rels[$i], true), ['start' => $this->nodes[$i]->id, 'end' => $this->nodes[$i + 1]->id()]),
+                'relationship' => array_merge(json_decode($this->rels[$i], true), ['start' => $this->nodes[$i]->id, 'end' => $this->nodes[$i + 1]->id]),
                 'end' => json_decode($this->nodes[$i + 1], true)
             ];
         }
