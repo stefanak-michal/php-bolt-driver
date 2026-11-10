@@ -29,6 +29,7 @@ abstract class AProtocol
     public ServerState $serverState;
 
     private int $writeCalls = 0;
+    private array $ecosystems = [];
 
     /**
      * Multiple RUN statements in transaction generates "streams" which are pulled or discarded
@@ -159,7 +160,16 @@ abstract class AProtocol
             $response = new Response($message, $signature, $content);
         }
 
-        if ($response->signature != Signature::RECORD)
+        if (
+            $response->signature === Signature::SUCCESS
+            && ($response->message === Message::INIT || $response->message === Message::HELLO)
+            && !empty($response->content['server'])
+            && is_string($response->content['server'])
+        ) {
+            $this->ecosystems[] = $response->content['server'];
+        }
+
+        if ($response->signature !== Signature::RECORD)
             array_shift($this->pipelinedMessages);
 
         foreach (($this->serverStateTransition ?? []) as $transition) {
@@ -190,9 +200,14 @@ abstract class AProtocol
 
         // update analytics data
         $data = (array)CacheProvider::get()->get('analytics');
-        $data[strtotime('today')] = [
-            'queries' => ($data[strtotime('today')]['queries'] ?? 0) + $this->writeCalls,
-            'sessions' => ($data[strtotime('today')]['sessions'] ?? 0) + 1
+        $today = strtotime('today');
+        $data[$today] = [
+            'queries' => ($data[$today]['queries'] ?? 0) + $this->writeCalls,
+            'sessions' => ($data[$today]['sessions'] ?? 0) + 1,
+            'ecosystems' => array_values(array_unique(array_merge(
+                $data[$today]['ecosystems'] ?? [],
+                $this->ecosystems
+            ))),
         ];
         CacheProvider::get()->set('analytics', $data);
 
