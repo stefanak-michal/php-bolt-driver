@@ -8,6 +8,7 @@ use Bolt\protocol\AProtocol;
 use Bolt\enum\{Signature, ServerState};
 use Bolt\connection\IConnection;
 use Bolt\helpers\CacheProvider;
+use Throwable;
 
 /**
  * Main class Bolt
@@ -28,48 +29,57 @@ final class Bolt
      */
     public static bool $debug = false;
 
-    public function __construct(private IConnection $connection)
+    public function __construct(private readonly IConnection $connection)
     {
         if (!getenv('BOLT_ANALYTICS_OPTOUT') && is_writable(sys_get_temp_dir() . DIRECTORY_SEPARATOR)) {
             if (!file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-analytics' . DIRECTORY_SEPARATOR)) {
                 mkdir(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-analytics', recursive: true);
             }
-            $this->track();
+            try {
+                $this->track();
+            } catch (Throwable) {
+            }
         }
 
         $this->setProtocolVersions('6.1.1', '5.8.8', '4.4.4');
     }
 
+    /**
+     * @return void
+     * @throws Throwable
+     */
     private function track(): void
     {
         $data = (array)CacheProvider::get()->get('analytics', []);
-        if (empty($data))  {
+        if (empty($data)) {
             return;
         }
 
         $distinctId = sha1(implode('', [php_uname(), disk_total_space('.'), filectime('/'), phpversion()]));
 
         $toSend = [];
-        foreach ($data as $time => $counts) {
+        $add = function (string $event, int|string $time, array $properties) use (&$toSend, $distinctId) {
+            $toSend[] = [
+                'event' => $event,
+                'properties' => [
+                    '$insert_id' => (string)$time,
+                    'distinct_id' => $distinctId,
+                    'time' => $time,
+                    ...$properties,
+                ],
+            ];
+        };
+        foreach ($data as $time => $entry) {
             if ($time < strtotime('today')) {
-                $toSend[] = [
-                    'properties' => [
-                        '$insert_id' => (string) $time,
-                        'distinct_id' => $distinctId,
-                        'amount' => $counts['queries'] ?? 0,
-                        'time' => $time
-                    ],
-                    'event' => 'queries'
-                ];
-                $toSend[] = [
-                    'properties' => [
-                        '$insert_id' => (string) $time,
-                        'distinct_id' => $distinctId,
-                        'amount' => $counts['sessions'] ?? 0,
-                        'time' => $time
-                    ],
-                    'event' => 'sessions'
-                ];
+                if (!empty($entry['queries'])) {
+                    $add('queries', $time, ['amount' => $entry['queries']]);
+                }
+                if (!empty($entry['sessions'])) {
+                    $add('sessions', $time, ['amount' => $entry['sessions']]);
+                }
+                if (!empty($entry['ecosystems'])) {
+                    $add('ecosystems', $time, ['ecosystems' => $entry['ecosystems']]);
+                }
             }
         }
 
@@ -98,7 +108,7 @@ final class Bolt
 
         if (curl_exec($curl) !== false) {
             unset($curl);
-            
+
             // clean sent analytics data
             if (method_exists(CacheProvider::get(), 'lock')) {
                 CacheProvider::get()->lock('analytics');
@@ -145,6 +155,9 @@ final class Bolt
         return $protocol;
     }
 
+    /**
+     * @throws BoltException
+     */
     private function normalBuild(): AProtocol
     {
         $version = $this->handshake();
@@ -176,7 +189,10 @@ final class Bolt
             $protocol = new $protocolClass($this->connection);
             $protocol->serverState = ServerState::INTERRUPTED;
 
-            if ($protocol->reset()->getResponse()->signature != Signature::SUCCESS) {
+            if (
+                method_exists($protocol, 'reset')
+                && $protocol->reset()->getResponse()->signature !== Signature::SUCCESS
+            ) {
                 $this->connection->disconnect();
                 $this->connection->connect();
                 return null;
@@ -248,11 +264,11 @@ final class Bolt
             if (is_int($v))
                 $versions[] = pack('N', $v);
             else {
-                $splitted = explode('.', (string) $v);
-                $splitted = array_reverse($splitted);
-                while (count($splitted) < 4)
-                    array_unshift($splitted, 0);
-                foreach ($splitted as $s)
+                $split = explode('.', (string)$v);
+                $split = array_reverse($split);
+                while (count($split) < 4)
+                    array_unshift($split, 0);
+                foreach ($split as $s)
                     $versions[] = pack('C', $s);
             }
         }
