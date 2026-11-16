@@ -24,7 +24,7 @@ trait HelloMessage
             'product' => 'php-bolt/' . \Composer\InstalledVersions::getPrettyVersion('stefanak-michal/bolt'),
             'platform' => php_uname(),
             'language' => 'PHP/' . phpversion(),
-            'language_details' => 'null'
+            'language_details' => 'null',
         ];
 
         return $this->__hello($extra);

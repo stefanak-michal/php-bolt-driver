@@ -45,8 +45,9 @@ class UnpackerTest extends TestLayer
 
         /** @var Response $response */
         foreach ($gen as $response) {
-            if ($response->signature == Signature::RECORD)
+            if ($response->signature == Signature::RECORD) {
                 $this->assertNull($response->content[0]);
+            }
         }
     }
 
@@ -75,14 +76,37 @@ class UnpackerTest extends TestLayer
     public function testInteger(AProtocol $protocol): void
     {
         $gen = $protocol
-            ->run('RETURN -16, 0, 127, -17, -128, 128, 32767, 32768, 2147483647, 2147483648, 9223372036854775807, -129, -32768, -32769, -2147483648, -2147483649, -9223372036854775808', [], ['mode' => 'r'])
+            ->run(
+                'RETURN -16, 0, 127, -17, -128, 128, 32767, 32768, 2147483647, 2147483648, 
+                9223372036854775807, -129, -32768, -32769, -2147483648, -2147483649, -9223372036854775808',
+                [],
+                ['mode' => 'r'],
+            )
             ->pull()
             ->getResponses();
 
         /** @var Response $response */
         foreach ($gen as $response) {
             if ($response->signature == Signature::RECORD) {
-                foreach ([-16, 0, 127, -17, -128, 128, 32767, 32768, 2147483647, 2147483648, 9223372036854775807, -129, -32768, -32769, -2147483648, -2147483649, -9223372036854775808] as $i => $value) {
+                foreach ([
+                    -16,
+                    0,
+                    127,
+                    -17,
+                    -128,
+                    128,
+                    32767,
+                    32768,
+                    2147483647,
+                    2147483648,
+                    9223372036854775807,
+                    -129,
+                    -32768,
+                    -32769,
+                    -2147483648,
+                    -2147483649,
+                    -9223372036854775808,
+                ] as $i => $value) {
                     $this->assertEquals($value, $response->content[$i]);
                 }
             }
@@ -132,15 +156,17 @@ class UnpackerTest extends TestLayer
 
     public function stringProvider(): \Generator
     {
-        foreach ([0, 10, 200, 60000, 200000] as $length)
+        foreach ([0, 10, 200, 60000, 200000] as $length) {
             yield 'string length: ' . $length => [$this->randomString($length)];
+        }
     }
 
     private function randomString(int $length): string
     {
         $str = '';
-        while (strlen($str) < $length)
+        while (strlen($str) < $length) {
             $str .= chr(mt_rand(32, 126));
+        }
         return $str;
     }
 
@@ -165,8 +191,9 @@ class UnpackerTest extends TestLayer
 
     public function listProvider(): \Generator
     {
-        foreach ([0, 10, 200, 60000, 200000] as $size)
+        foreach ([0, 10, 200, 60000, 200000] as $size) {
             yield 'list size: ' . $size => [$size];
+        }
     }
 
     /**
@@ -193,8 +220,10 @@ class UnpackerTest extends TestLayer
     public function dictionaryProvider(): \Generator
     {
         foreach ([0, 10, 200, 20000, 70000] as $size) {
-            yield 'dictionary size: ' . $size => ['RETURN apoc.map.fromLists(toStringList(range(1, ' . $size . ')), range(1, ' . $size . '))', $size];
+            yield 'dictionary size: ' . $size => [
+                'RETURN apoc.map.fromLists(toStringList(range(1, ' . $size . ')), range(1, ' . $size . '))',
+                $size,
+            ];
         }
     }
-
 }

@@ -14,7 +14,7 @@ use Bolt\packstream\v1\{Packer, Unpacker};
  */
 class V2Test extends ProtocolLayer
 {
-    public function test__construct(): V2
+    public function testConstruct(): V2
     {
         $cls = new V2($this->mockConnection());
         $this->assertInstanceOf(V2::class, $cls);

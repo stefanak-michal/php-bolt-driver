@@ -20,9 +20,7 @@ class Date implements IStructure
     /**
      * @param int $days days since the Unix epoch
      */
-    public function __construct(public readonly int $days)
-    {
-    }
+    public function __construct(public readonly int $days) {}
 
     public function __toString(): string
     {

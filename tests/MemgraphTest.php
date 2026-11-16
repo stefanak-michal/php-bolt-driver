@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class MemgraphTest
- * 
+ *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
@@ -28,8 +28,9 @@ class MemgraphTest extends TestCase
      */
     public function testConnection(): AProtocol
     {
-        if (!extension_loaded('sockets'))
+        if (!extension_loaded('sockets')) {
             $this->markTestSkipped('Sockets extension not available');
+        }
 
         $conn = new \Bolt\connection\Socket('127.0.0.1', 7687, 3);
         $this->assertInstanceOf(\Bolt\connection\Socket::class, $conn);
@@ -64,7 +65,7 @@ class MemgraphTest extends TestCase
             'bool' => true,
             'float' => 0.4591563,
             'list' => [1, 2, 3],
-            'dictionary' => ['a' => 1, 'b' => 2, 'c' => 3]
+            'dictionary' => ['a' => 1, 'b' => 2, 'c' => 3],
         ];
 
         $query = implode(', ', array_map(function (string $key) {
@@ -99,7 +100,7 @@ class MemgraphTest extends TestCase
                 ->pull()
                 ->rollback()
                 ->getResponses(),
-            false
+            false,
         );
 
         $id = $res[2]->content[1];
@@ -110,11 +111,11 @@ class MemgraphTest extends TestCase
                 ->run('MATCH (a:Test) WHERE ID(a) = '
                     . (version_compare($protocol->getVersion(), 4, '<') ? '{a}' : '$a')
                     . ' RETURN COUNT(a)', [
-                    'a' => $id
-                ])
+                        'a' => $id,
+                    ])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertEquals(0, $res[1]->content[0]);
@@ -132,15 +133,15 @@ class MemgraphTest extends TestCase
         $responses = iterator_to_array(
             $protocol
                 ->run('RETURN $s', [
-                    's' => $structure
+                    's' => $structure,
                 ])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertInstanceOf(get_class($structure), $responses[1]->content[0]);
-        $this->assertEquals((string)$structure, (string)$responses[1]->content[0]);
+        $this->assertEquals((string) $structure, (string) $responses[1]->content[0]);
     }
 
     public function structureProvider(): \Generator

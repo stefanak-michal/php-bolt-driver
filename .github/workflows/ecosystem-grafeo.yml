@@ -1,0 +1,35 @@
+name: Tests with Grafeo on PHP 8.5
+
+on:
+  workflow_call:
+
+jobs:
+  grafeo-tests:
+    runs-on: ubuntu-latest
+    name: "Running Integration tests for PHP on Grafeo"
+
+    services:
+      grafeo:
+        image: grafeo/grafeo-server:bolt
+        env:
+          GRAFEO_ALLOW_UNAUTHENTICATED: true
+        ports:
+          - 7687:7687
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+          coverage: xdebug
+          ini-values: max_execution_time=0, variables_order="EGPCS"
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Test with phpunit
+        run: vendor/bin/phpunit --configuration phpunit.xml --testsuite "Grafeo"

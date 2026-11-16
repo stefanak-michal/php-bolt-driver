@@ -8,7 +8,4 @@ namespace Bolt\packstream;
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\packstream
  */
-interface IPackDictionaryGenerator extends \Countable, \Iterator
-{
-
-}
+interface IPackDictionaryGenerator extends \Countable, \Iterator {}

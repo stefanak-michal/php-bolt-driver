@@ -45,8 +45,7 @@ abstract class AProtocol
      */
     public function __construct(
         protected IConnection $connection,
-    )
-    {
+    ) {
         $packStreamVersion = $this->getPackStreamVersion();
 
         $packerClass = "\\Bolt\\packstream\\v" . $packStreamVersion . "\\Packer";
@@ -93,8 +92,9 @@ abstract class AProtocol
         $msg = '';
         while (true) {
             $header = $this->connection->read(2);
-            if ($msg !== '' && ord($header[0]) == 0x00 && ord($header[1]) == 0x00)
+            if ($msg !== '' && ord($header[0]) == 0x00 && ord($header[1]) == 0x00) {
                 break;
+            }
             $length = unpack('n', $header)[1] ?? 0;
             $msg .= $this->connection->read($length);
         }
@@ -144,14 +144,15 @@ abstract class AProtocol
         $serverState = $this->serverState;
 
         $message = reset($this->pipelinedMessages);
-        if ($message === false)
+        if ($message === false) {
             throw new ConnectException('No response waiting to be consumed');
+        }
 
-        $methodName = '_' . (
+        $methodName = 'read' . ucfirst(
             str_contains($message->name, '_')
                 ? preg_replace("/_([a-z])/", "strtoupper('$1')", strtolower($message->name))
-                : strtolower($message->name)
-            );
+                : strtolower($message->name),
+        );
         if (method_exists($this, $methodName)) {
             /** @var Response $response */
             $response = $this->$methodName()->current();
@@ -169,18 +170,29 @@ abstract class AProtocol
             $this->ecosystems[] = $response->content['server'];
         }
 
-        if ($response->signature !== Signature::RECORD)
+        if ($response->signature !== Signature::RECORD) {
             array_shift($this->pipelinedMessages);
+        }
 
         foreach (($this->serverStateTransition ?? []) as $transition) {
-            if ($transition[0] === $serverState && $transition[1] === $response->message && $transition[2] === $response->signature) {
+            if (
+                $transition[0] === $serverState
+                && $transition[1] === $response->message
+                && $transition[2] === $response->signature
+            ) {
                 $this->serverState = $transition[3];
-                if (in_array($response->message, [Message::PULL, Message::DISCARD], true)
+                if (
+                    in_array($response->message, [Message::PULL, Message::DISCARD], true)
                     && $response->signature === Signature::SUCCESS
-                    && (($response->content['has_more'] ?? false) || $this->openStreams))
-                    $this->serverState = $this->serverState === ServerState::TX_READY ? ServerState::TX_STREAMING : ServerState::STREAMING;
-                if ($transition[3] === ServerState::DEFUNCT)
+                    && (($response->content['has_more'] ?? false) || $this->openStreams)
+                ) {
+                    $this->serverState = $this->serverState === ServerState::TX_READY
+                        ? ServerState::TX_STREAMING
+                        : ServerState::STREAMING;
+                }
+                if ($transition[3] === ServerState::DEFUNCT) {
                     $this->connection->disconnect();
+                }
                 break;
             }
         }
@@ -193,21 +205,25 @@ abstract class AProtocol
         if (getenv('BOLT_ANALYTICS_OPTOUT')) {
             return;
         }
-        
+
         if (method_exists(CacheProvider::get(), 'lock')) {
             CacheProvider::get()->lock('analytics');
         }
 
         // update analytics data
-        $data = (array)CacheProvider::get()->get('analytics');
+        $data = (array) CacheProvider::get()->get('analytics');
         $today = strtotime('today');
         $data[$today] = [
             'queries' => ($data[$today]['queries'] ?? 0) + $this->writeCalls,
             'sessions' => ($data[$today]['sessions'] ?? 0) + 1,
-            'ecosystems' => array_values(array_unique(array_merge(
-                $data[$today]['ecosystems'] ?? [],
-                $this->ecosystems
-            ))),
+            'ecosystems' => array_values(
+                array_unique(
+                    array_merge(
+                        $data[$today]['ecosystems'] ?? [],
+                        $this->ecosystems,
+                    ),
+                ),
+            ),
         ];
         CacheProvider::get()->set('analytics', $data);
 

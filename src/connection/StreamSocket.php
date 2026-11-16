@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Bolt\connection;
 
 use Bolt\error\ConnectException;
@@ -41,10 +40,17 @@ class StreamSocket extends AConnection
             'socket' => [
                 'tcp_nodelay' => true,
             ],
-            'ssl' => (array)$this->sslContextOptions
+            'ssl' => (array) $this->sslContextOptions,
         ]);
 
-        $this->stream = @stream_socket_client('tcp://' . $this->ip . ':' . $this->port, $errno, $errstr, $this->timeout, $this->connectionFlags, $context);
+        $this->stream = @stream_socket_client(
+            'tcp://' . $this->ip . ':' . $this->port,
+            $errno,
+            $errstr,
+            $this->timeout,
+            $this->connectionFlags,
+            $context,
+        );
 
         if ($this->stream === false) {
             throw new ConnectException($errstr, $errno);
@@ -55,7 +61,11 @@ class StreamSocket extends AConnection
         }
 
         if ($this->sslContextOptions !== null) {
-            if (stream_socket_enable_crypto($this->stream, true, STREAM_CRYPTO_METHOD_ANY_CLIENT) !== true) {
+            if (stream_socket_enable_crypto(
+                $this->stream,
+                true,
+                STREAM_CRYPTO_METHOD_ANY_CLIENT,
+            ) !== true) {
                 throw new ConnectException('Enable encryption error');
             }
         }
@@ -76,10 +86,13 @@ class StreamSocket extends AConnection
             $sent = fwrite($this->stream, $buffer);
 
             if ($sent === false || $sent === 0) {
-                if (microtime(true) - $time >= $this->timeout)
-                    throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
-                else
+                if (microtime(true) - $time >= $this->timeout) {
+                    throw new ConnectionTimeoutException(
+                        'Connection timeout reached after ' . $this->timeout . ' seconds.',
+                    );
+                } else {
                     throw new ConnectException('Write error');
+                }
             }
 
             $buffer = mb_strcut($buffer, $sent, null, '8bit');
@@ -92,15 +105,26 @@ class StreamSocket extends AConnection
         $output = '';
         $t = microtime(true);
         do {
-            if (mb_strlen($output, '8bit') == 0 && $this->timeout > 0 && (microtime(true) - $t) >= $this->timeout)
-                throw new ConnectionTimeoutException('Read from connection reached timeout after ' . $this->timeout . ' seconds.');
+            if (
+                mb_strlen($output, '8bit') == 0
+                && $this->timeout > 0
+                && (microtime(true) - $t) >= $this->timeout
+            ) {
+                throw new ConnectionTimeoutException(
+                    'Read from connection reached timeout after ' . $this->timeout . ' seconds.',
+                );
+            }
 
             $readed = stream_get_contents($this->stream, $length - mb_strlen($output, '8bit'));
 
-            if (stream_get_meta_data($this->stream)['timed_out'] ?? false)
-                throw new ConnectionTimeoutException('Stream connection timed out after ' . $this->timeout . ' seconds.');
-            if ($readed === false)
+            if (stream_get_meta_data($this->stream)['timed_out'] ?? false) {
+                throw new ConnectionTimeoutException(
+                    'Stream connection timed out after ' . $this->timeout . ' seconds.',
+                );
+            }
+            if ($readed === false) {
                 throw new ConnectException('Read error');
+            }
 
             $output .= $readed;
         } while (mb_strlen($output, '8bit') < $length);
@@ -133,8 +157,8 @@ class StreamSocket extends AConnection
     protected function configureTimeout(): void
     {
         if (is_resource($this->stream)) {
-            $timeout = (int)floor($this->timeout);
-            if (!stream_set_timeout($this->stream, $timeout, (int)floor(($this->timeout - $timeout) * 1000000))) {
+            $timeout = (int) floor($this->timeout);
+            if (!stream_set_timeout($this->stream, $timeout, (int) floor(($this->timeout - $timeout) * 1000000))) {
                 throw new ConnectException('Cannot set timeout on stream');
             }
         }

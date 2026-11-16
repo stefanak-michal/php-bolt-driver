@@ -16,12 +16,14 @@ trait HelloMessage
      */
     public function hello(array $extra = []): static
     {
-        if (empty($extra['user_agent']))
+        if (empty($extra['user_agent'])) {
             $extra['user_agent'] = 'bolt-php';
-        if (isset($extra['routing']) && is_array($extra['routing']))
-            $extra['routing'] = (object)$extra['routing'];
+        }
+        if (isset($extra['routing']) && is_array($extra['routing'])) {
+            $extra['routing'] = (object) $extra['routing'];
+        }
 
-        $this->write($this->packer->pack(0x01, (object)$extra));
+        $this->write($this->packer->pack(0x01, (object) $extra));
         $this->pipelinedMessages[] = Message::HELLO;
         return $this;
     }

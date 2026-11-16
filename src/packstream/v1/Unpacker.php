@@ -149,8 +149,9 @@ class Unpacker implements IUnpacker
             $class = $this->structuresLt[$signature];
             try {
                 $reflection = new \ReflectionClass($class);
-                if ($reflection->getConstructor()->getNumberOfParameters() != count($values))
+                if ($reflection->getConstructor()->getNumberOfParameters() != count($values)) {
                     throw new UnpackException('Incorrect amount of structure fields for ' . $class);
+                }
             } catch (\ReflectionException $e) {
                 throw new UnpackException($e->getMessage());
             }
@@ -171,11 +172,11 @@ class Unpacker implements IUnpacker
         if ($marker >> 4 == 0b1010) { //TINY_DICT
             $size = 0b10100000 ^ $marker;
         } elseif ($marker == 0xD8) { //DICT_8
-            $size = (int)unpack('C', $this->next(1))[1];
+            $size = (int) unpack('C', $this->next(1))[1];
         } elseif ($marker == 0xD9) { //DICT_16
-            $size = (int)unpack('n', $this->next(2))[1];
+            $size = (int) unpack('n', $this->next(2))[1];
         } elseif ($marker == 0xDA) { //DICT_32
-            $size = (int)unpack('N', $this->next(4))[1];
+            $size = (int) unpack('N', $this->next(4))[1];
         } else {
             return null;
         }
@@ -196,11 +197,11 @@ class Unpacker implements IUnpacker
         if ($marker >> 4 == 0b1000) { //TINY_STRING
             $length = 0b10000000 ^ $marker;
         } elseif ($marker == 0xD0) { //STRING_8
-            $length = (int)unpack('C', $this->next(1))[1];
+            $length = (int) unpack('C', $this->next(1))[1];
         } elseif ($marker == 0xD1) { //STRING_16
-            $length = (int)unpack('n', $this->next(2))[1];
+            $length = (int) unpack('n', $this->next(2))[1];
         } elseif ($marker == 0xD2) { //STRING_32
-            $length = (int)unpack('N', $this->next(4))[1];
+            $length = (int) unpack('N', $this->next(4))[1];
         } else {
             return null;
         }
@@ -216,21 +217,24 @@ class Unpacker implements IUnpacker
     private function unpackInteger(int $marker): ?int
     {
         if ($marker >> 4 >= 0xF || $marker >> 4 <= 0x7) { //TINY_INT
-            return (int)unpack('c', chr($marker))[1];
+            return (int) unpack('c', chr($marker))[1];
         } elseif ($marker == 0xC8) { //INT_8
-            return (int)unpack('c', $this->next(1))[1];
+            return (int) unpack('c', $this->next(1))[1];
         } elseif ($marker == 0xC9) { //INT_16
             $value = $this->next(2);
-            return (int)unpack('s', $this->littleEndian ? strrev($value) : $value)[1];
+            return (int) unpack('s', $this->littleEndian ? strrev($value) : $value)[1];
         } elseif ($marker == 0xCA) { //INT_32
             $value = $this->next(4);
-            return (int)unpack('l', $this->littleEndian ? strrev($value) : $value)[1];
+            return (int) unpack('l', $this->littleEndian ? strrev($value) : $value)[1];
         } elseif ($marker == 0xCB) { //INT_64
             $value = $this->next(8);
             if (PHP_INT_SIZE == 4) {
-                throw new UnpackException('It is not possible to unpack received 64-bit integer because the environment is running 32-bit version of PHP.');
+                throw new UnpackException(
+                    'It is not possible to unpack received 64-bit integer because '
+                    . 'the environment is running 32-bit version of PHP.',
+                );
             }
-            return (int)unpack('q', $this->littleEndian ? strrev($value) : $value)[1];
+            return (int) unpack('q', $this->littleEndian ? strrev($value) : $value)[1];
         } else {
             return null;
         }
@@ -244,7 +248,7 @@ class Unpacker implements IUnpacker
     {
         if ($marker == 0xC1) {
             $value = $this->next(8);
-            return (float)unpack('E', $value)[1];
+            return (float) unpack('E', $value)[1];
         } else {
             return null;
         }
@@ -260,11 +264,11 @@ class Unpacker implements IUnpacker
         if ($marker >> 4 == 0b1001) { //TINY_LIST
             $size = 0b10010000 ^ $marker;
         } elseif ($marker == 0xD4) { //LIST_8
-            $size = (int)unpack('C', $this->next(1))[1];
+            $size = (int) unpack('C', $this->next(1))[1];
         } elseif ($marker == 0xD5) { //LIST_16
-            $size = (int)unpack('n', $this->next(2))[1];
+            $size = (int) unpack('n', $this->next(2))[1];
         } elseif ($marker == 0xD6) { //LIST_32
-            $size = (int)unpack('N', $this->next(4))[1];
+            $size = (int) unpack('N', $this->next(4))[1];
         } else {
             return null;
         }
@@ -284,16 +288,15 @@ class Unpacker implements IUnpacker
     private function unpackByteArray(int $marker): ?Bytes
     {
         if ($marker == 0xCC) {
-            $size = (int)unpack('C', $this->next(1))[1];
+            $size = (int) unpack('C', $this->next(1))[1];
         } elseif ($marker == 0xCD) {
-            $size = (int)unpack('n', $this->next(2))[1];
+            $size = (int) unpack('n', $this->next(2))[1];
         } elseif ($marker == 0xCE) {
-            $size = (int)unpack('N', $this->next(4))[1];
+            $size = (int) unpack('N', $this->next(4))[1];
         } else {
             return null;
         }
 
         return new Bytes(mb_str_split($this->next($size), 1, '8bit'));
     }
-
 }

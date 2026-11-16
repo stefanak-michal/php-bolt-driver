@@ -16,19 +16,17 @@ use Bolt\protocol\IStructure;
 class Node implements IStructure
 {
     public function __construct(
-        public readonly int   $id,
+        public readonly int $id,
         public readonly array $labels,
-        public readonly array $properties
-    )
-    {
-    }
+        public readonly array $properties,
+    ) {}
 
     public function __toString(): string
     {
         return json_encode([
             'identity' => $this->id,
             'labels' => $this->labels,
-            'properties' => $this->properties
+            'properties' => $this->properties,
         ]);
     }
 }

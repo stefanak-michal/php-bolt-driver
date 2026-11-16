@@ -30,8 +30,9 @@ class PerformanceTest extends TestLayer
             $protocol->run('MATCH (n:Test50k) RETURN count(n)')->getResponse();
             /** @var Response $response */
             $response = $protocol->pull()->getResponse();
-            if ($response->signature !== Signature::RECORD)
+            if ($response->signature !== Signature::RECORD) {
                 $this->markTestSkipped('Response not as expected.');
+            }
             $protocol->getResponse();
             if ($response->content[0] > 0) {
                 $this->markTestSkipped('Test is already running by another process.');
@@ -48,14 +49,16 @@ class PerformanceTest extends TestLayer
             ->run('UNWIND $x as x RETURN x', ['x' => $generator])
             ->getResponse();
 
-        if ($response->signature !== Signature::SUCCESS)
+        if ($response->signature !== Signature::SUCCESS) {
             $this->markTestIncomplete('[' . $response->content['code'] . '] ' . $response->content['message']);
+        }
 
         $count = 0;
         /** @var Response $response */
         foreach ($protocol->pull()->getResponses() as $response) {
-            if ($response->signature === Signature::RECORD)
+            if ($response->signature === Signature::RECORD) {
                 $count++;
+            }
         }
 
         $protocol->run('MATCH (n:Test50k) DELETE n')->getResponses();

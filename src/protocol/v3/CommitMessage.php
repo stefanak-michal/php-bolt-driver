@@ -27,7 +27,7 @@ trait CommitMessage
      * @return iterable
      * @throws BoltException
      */
-    protected function _commit(): iterable
+    protected function readCommit(): iterable
     {
         $this->openStreams = 0;
         $content = $this->read($signature);

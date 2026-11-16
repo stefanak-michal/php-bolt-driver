@@ -24,7 +24,9 @@ class FileCacheTest extends TestCase
     public function testConstruct(): void
     {
         $this->assertDirectoryExists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache');
-        $this->assertDirectoryExists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache' . DIRECTORY_SEPARATOR . '.ttl');
+        $this->assertDirectoryExists(
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache' . DIRECTORY_SEPARATOR . '.ttl',
+        );
     }
 
     public function testGetAndSet(): void
@@ -69,7 +71,7 @@ class FileCacheTest extends TestCase
     {
         $values = [
             uniqid('key1_', true) => uniqid('value1_', true),
-            uniqid('key2_', true) => uniqid('value2_', true)
+            uniqid('key2_', true) => uniqid('value2_', true),
         ];
         $this->assertTrue($this->cache->setMultiple($values));
         foreach ($values as $key => $value) {
@@ -107,7 +109,7 @@ class FileCacheTest extends TestCase
         $this->assertTrue($this->cache->set($key, $value));
         $this->assertTrue($this->cache->lock($key));
         $this->cache->unlock($key);
-        
+
         $reflection = new \ReflectionClass($this->cache);
         $property = $reflection->getProperty('handles');
         $property->setAccessible(true);
@@ -120,10 +122,10 @@ class FileCacheTest extends TestCase
         $key = 'test_lock_key';
         $this->assertTrue($this->cache->delete($key));
 
-        $descriptorspec = array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-        );
+        $descriptorspec = [
+            0 => ["pipe", "r"],
+            1 => ["pipe", "w"],
+        ];
 
         $t = microtime(true);
         // run another script in background
@@ -131,7 +133,7 @@ class FileCacheTest extends TestCase
         // wait to make sure another script is running and it locked the key
         sleep(1);
         proc_close($proc);
-        
+
         if ($this->cache->lock($key)) {
             $this->assertGreaterThan(3.0, microtime(true) - $t);
             $this->assertEquals(123, $this->cache->get($key));
@@ -144,10 +146,10 @@ class FileCacheTest extends TestCase
         $key = 'test_lock_key';
         $this->assertTrue($this->cache->delete($key));
 
-        $descriptorspec = array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-        );
+        $descriptorspec = [
+            0 => ["pipe", "r"],
+            1 => ["pipe", "w"],
+        ];
 
         $t = microtime(true);
         // Run another script in background

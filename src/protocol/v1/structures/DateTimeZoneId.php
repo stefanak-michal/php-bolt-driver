@@ -27,18 +27,16 @@ class DateTimeZoneId implements IStructure
      * @param string $tz_id identifier for a specific time zone
      */
     public function __construct(
-        public readonly int    $seconds,
-        public readonly int    $nanoseconds,
-        public readonly string $tz_id
-    )
-    {
-    }
+        public readonly int $seconds,
+        public readonly int $nanoseconds,
+        public readonly string $tz_id,
+    ) {}
 
     public function __toString(): string
     {
         $datetime = sprintf("%d", $this->seconds)
             . '.' . substr(sprintf("%09d", $this->nanoseconds), 0, 6);
         return \DateTime::createFromFormat('U.u', $datetime, new \DateTimeZone($this->tz_id))
-                ->format('Y-m-d\TH:i:s.u') . '[' . $this->tz_id . ']';
+            ->format('Y-m-d\TH:i:s.u') . '[' . $this->tz_id . ']';
     }
 }

@@ -16,14 +16,12 @@ use Bolt\protocol\IStructure;
 class Relationship implements IStructure
 {
     public function __construct(
-        public readonly int    $id,
-        public readonly int    $startNodeId,
-        public readonly int    $endNodeId,
+        public readonly int $id,
+        public readonly int $startNodeId,
+        public readonly int $endNodeId,
         public readonly string $type,
-        public readonly array  $properties
-    )
-    {
-    }
+        public readonly array $properties,
+    ) {}
 
     public function __toString(): string
     {
@@ -32,7 +30,7 @@ class Relationship implements IStructure
             'start' => $this->startNodeId,
             'end' => $this->endNodeId,
             'type' => $this->type,
-            'properties' => $this->properties
+            'properties' => $this->properties,
         ]);
     }
 }

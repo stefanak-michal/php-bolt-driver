@@ -13,10 +13,8 @@ class ListGenerator implements \Bolt\packstream\IPackListGenerator
 {
     public function __construct(
         public array $array,
-        private int  $position = 0
-    )
-    {
-    }
+        private int $position = 0,
+    ) {}
 
     public function rewind(): void
     {

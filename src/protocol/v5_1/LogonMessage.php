@@ -16,7 +16,7 @@ trait LogonMessage
      */
     public function logon(array $auth): static
     {
-        $this->write($this->packer->pack(0x6A, (object)$auth));
+        $this->write($this->packer->pack(0x6A, (object) $auth));
         $this->pipelinedMessages[] = Message::LOGON;
         return $this;
     }

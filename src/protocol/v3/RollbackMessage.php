@@ -27,7 +27,7 @@ trait RollbackMessage
      * @return iterable
      * @throws BoltException
      */
-    protected function _rollback(): iterable
+    protected function readRollback(): iterable
     {
         $this->openStreams = 0;
         $content = $this->read($signature);

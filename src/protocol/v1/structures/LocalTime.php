@@ -20,16 +20,15 @@ class LocalTime implements IStructure
     /**
      * @param int $nanoseconds nanosecond since midnight
      */
-    public function __construct(public readonly int $nanoseconds)
-    {
-    }
+    public function __construct(public readonly int $nanoseconds) {}
 
     public function __toString(): string
     {
         $value = sprintf("%09d", $this->nanoseconds);
         $seconds = substr($value, 0, -9);
-        if (empty($seconds))
+        if (empty($seconds)) {
             $seconds = '0';
+        }
         $fraction = substr($value, -9, 6);
 
         return \DateTime::createFromFormat('U.u', $seconds . '.' . $fraction)

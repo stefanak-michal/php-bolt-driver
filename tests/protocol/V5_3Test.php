@@ -14,7 +14,7 @@ use Bolt\enum\{Signature, ServerState};
  */
 class V5_3Test extends \Bolt\tests\protocol\ProtocolLayer
 {
-    public function test__construct(): V5_3
+    public function testConstruct(): V5_3
     {
         $cls = new V5_3($this->mockConnection());
         $this->assertInstanceOf(V5_3::class, $cls);
@@ -22,13 +22,13 @@ class V5_3Test extends \Bolt\tests\protocol\ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testHello(V5_3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
 
         $cls->serverState = ServerState::NEGOTIATION;

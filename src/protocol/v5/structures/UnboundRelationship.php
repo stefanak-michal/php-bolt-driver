@@ -16,12 +16,11 @@ use Bolt\protocol\v1\structures\UnboundRelationship as v1_UnboundRelationship;
 class UnboundRelationship extends v1_UnboundRelationship
 {
     public function __construct(
-        int                    $id,
-        string                 $type,
-        array                  $properties,
-        public readonly string $element_id
-    )
-    {
+        int $id,
+        string $type,
+        array $properties,
+        public readonly string $element_id,
+    ) {
         parent::__construct($id, $type, $properties);
     }
 
@@ -31,7 +30,7 @@ class UnboundRelationship extends v1_UnboundRelationship
             'identity' => $this->id,
             'type' => $this->type,
             'properties' => $this->properties,
-            'element_id' => $this->element_id
+            'element_id' => $this->element_id,
         ]);
     }
 }

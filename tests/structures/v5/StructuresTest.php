@@ -32,7 +32,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
-        
+
         try {
             $protocol = $bolt->setProtocolVersions('5.8.8')->build();
             $this->assertInstanceOf(AProtocol::class, $protocol);
@@ -62,7 +62,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('CREATE (a:Test { param1: 123 }) RETURN a, ID(a), elementId(a)')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Node::class, $res[1]->content[0]);
 
@@ -89,7 +89,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('CREATE p=(:Test)-[r:HAS { param1: 123 }]->(:Test) RETURN p, ID(r), elementId(r)')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Path::class, $res[1]->content[0]);
 
@@ -117,10 +117,11 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         //unpack
         $res = iterator_to_array(
             $protocol
-                ->run('CREATE (a:Test)-[rel:HAS { param1: 123 }]->(b:Test) RETURN rel, ID(rel), elementId(rel), ID(a), ID(b), elementId(a), elementId(b)')
+                ->run('CREATE (a:Test)-[rel:HAS { param1: 123 }]->(b:Test) 
+                    RETURN rel, ID(rel), elementId(rel), ID(a), ID(b), elementId(a), elementId(b)')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Relationship::class, $res[1]->content[0]);
 

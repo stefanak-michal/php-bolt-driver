@@ -50,7 +50,7 @@ final class Bolt
      */
     private function track(): void
     {
-        $data = (array)CacheProvider::get()->get('analytics', []);
+        $data = (array) CacheProvider::get()->get('analytics', []);
         if (empty($data)) {
             return;
         }
@@ -62,7 +62,7 @@ final class Bolt
             $toSend[] = [
                 'event' => $event,
                 'properties' => [
-                    '$insert_id' => (string)$time,
+                    '$insert_id' => (string) $time,
                     'distinct_id' => $distinctId,
                     'time' => $time,
                     ...$properties,
@@ -113,7 +113,7 @@ final class Bolt
             if (method_exists(CacheProvider::get(), 'lock')) {
                 CacheProvider::get()->lock('analytics');
             }
-            $data = (array)CacheProvider::get()->get('analytics');
+            $data = (array) CacheProvider::get()->get('analytics');
             foreach ($data as $time => $counts) {
                 if ($time < strtotime('today')) {
                     unset($data[$time]);
@@ -149,7 +149,11 @@ final class Bolt
         }
 
         if ($this->connection instanceof \Bolt\connection\PStreamSocket) {
-            CacheProvider::get()->set($this->connection->getIdentifier(), $protocol->getVersion(), strtotime('+15 minutes'));
+            CacheProvider::get()->set(
+                $this->connection->getIdentifier(),
+                $protocol->getVersion(),
+                strtotime('+15 minutes'),
+            );
         }
 
         return $protocol;
@@ -168,7 +172,9 @@ final class Bolt
         }
 
         $protocol = new $protocolClass($this->connection);
-        $protocol->serverState = version_compare($version, '5.1', '>=') ? ServerState::NEGOTIATION : ServerState::CONNECTED;
+        $protocol->serverState = version_compare($version, '5.1', '>=')
+            ? ServerState::NEGOTIATION
+            : ServerState::CONNECTED;
         return $protocol;
     }
 
@@ -206,8 +212,9 @@ final class Bolt
     public function setProtocolVersions(int|float|string ...$v): Bolt
     {
         $this->protocolVersions = array_slice($v, 0, 4);
-        while (count($this->protocolVersions) < 4)
+        while (count($this->protocolVersions) < 4) {
             $this->protocolVersions[] = 0;
+        }
         return $this;
     }
 
@@ -226,11 +233,18 @@ final class Bolt
         $this->connection->write(chr(0x60) . chr(0x60) . chr(0xb0) . chr(0x17) . $this->packProtocolVersions());
 
         $bytes = $this->connection->read(4);
-        if ($bytes == 'HTTP')
-            throw new ConnectException('Cannot to connect to Bolt service on ' . $this->connection->getIp() . ':' . $this->connection->getPort() . ' (looks like HTTP)');
+        if ($bytes == 'HTTP') {
+            throw new ConnectException(
+                'Cannot to connect to Bolt service on '
+                . $this->connection->getIp() . ':'
+                . $this->connection->getPort()
+                . ' (looks like HTTP)',
+            );
+        }
         $version = $this->unpackProtocolVersion($bytes);
-        if (empty($version))
+        if (empty($version)) {
             throw new ConnectException('Wrong version');
+        }
 
         return $version;
     }
@@ -261,15 +275,17 @@ final class Bolt
         $versions = [];
 
         foreach ($this->protocolVersions as $v) {
-            if (is_int($v))
+            if (is_int($v)) {
                 $versions[] = pack('N', $v);
-            else {
-                $split = explode('.', (string)$v);
+            } else {
+                $split = explode('.', (string) $v);
                 $split = array_reverse($split);
-                while (count($split) < 4)
+                while (count($split) < 4) {
                     array_unshift($split, 0);
-                foreach ($split as $s)
+                }
+                foreach ($split as $s) {
                     $versions[] = pack('C', $s);
+                }
             }
         }
 

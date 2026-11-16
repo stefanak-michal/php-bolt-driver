@@ -14,7 +14,7 @@ use Bolt\enum\{Signature, ServerState};
  */
 class V4Test extends ProtocolLayer
 {
-    public function test__construct(): V4
+    public function testConstruct(): V4
     {
         $cls = new V4($this->mockConnection());
         $this->assertInstanceOf(V4::class, $cls);
@@ -22,15 +22,15 @@ class V4Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testPull(V4 $cls): void
     {
         self::$readArray = [
-            [0x71, (object)[]],
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x71, (object) []],
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '00 01 b1',
@@ -60,14 +60,14 @@ class V4Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testDiscard(V4 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '0001b1',

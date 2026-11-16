@@ -1,0 +1,68 @@
+name: Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ master ]
+
+jobs:
+  check-format:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    name: "Running dresscode check"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Check with dresscode
+        run: composer run-script check-format
+
+  no-db:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-no-db.yml
+
+  arcadedb:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-arcadedb.yml
+
+  grafeo:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-grafeo.yml
+
+  memgraph:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-memgraph.yml
+
+  neo4j-2025:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-neo4j.2025.yml
+
+  neo4j-2026:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-neo4j.2026.yml
+
+  neo4j-4-4:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-neo4j.4.4.yml
+
+  neo4j-5:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-neo4j.5.yml
+
+  nornicdb:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-nornicdb.yml
+
+  tugraph:
+    needs: check-format
+    uses: ./.github/workflows/ecosystem-tugraph.yml

@@ -9,7 +9,4 @@ namespace Bolt\error;
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\error
  */
-class PackException extends BoltException
-{
-
-}
+class PackException extends BoltException {}

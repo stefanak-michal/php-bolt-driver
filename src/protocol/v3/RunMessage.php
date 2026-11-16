@@ -20,8 +20,8 @@ trait RunMessage
         $this->write($this->packer->pack(
             0x10,
             $query,
-            (object)$parameters,
-            (object)$extra
+            (object) $parameters,
+            (object) $extra,
         ));
         $this->pipelinedMessages[] = Message::RUN;
         return $this;
@@ -32,11 +32,12 @@ trait RunMessage
      * @return iterable
      * @throws BoltException
      */
-    protected function _run(): iterable
+    protected function readRun(): iterable
     {
         $content = $this->read($signature);
-        if (array_key_exists('qid', $content))
+        if (array_key_exists('qid', $content)) {
             $this->openStreams++;
+        }
         yield new Response(Message::RUN, $signature, $content);
     }
 }

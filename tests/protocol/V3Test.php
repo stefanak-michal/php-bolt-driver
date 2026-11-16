@@ -14,7 +14,7 @@ use Bolt\enum\{Signature, ServerState};
  */
 class V3Test extends ProtocolLayer
 {
-    public function test__construct(): V3
+    public function testConstruct(): V3
     {
         $cls = new V3($this->mockConnection());
         $this->assertInstanceOf(V3::class, $cls);
@@ -22,13 +22,13 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testHello(V3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b1',
@@ -65,14 +65,14 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testRun(V3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '0001b3',
@@ -110,14 +110,14 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testBegin(V3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '00 01 b1',
@@ -141,14 +141,14 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testCommit(V3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '00 01 b0',
@@ -171,14 +171,14 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testRollback(V3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '00 01 b0',
@@ -201,7 +201,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testGoodbye(V3 $cls): void
     {
@@ -214,5 +214,4 @@ class V3Test extends ProtocolLayer
         $cls->goodbye();
         $this->assertEquals(ServerState::DEFUNCT, $cls->serverState);
     }
-
 }

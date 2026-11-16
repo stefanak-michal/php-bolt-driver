@@ -29,27 +29,32 @@ abstract class DateTimeUpdate extends StructureLayer
 
         //unpack
         $res = iterator_to_array(
-            $protocol->run('RETURN datetime($date)', [
-                'date' => $datetime
-            ], ['mode' => 'r'])
+            $protocol
+                ->run('RETURN datetime($date)', [
+                    'date' => $datetime,
+                ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $dateTimeStructure = $res[1]->content[0];
 
         $this->assertInstanceOf($this->expectedDateTimeClass, $dateTimeStructure);
-        $this->assertEquals($datetime, (string)$dateTimeStructure, 'unpack ' . $datetime . ' != ' . $dateTimeStructure);
+        $this->assertEquals(
+            $datetime,
+            (string) $dateTimeStructure,
+            'unpack ' . $datetime . ' != ' . $dateTimeStructure,
+        );
 
         //pack
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($date)', [
-                    'date' => $dateTimeStructure
+                    'date' => $dateTimeStructure,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         // neo4j returns fraction of seconds not padded with zeros ... zero timezone offset returns as Z
@@ -66,17 +71,17 @@ abstract class DateTimeUpdate extends StructureLayer
         try {
             $timestamp .= '.' . rand(0, 9e5);
             $datetime = \DateTime::createFromFormat('U.u', $timestamp, new \DateTimeZone($timezone))
-                    ->format('Y-m-d\TH:i:s.u') . '[' . $timezone . ']';
+                ->format('Y-m-d\TH:i:s.u') . '[' . $timezone . ']';
 
             //unpack
             $res = iterator_to_array(
                 $protocol
                     ->run('RETURN datetime($dt)', [
-                        'dt' => $datetime
+                        'dt' => $datetime,
                     ], ['mode' => 'r'])
                     ->pull()
                     ->getResponses(),
-                false
+                false,
             );
 
             /** @var Response $response */
@@ -89,23 +94,32 @@ abstract class DateTimeUpdate extends StructureLayer
             $dateTimeZoneIdStructure = $res[1]->content[0];
 
             $this->assertInstanceOf($this->expectedDateTimeZoneIdClass, $dateTimeZoneIdStructure);
-            $this->assertEquals($datetime, (string)$dateTimeZoneIdStructure, 'unpack ' . $datetime . ' != ' . $dateTimeZoneIdStructure);
+            $this->assertEquals(
+                $datetime,
+                (string) $dateTimeZoneIdStructure,
+                'unpack ' . $datetime . ' != ' . $dateTimeZoneIdStructure,
+            );
 
             //pack
             $res = iterator_to_array(
                 $protocol
                     ->run('RETURN toString($dt)', [
-                        'dt' => $dateTimeZoneIdStructure
+                        'dt' => $dateTimeZoneIdStructure,
                     ], ['mode' => 'r'])
                     ->pull()
                     ->getResponses(),
-                false
+                false,
             );
 
-            // neo4j returns fraction of seconds not padded with zeros ... also contains timezone offset before timezone id
+            // neo4j returns fraction of seconds not padded with zeros
+            // also contains timezone offset before timezone id
             $datetime = preg_replace("/\.?0+\[/", '[', $datetime);
             $dateTimeZoneIdStructure = preg_replace("/([+\-]\d{2}:\d{2}|Z)\[/", '[', $res[1]->content[0]);
-            $this->assertEquals($datetime, $dateTimeZoneIdStructure, 'pack ' . $datetime . ' != ' . $dateTimeZoneIdStructure);
+            $this->assertEquals(
+                $datetime,
+                $dateTimeZoneIdStructure,
+                'pack ' . $datetime . ' != ' . $dateTimeZoneIdStructure,
+            );
         } catch (Exception $e) {
             if (str_starts_with($e->getMessage(), 'Invalid value for TimeZone: Text \'' . $timezone . '\'')) {
                 $protocol->reset()->getResponse();

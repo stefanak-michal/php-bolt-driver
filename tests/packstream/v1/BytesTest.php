@@ -9,7 +9,7 @@ use Bolt\tests\TestLayer;
 
 /**
  * Class BytesTest
- * 
+ *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests\packstream\v1
@@ -43,7 +43,7 @@ class BytesTest extends TestLayer
                 ->run('RETURN $arr', ['arr' => $arr])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertEquals($arr, $res[1]->content[0]);
     }

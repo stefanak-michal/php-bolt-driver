@@ -19,10 +19,9 @@ abstract class AConnection implements IConnection, LoggerAwareInterface
 
     public function __construct(
         protected string $ip = '127.0.0.1',
-        protected int    $port = 7687,
-        protected float  $timeout = 15
-    )
-    {
+        protected int $port = 7687,
+        protected float $timeout = 15,
+    ) {
         if (filter_var($this->ip, FILTER_VALIDATE_URL)) {
             $scheme = parse_url($this->ip, PHP_URL_SCHEME);
             if (!empty($scheme)) {

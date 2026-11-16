@@ -13,7 +13,7 @@ use Bolt\protocol\V6;
  */
 class V6Test extends ProtocolLayer
 {
-    public function test__construct(): V6
+    public function testConstruct(): V6
     {
         $cls = new V6($this->mockConnection());
         $this->assertInstanceOf(V6::class, $cls);

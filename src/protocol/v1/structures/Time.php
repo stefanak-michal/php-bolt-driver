@@ -26,17 +26,16 @@ class Time implements IStructure
      */
     public function __construct(
         public readonly int $nanoseconds,
-        public readonly int $tz_offset_seconds
-    )
-    {
-    }
+        public readonly int $tz_offset_seconds,
+    ) {}
 
     public function __toString(): string
     {
         $value = sprintf("%09d", $this->nanoseconds - $this->tz_offset_seconds * 1e9);
         $seconds = substr($value, 0, -9);
-        if (empty($seconds))
+        if (empty($seconds)) {
             $seconds = '0';
+        }
         $fraction = substr($value, -9, 6);
 
         return \DateTime::createFromFormat('U.u', $seconds . '.' . $fraction, new \DateTimeZone('UTC'))

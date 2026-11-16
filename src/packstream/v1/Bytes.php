@@ -16,9 +16,7 @@ use Stringable;
  */
 class Bytes implements ArrayAccess, Countable, Stringable
 {
-    public function __construct(private array $bytes = [])
-    {
-    }
+    public function __construct(private array $bytes = []) {}
 
     public function offsetExists($offset): bool
     {
@@ -32,10 +30,11 @@ class Bytes implements ArrayAccess, Countable, Stringable
 
     public function offsetSet($offset, $value): void
     {
-        if ($offset === null)
+        if ($offset === null) {
             $this->bytes[] = $value;
-        else
+        } else {
             $this->bytes[$offset] = $value;
+        }
     }
 
     public function offsetUnset($offset): void
