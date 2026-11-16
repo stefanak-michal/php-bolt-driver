@@ -2,7 +2,7 @@ name: Tests with Neo4j 4.4 on PHP^8
 
 on:
   workflow_run:
-    workflows: ["Check code formatting with dresscode"]
+    workflows: [format]
     types:
       - completed
 

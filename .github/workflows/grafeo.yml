@@ -2,7 +2,7 @@ name: Tests with Grafeo on PHP 8.5
 
 on:
   workflow_run:
-    workflows: ["Check code formatting with dresscode"]
+    workflows: [format]
     types:
       - completed
 
