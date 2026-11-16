@@ -89,7 +89,12 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         $res = iterator_to_array(
             $protocol
                 ->run(
-                    'CYPHER 25 RETURN toFloatList($float), toIntegerList($int64), toIntegerList($int8), toIntegerList($int16), toIntegerList($int32)',
+                    'CYPHER 25 RETURN 
+                        toFloatList($float), 
+                        toIntegerList($int64), 
+                        toIntegerList($int8), 
+                        toIntegerList($int16), 
+                        toIntegerList($int32)',
                     [
                         'float' => Vector::encode([1.05, 0.123, 5.0]),
                         'int64' => Vector::encode([5, -21474836480, 21474836470]),

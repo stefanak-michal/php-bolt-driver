@@ -111,7 +111,8 @@ abstract class DateTimeUpdate extends StructureLayer
                 false,
             );
 
-            // neo4j returns fraction of seconds not padded with zeros ... also contains timezone offset before timezone id
+            // neo4j returns fraction of seconds not padded with zeros
+            // also contains timezone offset before timezone id
             $datetime = preg_replace("/\.?0+\[/", '[', $datetime);
             $dateTimeZoneIdStructure = preg_replace("/([+\-]\d{2}:\d{2}|Z)\[/", '[', $res[1]->content[0]);
             $this->assertEquals(

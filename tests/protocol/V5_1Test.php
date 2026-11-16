@@ -14,7 +14,7 @@ use Bolt\enum\{Signature, ServerState};
  */
 class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
 {
-    public function test__construct(): V5_1
+    public function testConstruct(): V5_1
     {
         $cls = new V5_1($this->mockConnection());
         $this->assertInstanceOf(V5_1::class, $cls);

@@ -14,7 +14,7 @@ use Bolt\enum\{Signature, ServerState};
  */
 class V4Test extends ProtocolLayer
 {
-    public function test__construct(): V4
+    public function testConstruct(): V4
     {
         $cls = new V4($this->mockConnection());
         $this->assertInstanceOf(V4::class, $cls);

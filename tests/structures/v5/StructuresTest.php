@@ -117,7 +117,8 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         //unpack
         $res = iterator_to_array(
             $protocol
-                ->run('CREATE (a:Test)-[rel:HAS { param1: 123 }]->(b:Test) RETURN rel, ID(rel), elementId(rel), ID(a), ID(b), elementId(a), elementId(b)')
+                ->run('CREATE (a:Test)-[rel:HAS { param1: 123 }]->(b:Test) 
+                    RETURN rel, ID(rel), elementId(rel), ID(a), ID(b), elementId(a), elementId(b)')
                 ->pull()
                 ->getResponses(),
             false,

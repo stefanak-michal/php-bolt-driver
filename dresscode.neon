@@ -9,3 +9,6 @@ nameResolution: certain
 
 file:
 	lineEnding: LF
+
+naming:
+    class: Pascal_Snake_Case

@@ -11,7 +11,7 @@ use Bolt\protocol\V5_7;
  */
 class V5_7Test extends \Bolt\tests\protocol\ProtocolLayer
 {
-    public function test__construct(): V5_7
+    public function testConstruct(): V5_7
     {
         $cls = new V5_7($this->mockConnection());
         $this->assertInstanceOf(V5_7::class, $cls);
