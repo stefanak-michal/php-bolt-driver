@@ -1,14 +1,14 @@
 name: Tests without a database PHP^8
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    branches: [ master ]
+  workflow_run:
+    workflows: ["Check code formatting with dresscode"]
+    types:
+      - completed
 
 jobs:
-  no-db-tests-2204:
-    if: ${{ github.event.pull_request.draft == false }}
-    runs-on: ubuntu-22.04
+  no-db-tests:
+    runs-on: ubuntu-latest
     name: "Running Tests for PHP ${{ matrix.php-version }}"
     strategy:
       fail-fast: false
@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

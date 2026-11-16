@@ -61,7 +61,11 @@ class StreamSocket extends AConnection
         }
 
         if ($this->sslContextOptions !== null) {
-            if (stream_socket_enable_crypto($this->stream, true, STREAM_CRYPTO_METHOD_ANY_CLIENT) !== true) {
+            if (stream_socket_enable_crypto(
+                $this->stream,
+                true,
+                STREAM_CRYPTO_METHOD_ANY_CLIENT,
+            ) !== true) {
                 throw new ConnectException('Enable encryption error');
             }
         }
@@ -83,7 +87,9 @@ class StreamSocket extends AConnection
 
             if ($sent === false || $sent === 0) {
                 if (microtime(true) - $time >= $this->timeout) {
-                    throw new ConnectionTimeoutException('Connection timeout reached after ' . $this->timeout . ' seconds.');
+                    throw new ConnectionTimeoutException(
+                        'Connection timeout reached after ' . $this->timeout . ' seconds.',
+                    );
                 } else {
                     throw new ConnectException('Write error');
                 }
@@ -99,14 +105,22 @@ class StreamSocket extends AConnection
         $output = '';
         $t = microtime(true);
         do {
-            if (mb_strlen($output, '8bit') == 0 && $this->timeout > 0 && (microtime(true) - $t) >= $this->timeout) {
-                throw new ConnectionTimeoutException('Read from connection reached timeout after ' . $this->timeout . ' seconds.');
+            if (
+                mb_strlen($output, '8bit') == 0
+                && $this->timeout > 0
+                && (microtime(true) - $t) >= $this->timeout
+            ) {
+                throw new ConnectionTimeoutException(
+                    'Read from connection reached timeout after ' . $this->timeout . ' seconds.',
+                );
             }
 
             $readed = stream_get_contents($this->stream, $length - mb_strlen($output, '8bit'));
 
             if (stream_get_meta_data($this->stream)['timed_out'] ?? false) {
-                throw new ConnectionTimeoutException('Stream connection timed out after ' . $this->timeout . ' seconds.');
+                throw new ConnectionTimeoutException(
+                    'Stream connection timed out after ' . $this->timeout . ' seconds.',
+                );
             }
             if ($readed === false) {
                 throw new ConnectException('Read error');

@@ -11,7 +11,8 @@ use Closure;
 /**
  * Class Client
  * Helper class for simplified interaction with graph database over Bolt protocol.
- * If you are in need of more complex implementation, consider using Bolt directly or building your own wrapper around it.
+ * If you are in need of more complex implementation, consider using Bolt directly
+ * or building your own wrapper around it.
  *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
@@ -22,8 +23,8 @@ class Client
     private array $statistics = [];
 
     /**
-     * This property is public to make it available for updating last bookmark if there is external bolt communication (outside of this client)
-     * @var string
+     * This property is public to make it available for updating last bookmark if there is external bolt communication
+     * (outside of this client)
      */
     public string $lastBookmark = '';
 

@@ -12,3 +12,4 @@ file:
 
 naming:
     class: Pascal_Snake_Case
+    enumCase: Pascal_Snake_Case

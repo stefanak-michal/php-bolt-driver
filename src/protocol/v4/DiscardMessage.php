@@ -32,7 +32,7 @@ trait DiscardMessage
      * @return iterable
      * @throws BoltException
      */
-    protected function _discard(): iterable
+    protected function readDiscard(): iterable
     {
         $content = $this->read($signature);
         if (!($content['has_more'] ?? false) && $this->openStreams) {

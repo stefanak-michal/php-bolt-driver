@@ -9,7 +9,8 @@ trait RunMessage
 {
     /**
      * Send RUN message
-     * A RUN message submits a new query for execution, the result of which will be consumed by a subsequent message, such as PULL_ALL.
+     * A RUN message submits a new query for execution, the result of which will be consumed by a subsequent message,
+     * such as PULL_ALL.
      *
      * @link https://www.neo4j.com/docs/bolt/current/bolt/message/#messages-run
      * @throws BoltException

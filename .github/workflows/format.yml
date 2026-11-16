@@ -1,0 +1,28 @@
+name: Check code formatting with dresscode
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ master ]
+
+jobs:
+  check-format:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    name: "Running dresscode check"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, sockets
+
+      - name: Install dependencies
+        run: composer install --no-progress
+
+      - name: Check with dresscode
+        run: composer run-script check-format

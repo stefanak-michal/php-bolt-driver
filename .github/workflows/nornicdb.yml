@@ -1,13 +1,13 @@
 name: Tests with NornicDB on PHP 8.5
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    branches: [ master ]
+  workflow_run:
+    workflows: ["Check code formatting with dresscode"]
+    types:
+      - completed
 
 jobs:
   nornicdb-tests:
-    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     name: "Running Integration tests for PHP on NornicDB"
 
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

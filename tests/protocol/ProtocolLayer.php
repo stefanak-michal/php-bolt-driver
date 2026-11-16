@@ -17,19 +17,20 @@ use Bolt\enum\Signature;
 abstract class ProtocolLayer extends TestCase
 {
     /**
-     * @var string Temporal buffer for packed message to be read
+     * Temporal buffer for packed message to be read
      */
     private static string $readBuffer = '';
     /**
-     * @var array Order of consecutive returns from "read" method calls
+     * Order of consecutive returns from "read" method calls
      */
     protected static array $readArray = [];
     /**
-     * @var int Internal pointer for "writeBuffer"
+     * Internal pointer for "writeBuffer"
      */
     private static int $writeIndex = 0;
     /**
-     * @var array Expected write buffers or keep empty to skip verification. When hits last item from buffer it resets and start from beginning.
+     * Expected write buffers or keep empty to skip verification.
+     * When hits last item from buffer it resets and start from beginning.
      */
     protected static array $writeBuffer = [];
 

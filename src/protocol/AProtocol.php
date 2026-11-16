@@ -148,10 +148,10 @@ abstract class AProtocol
             throw new ConnectException('No response waiting to be consumed');
         }
 
-        $methodName = '_' . (
+        $methodName = 'read' . ucfirst(
             str_contains($message->name, '_')
                 ? preg_replace("/_([a-z])/", "strtoupper('$1')", strtolower($message->name))
-                : strtolower($message->name)
+                : strtolower($message->name),
         );
         if (method_exists($this, $methodName)) {
             /** @var Response $response */
@@ -216,10 +216,14 @@ abstract class AProtocol
         $data[$today] = [
             'queries' => ($data[$today]['queries'] ?? 0) + $this->writeCalls,
             'sessions' => ($data[$today]['sessions'] ?? 0) + 1,
-            'ecosystems' => array_values(array_unique(array_merge(
-                $data[$today]['ecosystems'] ?? [],
-                $this->ecosystems,
-            ))),
+            'ecosystems' => array_values(
+                array_unique(
+                    array_merge(
+                        $data[$today]['ecosystems'] ?? [],
+                        $this->ecosystems,
+                    ),
+                ),
+            ),
         ];
         CacheProvider::get()->set('analytics', $data);
 

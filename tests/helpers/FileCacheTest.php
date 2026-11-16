@@ -24,7 +24,9 @@ class FileCacheTest extends TestCase
     public function testConstruct(): void
     {
         $this->assertDirectoryExists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache');
-        $this->assertDirectoryExists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache' . DIRECTORY_SEPARATOR . '.ttl');
+        $this->assertDirectoryExists(
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache' . DIRECTORY_SEPARATOR . '.ttl',
+        );
     }
 
     public function testGetAndSet(): void

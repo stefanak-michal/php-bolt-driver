@@ -141,7 +141,10 @@ class Packer implements IPacker
         } elseif (($value >= 32768 && $value <= 2147483647) || ($value >= -2147483648 && $value <= -32769)) { //INT_32
             $packed = pack('l', $value);
             yield chr(0xCA) . ($this->littleEndian ? strrev($packed) : $packed);
-        } elseif (($value >= 2147483648 && $value <= 9223372036854775807) || ($value >= -9223372036854775808 && $value <= -2147483649)) { //INT_64
+        } elseif (
+            ($value >= 2147483648 && $value <= 9223372036854775807)
+            || ($value >= -9223372036854775808 && $value <= -2147483649)
+        ) { //INT_64
             $packed = pack('q', $value);
             yield chr(0xCB) . ($this->littleEndian ? strrev($packed) : $packed);
         } else {

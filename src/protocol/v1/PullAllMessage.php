@@ -10,7 +10,8 @@ trait PullAllMessage
 {
     /**
      * Send PULL_ALL message
-     * The PULL_ALL message issues a request to stream the outstanding result back to the client, before returning to a READY state.
+     * The PULL_ALL message issues a request to stream the outstanding result back to the client, before returning
+     * to a READY state.
      *
      * @link https://www.neo4j.com/docs/bolt/current/bolt/message/#message-pull
      * @throws BoltException
@@ -26,7 +27,7 @@ trait PullAllMessage
      * Read PULL_ALL response
      * @throws BoltException
      */
-    protected function _pullAll(): iterable
+    protected function readPullAll(): iterable
     {
         do {
             $content = $this->read($signature);

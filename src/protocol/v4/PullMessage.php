@@ -31,7 +31,7 @@ trait PullMessage
      * @return iterable
      * @throws BoltException
      */
-    protected function _pull(): iterable
+    protected function readPull(): iterable
     {
         do {
             $content = $this->read($signature);

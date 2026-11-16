@@ -234,7 +234,12 @@ final class Bolt
 
         $bytes = $this->connection->read(4);
         if ($bytes == 'HTTP') {
-            throw new ConnectException('Cannot to connect to Bolt service on ' . $this->connection->getIp() . ':' . $this->connection->getPort() . ' (looks like HTTP)');
+            throw new ConnectException(
+                'Cannot to connect to Bolt service on '
+                . $this->connection->getIp() . ':'
+                . $this->connection->getPort()
+                . ' (looks like HTTP)',
+            );
         }
         $version = $this->unpackProtocolVersion($bytes);
         if (empty($version)) {

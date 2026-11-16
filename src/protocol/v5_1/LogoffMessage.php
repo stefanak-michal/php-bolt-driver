@@ -9,7 +9,8 @@ trait LogoffMessage
 {
     /**
      * Send LOGOFF message
-     * A LOGOFF message logs off the currently authenticated user. The connection is then ready for another LOGON message.
+     * A LOGOFF message logs off the currently authenticated user.
+     * The connection is then ready for another LOGON message.
      *
      * @link https://www.neo4j.com/docs/bolt/current/bolt/message/#messages-logoff
      * @throws BoltException

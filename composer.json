@@ -55,6 +55,8 @@
             "@putenv XDEBUG_MODE=debug",
             "Composer\\Config::disableProcessTimeout",
             "phpunit"
-        ]
+        ],
+        "format": "dresscode fix",
+        "check-format": "dresscode check"
     }
 }

@@ -32,7 +32,7 @@ trait RunMessage
      * @return iterable
      * @throws BoltException
      */
-    protected function _run(): iterable
+    protected function readRun(): iterable
     {
         $content = $this->read($signature);
         if (array_key_exists('qid', $content)) {
