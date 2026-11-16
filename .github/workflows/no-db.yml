@@ -1,10 +1,7 @@
 name: Tests without a database PHP^8
 
 on:
-  workflow_run:
-    workflows: [format]
-    types:
-      - completed
+  workflow_call:
 
 jobs:
   no-db-tests:

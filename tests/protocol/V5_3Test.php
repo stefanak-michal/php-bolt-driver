@@ -22,7 +22,7 @@ class V5_3Test extends \Bolt\tests\protocol\ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testHello(V5_3 $cls): void
     {

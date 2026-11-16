@@ -22,7 +22,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testHello(V3 $cls): void
     {
@@ -65,7 +65,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testRun(V3 $cls): void
     {
@@ -110,7 +110,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testBegin(V3 $cls): void
     {
@@ -141,7 +141,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testCommit(V3 $cls): void
     {
@@ -171,7 +171,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testRollback(V3 $cls): void
     {
@@ -201,7 +201,7 @@ class V3Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testGoodbye(V3 $cls): void
     {

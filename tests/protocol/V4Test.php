@@ -22,7 +22,7 @@ class V4Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testPull(V4 $cls): void
     {
@@ -60,7 +60,7 @@ class V4Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testDiscard(V4 $cls): void
     {

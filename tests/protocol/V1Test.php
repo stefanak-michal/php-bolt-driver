@@ -22,7 +22,7 @@ class V1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testInit(V1 $cls): void
     {
@@ -60,7 +60,7 @@ class V1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testRun(V1 $cls): void
     {
@@ -102,7 +102,7 @@ class V1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testPullAll(V1 $cls): void
     {
@@ -135,7 +135,7 @@ class V1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testDiscardAll(V1 $cls): void
     {
@@ -165,7 +165,7 @@ class V1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testReset(V1 $cls): void
     {
@@ -187,7 +187,7 @@ class V1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testAckFailure(V1 $cls): void
     {

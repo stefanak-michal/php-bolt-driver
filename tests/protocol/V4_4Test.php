@@ -22,7 +22,7 @@ class V4_4Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testRoute(V4_4 $cls): void
     {

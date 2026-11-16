@@ -22,7 +22,7 @@ class V4_1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testHello(V4_1 $cls): void
     {

@@ -22,7 +22,7 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testHello(V5_1 $cls): void
     {
@@ -49,7 +49,7 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testLogon(V5_1 $cls): void
     {
@@ -88,7 +88,7 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testLogoff(V5_1 $cls): void
     {

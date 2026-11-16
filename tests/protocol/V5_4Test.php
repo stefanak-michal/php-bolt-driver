@@ -19,7 +19,7 @@ class V5_4Test extends \Bolt\tests\protocol\ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testTelemetry(V5_4 $cls): void
     {

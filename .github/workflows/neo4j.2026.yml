@@ -1,10 +1,7 @@
 name: Tests with Neo4j^2026 on PHP^8
 
 on:
-  workflow_run:
-    workflows: [format]
-    types:
-      - completed
+  workflow_call:
 
 jobs:
   db-tests-2026:

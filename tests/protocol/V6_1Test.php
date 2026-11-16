@@ -21,7 +21,7 @@ class V6_1Test extends ProtocolLayer
     }
 
     /**
-     * @depends test__construct
+     * @depends testConstruct
      */
     public function testPackStream(V6_1 $protocol)
     {

@@ -1,10 +1,7 @@
 name: Tests with Grafeo on PHP 8.5
 
 on:
-  workflow_run:
-    workflows: [format]
-    types:
-      - completed
+  workflow_call:
 
 jobs:
   grafeo-tests:

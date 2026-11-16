@@ -1,10 +1,7 @@
 name: Tests with ArcadeDB on PHP 8.5
 
 on:
-  workflow_run:
-    workflows: [format]
-    types:
-      - completed
+  workflow_call:
 
 jobs:
   arcadedb-tests:
@@ -23,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
