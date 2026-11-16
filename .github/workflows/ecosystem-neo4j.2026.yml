@@ -38,7 +38,7 @@ jobs:
           ini-values: max_execution_time=0, variables_order="EGPCS"
 
       - name: Install dependencies
-        run: composer install --no-progress --ignore-platform-req=php+
+        run: composer install --no-progress --ignore-platform-req=php
 
       - name: Test with phpunit
         env:
