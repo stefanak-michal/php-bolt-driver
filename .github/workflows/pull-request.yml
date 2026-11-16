@@ -29,40 +29,40 @@ jobs:
 
   no-db:
     needs: check-format
-    uses: ./.github/actions/ecosystems/no-db.yml
+    uses: ./.github/workflows/ecosystem-no-db.yml
 
   arcadedb:
     needs: check-format
-    uses: ./.github/actions/ecosystems/arcadedb.yml
+    uses: ./.github/workflows/ecosystem-arcadedb.yml
 
   grafeo:
     needs: check-format
-    uses: ./.github/actions/ecosystems/grafeo.yml
+    uses: ./.github/workflows/ecosystem-grafeo.yml
 
   memgraph:
     needs: check-format
-    uses: ./.github/actions/ecosystems/memgraph.yml
+    uses: ./.github/workflows/ecosystem-memgraph.yml
 
   neo4j-2025:
     needs: check-format
-    uses: ./.github/actions/ecosystems/neo4j.2025.yml
+    uses: ./.github/workflows/ecosystem-neo4j.2025.yml
 
   neo4j-2026:
     needs: check-format
-    uses: ./.github/actions/ecosystems/neo4j.2026.yml
+    uses: ./.github/workflows/ecosystem-neo4j.2026.yml
 
   neo4j-4-4:
     needs: check-format
-    uses: ./.github/actions/ecosystems/neo4j.4.4.yml
+    uses: ./.github/workflows/ecosystem-neo4j.4.4.yml
 
   neo4j-5:
     needs: check-format
-    uses: ./.github/actions/ecosystems/neo4j.5.yml
+    uses: ./.github/workflows/ecosystem-neo4j.5.yml
 
   nornicdb:
     needs: check-format
-    uses: ./.github/actions/ecosystems/nornicdb.yml
+    uses: ./.github/workflows/ecosystem-nornicdb.yml
 
   tugraph:
     needs: check-format
-    uses: ./.github/actions/ecosystems/tugraph.yml
+    uses: ./.github/workflows/ecosystem-tugraph.yml
