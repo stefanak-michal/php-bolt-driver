@@ -1,16 +1,16 @@
-name: Tests with Neo4j^2026 on PHP^8
+name: Tests with Neo4j^2025 on PHP^8
 
 on:
   workflow_call:
 
 jobs:
-  db-tests-2026:
-    runs-on: ubuntu-latest
+  db-tests-2025-2204:
+    runs-on: ubuntu-22.04
     name: "Running Integration tests for PHP ${{ matrix.php-version }} on Neo4j ${{ matrix.neo4j-version }}"
     strategy:
       fail-fast: false
       matrix:
-        neo4j-version: ['2026.09', '2026']
+        neo4j-version: ['2025.09', '2025']
         php-version: ['8.2', '8.3', '8.4', '8.5']
 
     services:
@@ -38,7 +38,7 @@ jobs:
           ini-values: max_execution_time=0, variables_order="EGPCS"
 
       - name: Install dependencies
-        run: composer install --no-progress
+        run: composer install --no-progress --ignore-platform-req=php+
 
       - name: Test with phpunit
         env:
