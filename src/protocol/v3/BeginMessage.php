@@ -16,7 +16,7 @@ trait BeginMessage
      */
     public function begin(array $extra = []): static
     {
-        $this->write($this->packer->pack(0x11, (object)$extra));
+        $this->write($this->packer->pack(0x11, (object) $extra));
         $this->pipelinedMessages[] = Message::BEGIN;
         return $this;
     }

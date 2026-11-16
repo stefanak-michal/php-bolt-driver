@@ -27,8 +27,8 @@ class V5_3Test extends \Bolt\tests\protocol\ProtocolLayer
     public function testHello(V5_3 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
 
         $cls->serverState = ServerState::NEGOTIATION;

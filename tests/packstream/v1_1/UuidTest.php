@@ -41,7 +41,7 @@ class UuidTest extends TestLayer
                 ->run('RETURN $uuid', ['uuid' => $uuid])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertEquals($uuid, $res[1]->content[0]);
     }

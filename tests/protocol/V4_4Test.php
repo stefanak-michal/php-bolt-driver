@@ -27,9 +27,9 @@ class V4_4Test extends ProtocolLayer
     public function testRoute(V4_4 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '0001b3',
@@ -44,7 +44,10 @@ class V4_4Test extends ProtocolLayer
         ];
 
         $cls->serverState = ServerState::READY;
-        $this->assertEquals(Signature::SUCCESS, $cls->route(['address' => 'localhost:7687'], [], ['db' => null])->getResponse()->signature);
+        $this->assertEquals(
+            Signature::SUCCESS,
+            $cls->route(['address' => 'localhost:7687'], [], ['db' => null])->getResponse()->signature,
+        );
         $this->assertEquals(ServerState::READY, $cls->serverState);
 
         $cls->serverState = ServerState::READY;
@@ -57,5 +60,4 @@ class V4_4Test extends ProtocolLayer
         $this->assertEquals(Signature::IGNORED, $response->signature);
         $this->assertEquals(ServerState::INTERRUPTED, $cls->serverState);
     }
-
 }

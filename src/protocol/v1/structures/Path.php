@@ -35,9 +35,8 @@ class Path implements IStructure
     public function __construct(
         public readonly array $nodes,
         public readonly array $rels,
-        array $indices
-    )
-    {
+        array $indices,
+    ) {
         $this->ids = $indices;
         $this->indices = $indices;
     }
@@ -48,14 +47,17 @@ class Path implements IStructure
             'start' => json_decode(count($this->nodes) ? $this->nodes[array_key_first($this->nodes)] : [], true),
             'end' => json_decode(count($this->nodes) ? $this->nodes[array_key_last($this->nodes)] : [], true),
             'segments' => [],
-            'length' => count($this->indices) - 1
+            'length' => count($this->indices) - 1,
         ];
 
         for ($i = 0; $i < count($this->nodes) - 1; $i++) {
             $obj['segments'][] = [
                 'start' => json_decode($this->nodes[$i], true),
-                'relationship' => array_merge(json_decode($this->rels[$i], true), ['start' => $this->nodes[$i]->id, 'end' => $this->nodes[$i + 1]->id]),
-                'end' => json_decode($this->nodes[$i + 1], true)
+                'relationship' => array_merge(
+                    json_decode($this->rels[$i], true),
+                    ['start' => $this->nodes[$i]->id, 'end' => $this->nodes[$i + 1]->id],
+                ),
+                'end' => json_decode($this->nodes[$i + 1], true),
             ];
         }
 

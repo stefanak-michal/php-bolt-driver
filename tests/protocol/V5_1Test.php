@@ -27,8 +27,8 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
     public function testHello(V5_1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b1',
@@ -54,8 +54,8 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
     public function testLogon(V5_1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b1',
@@ -73,7 +73,7 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
         $this->assertEquals(Signature::SUCCESS, $cls->logon([
             'scheme' => 'basic',
             'principal' => 'user',
-            'credentials' => 'password'
+            'credentials' => 'password',
         ])->getResponse()->signature);
         $this->assertEquals(ServerState::READY, $cls->serverState);
 
@@ -81,7 +81,7 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
         $response = $cls->logon([
             'scheme' => 'basic',
             'principal' => 'user',
-            'credentials' => 'password'
+            'credentials' => 'password',
         ])->getResponse();
         $this->checkFailure($response);
         $this->assertEquals(ServerState::DEFUNCT, $cls->serverState);
@@ -93,8 +93,8 @@ class V5_1Test extends \Bolt\tests\protocol\ProtocolLayer
     public function testLogoff(V5_1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b0',

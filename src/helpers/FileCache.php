@@ -24,7 +24,7 @@ class FileCache implements CacheInterface
     public function __construct()
     {
         $this->tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache' . DIRECTORY_SEPARATOR;
-        
+
         if (!file_exists($this->tempDir)) {
             mkdir(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-bolt-filecache', recursive: true);
         }
@@ -51,7 +51,7 @@ class FileCache implements CacheInterface
     private function validateKey(string $key): void
     {
         if (!preg_match('/^[\w\.]+$/i', $key)) {
-            throw new class($key) extends \Exception implements InvalidArgumentException {
+            throw new class ($key) extends \Exception implements InvalidArgumentException {
                 protected $message;
 
                 public function __construct(string $key)
@@ -94,7 +94,7 @@ class FileCache implements CacheInterface
         if ($ttl) {
             is_writable($this->tempDir . '.ttl' . DIRECTORY_SEPARATOR) && file_put_contents(
                 $this->tempDir . '.ttl' . DIRECTORY_SEPARATOR . $key,
-                $ttl instanceof \DateInterval ? (new \DateTime())->add($ttl)->getTimestamp() : $ttl
+                $ttl instanceof \DateInterval ? (new \DateTime())->add($ttl)->getTimestamp() : $ttl,
             );
         }
 
@@ -172,7 +172,7 @@ class FileCache implements CacheInterface
     public function has(string $key): bool
     {
         $this->validateKey($key);
-        
+
         // remove file when is expired
         if (
             file_exists($this->tempDir . '.ttl' . DIRECTORY_SEPARATOR . $key)
@@ -193,7 +193,9 @@ class FileCache implements CacheInterface
         $this->validateKey($key);
 
         $handle = @fopen($this->tempDir . $key, 'c+');
-        if ($handle === false) return false;
+        if ($handle === false) {
+            return false;
+        }
         $this->handles[$key] = $handle;
         return flock($this->handles[$key], LOCK_EX);
     }

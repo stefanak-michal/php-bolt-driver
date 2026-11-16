@@ -90,7 +90,8 @@ final class ConnectionTest extends TestLayer
                     ->run('FOREACH ( i IN range(1,10000) | MERGE (d:Day {day: i}) )')
                     ->pull()
                     ->getResponses(),
-                false);
+                false,
+            );
             $this->fail('No timeout error triggered');
         } catch (ConnectionTimeoutException) {
             $newTime = microtime(true);

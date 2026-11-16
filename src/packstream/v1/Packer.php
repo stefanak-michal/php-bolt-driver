@@ -94,7 +94,7 @@ class Packer implements IPacker
                 } elseif ($param instanceof IPackDictionaryGenerator) {
                     return yield from $this->packDictionary($param);
                 } else {
-                    return yield from $this->packDictionary((array)$param);
+                    return yield from $this->packDictionary((array) $param);
                 }
         }
 
@@ -169,7 +169,7 @@ class Packer implements IPacker
         }
 
         foreach ($param as $k => $v) {
-            yield from $this->packValue((string)$k); // The key names in a map must be of type String.
+            yield from $this->packValue((string) $k); // The key names in a map must be of type String.
             yield from $this->packValue($v);
         }
     }
@@ -238,5 +238,4 @@ class Packer implements IPacker
             throw new PackException('ByteArray too big');
         }
     }
-
 }

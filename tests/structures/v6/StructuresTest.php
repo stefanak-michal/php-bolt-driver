@@ -55,11 +55,11 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
                     vector([5, -20000, 30000], 3, INTEGER16),
                     vector([5, -2000000000, 2000000000], 3, INTEGER32)',
                     [],
-                    ['mode' => 'r']
+                    ['mode' => 'r'],
                 )
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         foreach ($res[1]->content as $vector) {
@@ -88,16 +88,20 @@ class StructuresTest extends \Bolt\tests\structures\StructureLayer
         //pack
         $res = iterator_to_array(
             $protocol
-                ->run('CYPHER 25 RETURN toFloatList($float), toIntegerList($int64), toIntegerList($int8), toIntegerList($int16), toIntegerList($int32)', [
-                    'float' => Vector::encode([1.05, 0.123, 5.0]),
-                    'int64' => Vector::encode([5, -21474836480, 21474836470]),
-                    'int8' => Vector::encode([5, -60, 120]),
-                    'int16' => Vector::encode([5, -20000, 30000]),
-                    'int32' => Vector::encode([5, -2000000000, 2000000000]),
-                ], ['mode' => 'r'])
+                ->run(
+                    'CYPHER 25 RETURN toFloatList($float), toIntegerList($int64), toIntegerList($int8), toIntegerList($int16), toIntegerList($int32)',
+                    [
+                        'float' => Vector::encode([1.05, 0.123, 5.0]),
+                        'int64' => Vector::encode([5, -21474836480, 21474836470]),
+                        'int8' => Vector::encode([5, -60, 120]),
+                        'int16' => Vector::encode([5, -20000, 30000]),
+                        'int32' => Vector::encode([5, -2000000000, 2000000000]),
+                    ],
+                    ['mode' => 'r'],
+                )
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertEqualsWithDelta([1.05, 0.123, 5], $res[1]->content[0], 1e-6);

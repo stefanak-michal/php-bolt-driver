@@ -18,8 +18,9 @@ class BoltTest extends TestLayer
 {
     public function testSockets(): void
     {
-        if (!extension_loaded('sockets'))
+        if (!extension_loaded('sockets')) {
             $this->markTestSkipped('Sockets extension not available');
+        }
 
         $conn = new \Bolt\connection\Socket($_ENV['GDB_HOST'], $_ENV['GDB_PORT'], 3);
         $this->assertInstanceOf(\Bolt\connection\Socket::class, $conn);
@@ -32,28 +33,32 @@ class BoltTest extends TestLayer
 
         $this->sayHello($protocol, $_ENV['GDB_USERNAME'], $_ENV['GDB_PASSWORD']);
 
-        if (method_exists($protocol, 'goodbye'))
+        if (method_exists($protocol, 'goodbye')) {
             $protocol->goodbye();
+        }
     }
 
     public function testAura(): void
     {
         $conn = new \Bolt\connection\StreamSocket('neo4j+s://demo.neo4jlabs.com');
         $conn->setSslContextOptions([
-            'verify_peer' => true
+            'verify_peer' => true,
         ]);
         $this->assertInstanceOf(\Bolt\connection\StreamSocket::class, $conn);
 
         $bolt = new Bolt($conn);
         $this->assertInstanceOf(Bolt::class, $bolt);
 
-        $protocol = $bolt->setProtocolVersions($this->getCompatibleBoltVersion('https://demo.neo4jlabs.com:7473'))->build();
+        $protocol = $bolt
+            ->setProtocolVersions($this->getCompatibleBoltVersion('https://demo.neo4jlabs.com:7473'))
+            ->build();
         $this->assertInstanceOf(AProtocol::class, $protocol);
 
         $this->sayHello($protocol, 'movies', 'movies');
 
-        if (method_exists($protocol, 'goodbye'))
+        if (method_exists($protocol, 'goodbye')) {
             $protocol->goodbye();
+        }
     }
 
     public function testHello(): AProtocol
@@ -121,7 +126,7 @@ class BoltTest extends TestLayer
                 ->pull()
                 ->rollback()
                 ->getResponses(),
-            false
+            false,
         );
 
         $id = $res[2]->content[1];
@@ -132,11 +137,11 @@ class BoltTest extends TestLayer
                 ->run('MATCH (a:Test) WHERE ID(a) = '
                     . (version_compare($protocol->getVersion(), 4, '<') ? '{a}' : '$a')
                     . ' RETURN COUNT(a)', [
-                    'a' => $id
-                ])
+                        'a' => $id,
+                    ])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertEquals(0, $res[1]->content[0]);
@@ -150,7 +155,7 @@ class BoltTest extends TestLayer
         if (version_compare($protocol->getVersion(), 4.3, '>=')) {
             $response = $protocol
                 ->route([
-                    'address' => $_ENV['GDB_HOST'] . ':' . $_ENV['GDB_PORT']
+                    'address' => $_ENV['GDB_HOST'] . ':' . $_ENV['GDB_PORT'],
                 ])
                 ->getResponse();
             $this->assertEquals(Signature::SUCCESS, $response->signature);
@@ -190,7 +195,7 @@ class BoltTest extends TestLayer
             $gen = $protocol
                 ->run('MATCH (a:Test) WHERE ID(a) = $id SET a += $data RETURN a', [
                     'id' => $id,
-                    'data' => (object)$data
+                    'data' => (object) $data,
                 ])
                 ->pull()
                 ->getResponses();

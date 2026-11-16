@@ -19,8 +19,9 @@ trait DiscardMessage
      */
     public function discard(array $extra = []): static
     {
-        if (!array_key_exists('n', $extra))
+        if (!array_key_exists('n', $extra)) {
             $extra['n'] = -1;
+        }
         $this->write($this->packer->pack(0x2F, $extra));
         $this->pipelinedMessages[] = Message::DISCARD;
         return $this;
@@ -34,8 +35,9 @@ trait DiscardMessage
     protected function _discard(): iterable
     {
         $content = $this->read($signature);
-        if (!($content['has_more'] ?? false) && $this->openStreams)
+        if (!($content['has_more'] ?? false) && $this->openStreams) {
             $this->openStreams = $signature === Signature::SUCCESS ? $this->openStreams - 1 : 0;
+        }
         yield new Response(Message::DISCARD, $signature, $content);
     }
 }

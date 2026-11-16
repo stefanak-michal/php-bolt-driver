@@ -27,8 +27,8 @@ class V4_1Test extends ProtocolLayer
     public function testHello(V4_1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b1',

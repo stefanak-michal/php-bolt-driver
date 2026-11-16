@@ -9,7 +9,7 @@ use Bolt\connection\Socket;
 
 /**
  * Class TuGraphTest
- * 
+ *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
@@ -22,7 +22,10 @@ class TuGraphTest extends TestCase
         $bolt = new Bolt($conn);
         $bolt->setProtocolVersions(4.4);
 
-        $client = new Client($bolt->build(), ['scheme' => 'basic', 'principal' => 'admin', 'credentials' => '73@TuGraph']);
+        $client = new Client(
+            $bolt->build(),
+            ['scheme' => 'basic', 'principal' => 'admin', 'credentials' => '73@TuGraph'],
+        );
         $extra = ['db' => 'default'];
 
         $data = $client->query('RETURN 1 AS num, "Hello, World!" AS str', [], $extra);
@@ -31,7 +34,7 @@ class TuGraphTest extends TestCase
 
         $data = $client->queryFirstField('RETURN 1 AS num', [], $extra);
         $this->assertEquals(1, $data);
-        
+
         $data = $client->queryFirstColumn('UNWIND [1, 2, 3] AS num RETURN num', [], $extra);
         $this->assertEquals([1, 2, 3], $data);
     }

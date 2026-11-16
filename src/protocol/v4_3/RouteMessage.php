@@ -16,7 +16,7 @@ trait RouteMessage
      */
     public function route(array $routing, array $bookmarks = [], ?string $db = null): static
     {
-        $this->write($this->packer->pack(0x66, (object)$routing, $bookmarks, $db));
+        $this->write($this->packer->pack(0x66, (object) $routing, $bookmarks, $db));
         $this->pipelinedMessages[] = Message::ROUTE;
         return $this;
     }

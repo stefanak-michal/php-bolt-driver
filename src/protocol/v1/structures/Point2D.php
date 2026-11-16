@@ -23,12 +23,10 @@ class Point2D implements IStructure
      * @param float $y
      */
     public function __construct(
-        public readonly int   $srid,
+        public readonly int $srid,
         public readonly float $x,
-        public readonly float $y
-    )
-    {
-    }
+        public readonly float $y,
+    ) {}
 
     public function __toString(): string
     {

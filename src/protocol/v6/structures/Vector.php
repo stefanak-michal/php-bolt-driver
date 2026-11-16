@@ -18,12 +18,12 @@ class Vector implements IStructure
 {
     public function __construct(
         public readonly Bytes $type_marker,
-        public readonly Bytes $data
+        public readonly Bytes $data,
     ) {}
 
     public function __toString(): string
     {
-        return json_encode([(string)$this->type_marker, (string)$this->data]);
+        return json_encode([(string) $this->type_marker, (string) $this->data]);
     }
 
     private static array $endiannessFormats = ['s', 'l', 'q'];
@@ -78,7 +78,7 @@ class Vector implements IStructure
         $packed = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
         foreach ($data as $entry) {
-            $value = pack($packFormat, $anyFloat ? (float)$entry : (int)$entry);
+            $value = pack($packFormat, $anyFloat ? (float) $entry : (int) $entry);
             $packed[] = in_array($packFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value;
         }
 
@@ -144,8 +144,11 @@ class Vector implements IStructure
 
         $output = [];
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
-        foreach (mb_str_split((string)$this->data, $size, '8bit') as $value) {
-            $output[] = unpack($unpackFormat, in_array($unpackFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value)[1];
+        foreach (mb_str_split((string) $this->data, $size, '8bit') as $value) {
+            $output[] = unpack(
+                $unpackFormat,
+                in_array($unpackFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value,
+            )[1];
         }
 
         return $output;

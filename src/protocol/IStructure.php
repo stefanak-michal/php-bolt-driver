@@ -9,6 +9,4 @@ namespace Bolt\protocol;
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\protocol
  */
-interface IStructure extends \Stringable
-{
-}
+interface IStructure extends \Stringable {}

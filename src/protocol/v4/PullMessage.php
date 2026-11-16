@@ -18,8 +18,9 @@ trait PullMessage
      */
     public function pull(array $extra = []): static
     {
-        if (!array_key_exists('n', $extra))
+        if (!array_key_exists('n', $extra)) {
             $extra['n'] = -1;
+        }
         $this->write($this->packer->pack(0x3F, $extra));
         $this->pipelinedMessages[] = Message::PULL;
         return $this;
@@ -35,10 +36,11 @@ trait PullMessage
         do {
             $content = $this->read($signature);
             if (!($content['has_more'] ?? false) && $this->openStreams) {
-                if ($signature === Signature::SUCCESS)
+                if ($signature === Signature::SUCCESS) {
                     $this->openStreams--;
-                elseif ($signature === Signature::FAILURE)
+                } elseif ($signature === Signature::FAILURE) {
                     $this->openStreams = 0;
+                }
             }
             yield new Response(Message::PULL, $signature, $content);
         } while ($signature == Signature::RECORD);

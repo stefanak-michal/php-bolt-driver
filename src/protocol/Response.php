@@ -18,10 +18,8 @@ class Response
      * @param array $content Response content
      */
     public function __construct(
-        public readonly Message   $message,
+        public readonly Message $message,
         public readonly Signature $signature,
-        public readonly array     $content = []
-    )
-    {
-    }
+        public readonly array $content = [],
+    ) {}
 }

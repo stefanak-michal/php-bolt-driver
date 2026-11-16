@@ -16,7 +16,7 @@ trait RunMessage
      */
     public function run(string $query, array $parameters = []): static
     {
-        $this->write($this->packer->pack(0x10, $query, (object)$parameters));
+        $this->write($this->packer->pack(0x10, $query, (object) $parameters));
         $this->pipelinedMessages[] = Message::RUN;
         return $this;
     }

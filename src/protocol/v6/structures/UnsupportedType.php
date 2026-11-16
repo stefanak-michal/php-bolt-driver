@@ -26,18 +26,17 @@ class UnsupportedType implements IStructure
         public readonly string $name,
         public readonly int $minimum_protocol_major,
         public readonly int $minimum_protocol_minor,
-        public readonly array $extra
-    )
-    {
-    }
+        public readonly array $extra,
+    ) {}
 
     public function __toString(): string
     {
-        return (string)json_encode([
+        return (string) json_encode([
+
             'name' => $this->name,
             'minimum_protocol_major' => $this->minimum_protocol_major,
             'minimum_protocol_minor' => $this->minimum_protocol_minor,
-            'extra' => $this->extra
+            'extra' => $this->extra,
         ]);
     }
 }

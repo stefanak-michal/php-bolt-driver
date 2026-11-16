@@ -23,10 +23,8 @@ class LocalDateTime implements IStructure
      */
     public function __construct(
         public readonly int $seconds,
-        public readonly int $nanoseconds
-    )
-    {
-    }
+        public readonly int $nanoseconds,
+    ) {}
 
     public function __toString(): string
     {
@@ -35,5 +33,4 @@ class LocalDateTime implements IStructure
         return \DateTime::createFromFormat('U.u', $datetime)
             ->format('Y-m-d\TH:i:s.u');
     }
-
 }

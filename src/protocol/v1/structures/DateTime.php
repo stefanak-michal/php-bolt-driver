@@ -29,10 +29,8 @@ class DateTime implements IStructure
     public function __construct(
         public readonly int $seconds,
         public readonly int $nanoseconds,
-        public readonly int $tz_offset_seconds
-    )
-    {
-    }
+        public readonly int $tz_offset_seconds,
+    ) {}
 
     public function __toString(): string
     {

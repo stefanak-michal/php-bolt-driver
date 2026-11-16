@@ -30,7 +30,7 @@ class Client
     /**
      * Client constructor.
      * Authentication is performed automatically based on protocol version.
-     * 
+     *
      * @param AProtocol $protocol Protocol instance to use for communication. Must be already built via Bolt::build().
      * @param array $auth Authentication parameters. Default is ['scheme' => 'none'] for no authentication.
      * @param Closure|null $logHandler Optional handler for logging executed queries.
@@ -38,11 +38,11 @@ class Client
      * @param bool $manageBookmarks Enable automatic handling of bookmarks
      */
     public function __construct(
-        public readonly AProtocol $protocol, 
-        private array $auth = ['scheme' => 'none'], 
-        private ?Closure $logHandler = null, 
-        private ?Closure $errorHandler = null,
-        private bool $manageBookmarks = false
+        public readonly AProtocol $protocol,
+        array $auth = ['scheme' => 'none'],
+        private readonly ?Closure $logHandler = null,
+        private readonly ?Closure $errorHandler = null,
+        private readonly bool $manageBookmarks = false,
     ) {
         try {
             $version = $protocol->getVersion();
@@ -136,9 +136,11 @@ class Client
             call_user_func($this->logHandler, $query, $params, $this->statistics);
         }
 
-        return !empty($all) ? array_map(function (array $element) use ($run): array {
-            return array_combine($run['fields'], $element);
-        }, $all) : [];
+        return !empty($all)
+            ? array_map(function (array $element) use ($run): array {
+                return array_combine($run['fields'], $element);
+            }, $all)
+            : [];
     }
 
     /**
@@ -320,7 +322,7 @@ class Client
         $code = '';
         foreach (($response->content ?? []) as $key => $value) {
             if (is_string($key) && stripos($key, 'code') !== false) {
-                $code = (string)$value;
+                $code = (string) $value;
                 break;
             }
         }

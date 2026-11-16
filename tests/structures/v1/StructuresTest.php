@@ -73,26 +73,26 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN date($date)', [
-                    'date' => $date
+                    'date' => $date,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $dateStructure = $res[1]->content[0];
 
         $this->assertInstanceOf(Date::class, $dateStructure);
-        $this->assertEquals($date, (string)$dateStructure, 'unpack ' . $date . ' != ' . $dateStructure);
+        $this->assertEquals($date, (string) $dateStructure, 'unpack ' . $date . ' != ' . $dateStructure);
 
         //pack
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($date)', [
-                    'date' => $dateStructure
+                    'date' => $dateStructure,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertEquals($date, $res[1]->content[0], 'pack ' . $date . ' != ' . $res[1]->content[0]);
     }
@@ -109,22 +109,26 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('RETURN duration($d)', ['d' => $duration], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $durationStructure = $res[1]->content[0];
 
         $this->assertInstanceOf(Duration::class, $durationStructure);
-        $this->assertEquals($duration, (string)$durationStructure, 'unpack ' . $duration . ' != ' . $durationStructure);
+        $this->assertEquals(
+            $duration,
+            (string) $durationStructure,
+            'unpack ' . $duration . ' != ' . $durationStructure,
+        );
 
         //pack
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($d)', [
-                    'd' => $durationStructure
+                    'd' => $durationStructure,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertEquals($duration, $res[1]->content[0], 'pack ' . $duration . ' != ' . $res[1]->content[0]);
@@ -133,15 +137,16 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
     public function durationProvider(): \Generator
     {
         foreach ([
-                     'P1Y',
-                     'P1M',
-                     'P1D',
-                     'PT1H',
-                     'PT1M',
-                     'PT1S',
-                     'P1Y2M14DT16H12M35.765S'
-                 ] as $duration)
+            'P1Y',
+            'P1M',
+            'P1D',
+            'PT1H',
+            'PT1M',
+            'PT1S',
+            'P1Y2M14DT16H12M35.765S',
+        ] as $duration) {
             yield $duration => [$duration];
+        }
     }
 
     /**
@@ -158,26 +163,30 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN localdatetime($dt)', [
-                    'dt' => $datetime
+                    'dt' => $datetime,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $localDateTimeStructure = $res[1]->content[0];
 
         $this->assertInstanceOf(LocalDateTime::class, $localDateTimeStructure);
-        $this->assertEquals($datetime, (string)$localDateTimeStructure, 'unpack ' . $datetime . ' != ' . $localDateTimeStructure);
+        $this->assertEquals(
+            $datetime,
+            (string) $localDateTimeStructure,
+            'unpack ' . $datetime . ' != ' . $localDateTimeStructure,
+        );
 
         //pack
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($dt)', [
-                    'dt' => $localDateTimeStructure
+                    'dt' => $localDateTimeStructure,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $datetime = rtrim($datetime, '.0');
         $this->assertEquals($datetime, $res[1]->content[0], 'pack ' . $datetime . ' != ' . $res[1]->content[0]);
@@ -197,26 +206,26 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN localtime($t)', [
-                    't' => $time
+                    't' => $time,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $localTimeStructure = $res[1]->content[0];
 
         $this->assertInstanceOf(LocalTime::class, $localTimeStructure);
-        $this->assertEquals($time, (string)$localTimeStructure, 'unpack ' . $time . ' != ' . $localTimeStructure);
+        $this->assertEquals($time, (string) $localTimeStructure, 'unpack ' . $time . ' != ' . $localTimeStructure);
 
         //pack
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($t)', [
-                    't' => $localTimeStructure
+                    't' => $localTimeStructure,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $time = rtrim($time, '.0');
         $this->assertEquals($time, $res[1]->content[0], 'pack ' . $time . ' != ' . $res[1]->content[0]);
@@ -235,7 +244,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('CREATE (a:Test { param1: 123 }) RETURN a, ID(a)')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Node::class, $res[1]->content[0]);
 
@@ -261,7 +270,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('CREATE p=(:Test)-[r:HAS { param1: 123 }]->(:Test) RETURN p, ID(r)')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Path::class, $res[1]->content[0]);
 
@@ -289,7 +298,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('RETURN point({ latitude: 13.43, longitude: 56.21 })', [], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Point2D::class, $res[1]->content[0]);
 
@@ -297,11 +306,11 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($p)', [
-                    'p' => $res[1]->content[0]
+                    'p' => $res[1]->content[0],
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertStringStartsWith('point(', $res[1]->content[0]);
     }
@@ -317,7 +326,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('RETURN point({ x: 0, y: 4, z: 1 })', [], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Point3D::class, $res[1]->content[0]);
 
@@ -325,11 +334,11 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($p)', [
-                    'p' => $res[1]->content[0]
+                    'p' => $res[1]->content[0],
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertStringStartsWith('point(', $res[1]->content[0]);
     }
@@ -347,7 +356,7 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
                 ->run('CREATE (a:Test)-[rel:HAS { param1: 123 }]->(b:Test) RETURN rel, ID(rel), ID(a), ID(b)')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Relationship::class, $res[1]->content[0]);
 
@@ -376,26 +385,26 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN time($t)', [
-                    't' => $time
+                    't' => $time,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $timeStructure = $res[1]->content[0];
 
         $this->assertInstanceOf(Time::class, $timeStructure);
-        $this->assertEquals($time, (string)$timeStructure, 'unpack ' . $time . ' != ' . $timeStructure);
+        $this->assertEquals($time, (string) $timeStructure, 'unpack ' . $time . ' != ' . $timeStructure);
 
         //pack
         $res = iterator_to_array(
             $protocol
                 ->run('RETURN toString($t)', [
-                    't' => $timeStructure
+                    't' => $timeStructure,
                 ], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         // neo4j returns fraction of seconds not padded with zeros ... zero timezone offset returns as Z
@@ -413,18 +422,18 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
             $protocol
                 ->begin()
                 ->run('CREATE (:Test { k: 123, b: $b })', [
-                    'b' => $bytes
+                    'b' => $bytes,
                 ], ['mode' => 'w'])
                 ->run('MATCH (n:Test { k: 123 }) RETURN n.b')
                 ->pull()
                 ->rollback()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertInstanceOf(Bytes::class, $res[3]->content[0]);
         $this->assertEquals(
-            (string)$bytes,
-            (string)($res[3]->content[0])
+            (string) $bytes,
+            (string) ($res[3]->content[0]),
         );
     }
 }

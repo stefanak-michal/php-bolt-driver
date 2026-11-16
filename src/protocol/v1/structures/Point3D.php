@@ -24,17 +24,14 @@ class Point3D implements IStructure
      * @param float $z
      */
     public function __construct(
-        public readonly int   $srid,
+        public readonly int $srid,
         public readonly float $x,
         public readonly float $y,
-        public readonly float $z
-    )
-    {
-    }
+        public readonly float $z,
+    ) {}
 
     public function __toString(): string
     {
         return 'point({srid: ' . $this->srid . ', ' . 'x: ' . $this->x . ', y: ' . $this->y . ', z: ' . $this->z . '})';
     }
-
 }

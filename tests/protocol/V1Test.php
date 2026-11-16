@@ -27,8 +27,8 @@ class V1Test extends ProtocolLayer
     public function testInit(V1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b2',
@@ -46,7 +46,7 @@ class V1Test extends ProtocolLayer
         $auth = [
             'scheme' => 'basic',
             'principal' => 'user',
-            'credentials' => 'password'
+            'credentials' => 'password',
         ];
 
         $cls->serverState = ServerState::CONNECTED;
@@ -65,9 +65,9 @@ class V1Test extends ProtocolLayer
     public function testRun(V1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '0001b2',
@@ -83,7 +83,7 @@ class V1Test extends ProtocolLayer
             '00 01 b2',
             '00 01 10',
             '00 0a 89 6e    6f 74 20 61    20 43 51 4c',
-            '00 01 a0'
+            '00 01 a0',
         ];
 
         $cls->serverState = ServerState::READY;
@@ -107,10 +107,10 @@ class V1Test extends ProtocolLayer
     public function testPullAll(V1 $cls): void
     {
         self::$readArray = [
-            [0x71, (object)[]],
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x71, (object) []],
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '0001b0',
@@ -140,9 +140,9 @@ class V1Test extends ProtocolLayer
     public function testDiscardAll(V1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
-            [0x7E, (object)[]]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
+            [0x7E, (object) []],
         ];
         self::$writeBuffer = [
             '0001b0',
@@ -170,8 +170,8 @@ class V1Test extends ProtocolLayer
     public function testReset(V1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b0',
@@ -192,8 +192,8 @@ class V1Test extends ProtocolLayer
     public function testAckFailure(V1 $cls): void
     {
         self::$readArray = [
-            [0x70, (object)[]],
-            [0x7F, (object)['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']]
+            [0x70, (object) []],
+            [0x7F, (object) ['message' => 'some error message', 'code' => 'Neo.ClientError.Statement.SyntaxError']],
         ];
         self::$writeBuffer = [
             '0001b0',

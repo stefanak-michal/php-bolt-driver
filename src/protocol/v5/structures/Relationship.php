@@ -16,16 +16,15 @@ use Bolt\protocol\v1\structures\Relationship as v1_Relationship;
 class Relationship extends v1_Relationship
 {
     public function __construct(
-        int                    $id,
-        int                    $startNodeId,
-        int                    $endNodeId,
-        string                 $type,
-        array                  $properties,
+        int $id,
+        int $startNodeId,
+        int $endNodeId,
+        string $type,
+        array $properties,
         public readonly string $element_id,
         public readonly string $start_node_element_id,
-        public readonly string $end_node_element_id
-    )
-    {
+        public readonly string $end_node_element_id,
+    ) {
         parent::__construct($id, $startNodeId, $endNodeId, $type, $properties);
     }
 
@@ -39,7 +38,7 @@ class Relationship extends v1_Relationship
             'properties' => $this->properties,
             'element_id' => $this->element_id,
             'start_node_element_id' => $this->start_node_element_id,
-            'end_node_element_id' => $this->end_node_element_id
+            'end_node_element_id' => $this->end_node_element_id,
         ]);
     }
 }

@@ -19,5 +19,4 @@ class V4_2Test extends ProtocolLayer
         $this->assertInstanceOf(V4_2::class, $cls);
         return $cls;
     }
-
 }

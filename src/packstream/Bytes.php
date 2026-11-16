@@ -11,7 +11,4 @@ namespace Bolt\packstream;
  * @link https://www.neo4j.com/docs/bolt/current/packstream/#data-type-bytes
  * @package Bolt\packstream
  */
-class Bytes extends \Bolt\packstream\v1\Bytes
-{
-
-}
+class Bytes extends \Bolt\packstream\v1\Bytes {}

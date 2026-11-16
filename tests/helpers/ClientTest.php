@@ -15,7 +15,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ClientTest extends TestCase
 {
-    private function getTestSuite(): string {
+    private function getTestSuite(): string
+    {
         $argv = $_SERVER['argv'] ?? [];
 
         foreach ($argv as $index => $arg) {
@@ -37,7 +38,7 @@ class ClientTest extends TestCase
             $credentials = [
                 'scheme' => 'basic',
                 'principal' => $_ENV['GDB_USERNAME'],
-                'credentials' => $_ENV['GDB_PASSWORD']
+                'credentials' => $_ENV['GDB_PASSWORD'],
             ];
         }
 
@@ -54,7 +55,7 @@ class ClientTest extends TestCase
 
         $data = $client->queryFirstField('RETURN 1 AS num');
         $this->assertEquals(1, $data);
-        
+
         $data = $client->queryFirstColumn('UNWIND [1, 2, 3] AS num RETURN num');
         $this->assertEquals([1, 2, 3], $data);
 

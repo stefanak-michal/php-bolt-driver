@@ -13,10 +13,8 @@ class DictionaryGenerator implements \Bolt\packstream\IPackDictionaryGenerator
 {
     public function __construct(
         public array $array,
-        private int  $position = 0
-    )
-    {
-    }
+        private int $position = 0,
+    ) {}
 
     public function rewind(): void
     {

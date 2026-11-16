@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class NornicDBTest
- * 
+ *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
@@ -21,8 +21,9 @@ class NornicDBTest extends TestCase
      */
     public function testConnection(): AProtocol
     {
-        if (!extension_loaded('sockets'))
+        if (!extension_loaded('sockets')) {
             $this->markTestSkipped('Sockets extension not available');
+        }
 
         $conn = new \Bolt\connection\Socket('127.0.0.1', 7687, 3);
         $this->assertInstanceOf(\Bolt\connection\Socket::class, $conn);
@@ -86,7 +87,7 @@ class NornicDBTest extends TestCase
                 ->pull()
                 ->rollback()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertInstanceOf(\Bolt\protocol\v1\structures\Node::class, $res[2]->content[0]);
@@ -97,11 +98,11 @@ class NornicDBTest extends TestCase
         $res = iterator_to_array(
             $protocol
                 ->run('MATCH (a:Test) WHERE ID(a) = $a RETURN COUNT(a)', [
-                    'a' => $res[2]->content[0]->id
+                    'a' => $res[2]->content[0]->id,
                 ])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertEquals(0, $res[1]->content[0]);
@@ -123,7 +124,7 @@ class NornicDBTest extends TestCase
                 ->run('CREATE (:A)-[r:RELATES_TO]->(:B) RETURN r')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertInstanceOf(\Bolt\protocol\v1\structures\Relationship::class, $res[1]->content[0]);
@@ -144,7 +145,7 @@ class NornicDBTest extends TestCase
                 ->run('CREATE p=(:A)-[:RELATES_TO]->(:B) RETURN p')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
 
         $this->assertInstanceOf(\Bolt\protocol\v1\structures\Path::class, $res[1]->content[0]);
@@ -170,7 +171,7 @@ class NornicDBTest extends TestCase
                 ->run('MATCH (n) DETACH DELETE n')
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
     }
 }

@@ -41,7 +41,7 @@ class PackerTest extends TestLayer
                 ->run('RETURN $n IS NULL', ['n' => null], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertTrue($res[1]->content[0]);
     }
@@ -56,7 +56,7 @@ class PackerTest extends TestLayer
                 ->run('RETURN $b = true', ['b' => true], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertTrue($res[1]->content[0]);
 
@@ -65,7 +65,7 @@ class PackerTest extends TestLayer
                 ->run('RETURN $b = false', ['b' => false], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertTrue($res[1]->content[0]);
     }
@@ -81,17 +81,34 @@ class PackerTest extends TestLayer
                 ->run('RETURN $i = ' . $i, ['i' => $i], ['mode' => 'r'])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertTrue($res[1]->content[0]);
     }
 
     public function providerInteger(): \Generator
     {
-        foreach (range(-16, 127) as $i)
+        foreach (range(-16, 127) as $i) {
             yield 'int ' . $i => [$i];
-        foreach ([-17, -128, 128, 32767, 32768, 2147483647, 2147483648, 9223372036854775807, -129, -32768, -32769, -2147483648, -2147483649, -9223372036854775808] as $i)
-            yield 'int ' . number_format($i, 0, '', ' ') => [(int)$i];
+        }
+        foreach ([
+            -17,
+            -128,
+            128,
+            32767,
+            32768,
+            2147483647,
+            2147483648,
+            9223372036854775807,
+            -129,
+            -32768,
+            -32769,
+            -2147483648,
+            -2147483649,
+            -9223372036854775808,
+        ] as $i) {
+            yield 'int ' . number_format($i, 0, '', ' ') => [(int) $i];
+        }
     }
 
     /**
@@ -103,10 +120,14 @@ class PackerTest extends TestLayer
             $num = mt_rand(-mt_getrandmax(), mt_getrandmax()) / mt_getrandmax();
             $res = iterator_to_array(
                 $protocol
-                    ->run('RETURN ' . $num . ' + 0.000001 > $n > ' . $num . ' - 0.000001', ['n' => $num], ['mode' => 'r'])
+                    ->run(
+                        'RETURN ' . $num . ' + 0.000001 > $n > ' . $num . ' - 0.000001',
+                        ['n' => $num],
+                        ['mode' => 'r'],
+                    )
                     ->pull()
                     ->getResponses(),
-                false
+                false,
             );
             $this->assertTrue($res[1]->content[0]);
         }
@@ -119,8 +140,9 @@ class PackerTest extends TestLayer
     {
         $randomString = function (int $length) {
             $str = '';
-            while (strlen($str) < $length)
+            while (strlen($str) < $length) {
                 $str .= chr(mt_rand(32, 126));
+            }
             return $str;
         };
 
@@ -128,10 +150,14 @@ class PackerTest extends TestLayer
             $str = $randomString($length);
             $res = iterator_to_array(
                 $protocol
-                    ->run('RETURN $s = "' . str_replace(['\\', '"'], ['\\\\', '\\"'], $str) . '"', ['s' => $str], ['mode' => 'r'])
+                    ->run(
+                        'RETURN $s = "' . str_replace(['\\', '"'], ['\\\\', '\\"'], $str) . '"',
+                        ['s' => $str],
+                        ['mode' => 'r'],
+                    )
                     ->pull()
                     ->getResponses(),
-                false
+                false,
             );
             $this->assertTrue($res[1]->content[0]);
         }
@@ -149,7 +175,7 @@ class PackerTest extends TestLayer
                     ->run('RETURN size($arr) = ' . count($arr), ['arr' => $arr], ['mode' => 'r'])
                     ->pull()
                     ->getResponses(),
-                false
+                false,
             );
             $this->assertTrue($res[1]->content[0]);
         }
@@ -173,10 +199,10 @@ class PackerTest extends TestLayer
             $arr = $this->randomArray($size);
             $res = iterator_to_array(
                 $protocol
-                    ->run('RETURN size(keys($arr)) = ' . count($arr), ['arr' => (object)$arr], ['mode' => 'r'])
+                    ->run('RETURN size(keys($arr)) = ' . count($arr), ['arr' => (object) $arr], ['mode' => 'r'])
                     ->pull()
                     ->getResponses(),
-                false
+                false,
             );
             $this->assertTrue($res[1]->content[0]);
         }
@@ -190,7 +216,7 @@ class PackerTest extends TestLayer
         $data = [
             'first',
             'second',
-            'third'
+            'third',
         ];
         $list = new \Bolt\tests\packstream\v1\generators\ListGenerator($data);
         $result = iterator_to_array(
@@ -198,10 +224,11 @@ class PackerTest extends TestLayer
                 ->run('UNWIND $list AS row RETURN row', ['list' => $list])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
-        foreach ($data as $i => $value)
+        foreach ($data as $i => $value) {
             $this->assertEquals($value, $result[1 + $i]->content[0]);
+        }
     }
 
     /**
@@ -212,7 +239,7 @@ class PackerTest extends TestLayer
         $data = [
             'a' => 'first',
             'b' => 'second',
-            'c' => 'third'
+            'c' => 'third',
         ];
         $dict = new \Bolt\tests\packstream\v1\generators\DictionaryGenerator($data);
         $result = iterator_to_array(
@@ -220,9 +247,8 @@ class PackerTest extends TestLayer
                 ->run('RETURN $dict', ['dict' => $dict])
                 ->pull()
                 ->getResponses(),
-            false
+            false,
         );
         $this->assertEquals($data, $result[1]->content[0]);
     }
-
 }

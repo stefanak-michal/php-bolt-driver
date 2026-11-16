@@ -16,19 +16,17 @@ use Bolt\protocol\IStructure;
 class UnboundRelationship implements IStructure
 {
     public function __construct(
-        public readonly int    $id,
+        public readonly int $id,
         public readonly string $type,
-        public readonly array  $properties
-    )
-    {
-    }
+        public readonly array $properties,
+    ) {}
 
     public function __toString(): string
     {
         return json_encode([
             'identity' => $this->id,
             'type' => $this->type,
-            'properties' => $this->properties
+            'properties' => $this->properties,
         ]);
     }
 }

@@ -22,7 +22,7 @@ class Socket extends AConnection
 
     private const POSSIBLE_RETRY_CODES = [
         SOCKET_EINTR,
-        SOCKET_EWOULDBLOCK
+        SOCKET_EWOULDBLOCK,
     ];
 
     public function __construct(string $ip = '127.0.0.1', int $port = 7687, float $timeout = 15)
@@ -129,8 +129,8 @@ class Socket extends AConnection
         if ($this->socket === false) {
             return;
         }
-        $timeoutSeconds = (int)floor($this->timeout);
-        $microSeconds = (int)floor(($this->timeout - $timeoutSeconds) * 1000000);
+        $timeoutSeconds = (int) floor($this->timeout);
+        $microSeconds = (int) floor(($this->timeout - $timeoutSeconds) * 1000000);
         $timeoutOption = ['sec' => $timeoutSeconds, 'usec' => $microSeconds];
         socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, $timeoutOption);
         socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, $timeoutOption);
@@ -142,7 +142,7 @@ class Socket extends AConnection
      * @throws ConnectException
      * @throws ConnectionTimeoutException
      */
-    private function throwConnectException(float|null $start = null): void
+    private function throwConnectException(?float $start = null): void
     {
         $code = socket_last_error($this->socket);
         if ($code === SOCKET_ETIMEDOUT) {

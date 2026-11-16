@@ -1,0 +1,11 @@
+# made to measure by `dresscode init`; run it again to see what has moved since, it writes nothing over this file
+use: perCs
+
+paths: [src, tests]
+
+# the namespaces of the scope declare no function and no constant, so an unqualified name in a namespace
+# is resolved for certain; one declared later is reported until it is listed
+nameResolution: certain
+
+file:
+	lineEnding: LF

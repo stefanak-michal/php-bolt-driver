@@ -17,11 +17,11 @@ use Bolt\enum\Signature;
 
 /**
  * Class StructuresTest
-*
-* @author Michal Stefanak
-* @link https://github.com/stefanak-michal/php-bolt-driver
-* @package Bolt\tests\structures\v4_3
-*/
+ *
+ * @author Michal Stefanak
+ * @link https://github.com/stefanak-michal/php-bolt-driver
+ * @package Bolt\tests\structures\v4_3
+ */
 class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 {
     protected string $expectedDateTimeClass = DateTime::class;
@@ -48,11 +48,14 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
             'scheme' => 'basic',
             'principal' => $_ENV['GDB_USERNAME'],
             'credentials' => $_ENV['GDB_PASSWORD'],
-            'patch_bolt' => ['utc']
+            'patch_bolt' => ['utc'],
         ])->getResponse();
         $this->assertEquals(Signature::SUCCESS, $helloResponse->signature);
 
-        if (version_compare($protocol->getVersion(), '5', '>=') || version_compare($protocol->getVersion(), '4.3', '<')) {
+        if (
+            version_compare($protocol->getVersion(), '5', '>=')
+            || version_compare($protocol->getVersion(), '4.3', '<')
+        ) {
             $this->markTestSkipped('You are not running Neo4j version with patch_bolt support.');
         }
 
@@ -62,5 +65,4 @@ class StructuresTest extends \Bolt\tests\structures\DateTimeUpdate
 
         return $protocol;
     }
-
 }

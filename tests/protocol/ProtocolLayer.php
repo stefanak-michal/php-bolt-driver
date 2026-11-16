@@ -43,28 +43,34 @@ abstract class ProtocolLayer extends TestCase
         $mockBuilder = $this
             ->getMockBuilder(AConnection::class)
             ->disableOriginalConstructor();
-        call_user_func([$mockBuilder, method_exists($mockBuilder, 'onlyMethods') ? 'onlyMethods' : 'setMethods'], ['__construct', 'write', 'read', 'connect', 'disconnect']);
+        call_user_func(
+            [$mockBuilder, method_exists($mockBuilder, 'onlyMethods') ? 'onlyMethods' : 'setMethods'],
+            ['__construct', 'write', 'read', 'connect', 'disconnect'],
+        );
         $connection = $mockBuilder->getMock();
 
         $connection
             ->method('write')
             ->with(
                 $this->callback(function ($buffer) {
-                    if (bin2hex($buffer) == '0000')
+                    if (bin2hex($buffer) == '0000') {
                         return true;
+                    }
 
                     //skip write buffer check
-                    if (empty(self::$writeBuffer))
+                    if (empty(self::$writeBuffer)) {
                         return true;
+                    }
 
                     $i = self::$writeIndex;
                     self::$writeIndex++;
-                    if (self::$writeIndex >= count(self::$writeBuffer))
+                    if (self::$writeIndex >= count(self::$writeBuffer)) {
                         self::$writeIndex = 0;
+                    }
 
                     //verify expected buffer
                     return hex2bin(str_replace(' ', '', self::$writeBuffer[$i] ?? '')) === $buffer;
-                })
+                }),
             );
 
         $connection
@@ -87,7 +93,10 @@ abstract class ProtocolLayer extends TestCase
                 self::$readBuffer .= mb_strcut($s, 2, null, '8bit');
             }
 
-            self::$readBuffer = pack('n', mb_strlen(self::$readBuffer, '8bit')) . self::$readBuffer . chr(0x00) . chr(0x00);
+            self::$readBuffer = pack('n', mb_strlen(self::$readBuffer, '8bit'))
+                . self::$readBuffer
+                . chr(0x00)
+                . chr(0x00);
         }
 
         $output = mb_strcut(self::$readBuffer, 0, $length, '8bit');

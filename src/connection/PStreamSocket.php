@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Bolt\connection;
 
 use Psr\SimpleCache\CacheInterface;
@@ -59,8 +58,11 @@ class PStreamSocket extends StreamSocket
 
     public function getIdentifier(): string
     {
-        if (empty($this->identifier))
-            $this->identifier = str_replace(':', '_', stream_socket_get_name($this->stream, false)) . '_' . str_replace(':', '_', stream_socket_get_name($this->stream, true));
+        if (empty($this->identifier)) {
+            $this->identifier = str_replace(':', '_', stream_socket_get_name($this->stream, false))
+                . '_'
+                . str_replace(':', '_', stream_socket_get_name($this->stream, true));
+        }
         return $this->identifier;
     }
 

@@ -7,7 +7,7 @@ use Bolt\enum\Signature;
 
 /**
  * Class ATest
- * 
+ *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\tests
@@ -17,10 +17,12 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        if (!isset($_ENV['GDB_HOST']))
+        if (!isset($_ENV['GDB_HOST'])) {
             $_ENV['GDB_HOST'] = '127.0.0.1';
-        if (!isset($_ENV['GDB_PORT']))
+        }
+        if (!isset($_ENV['GDB_PORT'])) {
             $_ENV['GDB_PORT'] = 7687;
+        }
     }
 
     /**
@@ -35,14 +37,14 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
             $this->assertEquals(Signature::SUCCESS, $protocol->init('bolt-php', [
                 'scheme' => 'basic',
                 'principal' => $name,
-                'credentials' => $password
+                'credentials' => $password,
             ])->getResponse()->signature);
         } elseif (method_exists($protocol, 'logon')) {
             $this->assertEquals(Signature::SUCCESS, $protocol->hello()->getResponse()->signature);
             $this->assertEquals(Signature::SUCCESS, $protocol->logon([
                 'scheme' => 'basic',
                 'principal' => $name,
-                'credentials' => $password
+                'credentials' => $password,
             ])->getResponse()->signature);
         } else {
             $this->assertEquals(Signature::SUCCESS, $protocol->hello([
@@ -63,45 +65,64 @@ abstract class TestLayer extends \PHPUnit\Framework\TestCase
      */
     protected function getCompatibleBoltVersion(?string $url = null): float|int
     {
-        $json = file_get_contents($url ?? $_ENV['NEO_BROWSER'] ?? ('http://' . ($_ENV['GDB_HOST'] ?? 'localhost') . ':7474/'));
+        $json = file_get_contents(
+            $url ?? $_ENV['NEO_BROWSER'] ?? ('http://' . ($_ENV['GDB_HOST'] ?? 'localhost') . ':7474/'),
+        );
         $decoded = json_decode($json, true);
-        if (json_last_error() !== JSON_ERROR_NONE)
+        if (json_last_error() !== JSON_ERROR_NONE) {
             $this->markTestIncomplete('Not able to obtain Neo4j version through HTTP');
+        }
 
         $neo4jVersion = $decoded['neo4j_version'];
 
-        if (version_compare($neo4jVersion, '2026.09', '>='))
+        if (version_compare($neo4jVersion, '2026.09', '>=')) {
             return 6.1;
-        if (version_compare($neo4jVersion, '2025.10', '>='))
+        }
+        if (version_compare($neo4jVersion, '2025.10', '>=')) {
             return 6;
-        if (version_compare($neo4jVersion, '5.26', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.26', '>=')) {
             return 5.8;
-        if (version_compare($neo4jVersion, '5.23', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.23', '>=')) {
             return 5.6;
-        if (version_compare($neo4jVersion, '5.13', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.13', '>=')) {
             return 5.4;
-        if (version_compare($neo4jVersion, '5.9', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.9', '>=')) {
             return 5.3;
-        if (version_compare($neo4jVersion, '5.7', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.7', '>=')) {
             return 5.2;
-        if (version_compare($neo4jVersion, '5.5', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.5', '>=')) {
             return 5.1;
-        if (version_compare($neo4jVersion, '5.0', '>='))
+        }
+        if (version_compare($neo4jVersion, '5.0', '>=')) {
             return 5;
-        if (version_compare($neo4jVersion, '4.4', '>='))
+        }
+        if (version_compare($neo4jVersion, '4.4', '>=')) {
             return 4.4;
-        if (version_compare($neo4jVersion, '4.3', '>='))
+        }
+        if (version_compare($neo4jVersion, '4.3', '>=')) {
             return 4.3;
-        if (version_compare($neo4jVersion, '4.2', '>='))
+        }
+        if (version_compare($neo4jVersion, '4.2', '>=')) {
             return 4.2;
-        if (version_compare($neo4jVersion, '4.1', '>='))
+        }
+        if (version_compare($neo4jVersion, '4.1', '>=')) {
             return 4.1;
-        if (version_compare($neo4jVersion, '4', '>='))
+        }
+        if (version_compare($neo4jVersion, '4', '>=')) {
             return 4;
-        if (version_compare($neo4jVersion, '3.5', '>='))
+        }
+        if (version_compare($neo4jVersion, '3.5', '>=')) {
             return 3;
-        if (version_compare($neo4jVersion, '3.4', '>='))
+        }
+        if (version_compare($neo4jVersion, '3.4', '>=')) {
             return 2;
+        }
         return 1;
     }
 }

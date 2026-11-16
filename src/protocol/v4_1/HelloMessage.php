@@ -20,8 +20,9 @@ trait HelloMessage
      */
     public function hello(array $extra): static
     {
-        if (isset($extra['routing']) && is_array($extra['routing']))
-            $extra['routing'] = (object)$extra['routing'];
+        if (isset($extra['routing']) && is_array($extra['routing'])) {
+            $extra['routing'] = (object) $extra['routing'];
+        }
 
         return $this->__hello($extra);
     }
