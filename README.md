@@ -36,8 +36,7 @@ We are trying to keep up and this library supports **Bolt <= 6.1**.
 
 ## :white_check_mark: Requirements
 
-This library keep up with [PHP supported versions](https://www.php.net/supported-versions.php) what means it is at *
-*PHP^8.1**.
+- **PHP^8.3** [PHP supported versions](https://www.php.net/supported-versions.php)
 
 ### PHP Extensions
 
