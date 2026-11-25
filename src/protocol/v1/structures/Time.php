@@ -5,9 +5,6 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class Time
- * Immutable
- *
  * An instant capturing the time of day, and the timezone, but not the date
  *
  * To convert to UTC use:
@@ -18,15 +15,15 @@ use Bolt\protocol\IStructure;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-time
  * @package Bolt\protocol\v1\structures
  */
-class Time implements IStructure
+readonly class Time implements IStructure
 {
     /**
      * @param int $nanoseconds nanoseconds since midnight. This time is not UTC
      * @param int $tz_offset_seconds offset in seconds from UTC
      */
     public function __construct(
-        public readonly int $nanoseconds,
-        public readonly int $tz_offset_seconds,
+        public int $nanoseconds,
+        public int $tz_offset_seconds,
     ) {}
 
     public function __toString(): string

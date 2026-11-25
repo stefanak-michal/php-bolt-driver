@@ -5,9 +5,6 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class DateTimeZoneId
- * Immutable
- *
  * An instant capturing the date, the time, and the time zone.
  * The time zone information is specified with a zone identification number.
  *
@@ -19,7 +16,7 @@ use Bolt\protocol\IStructure;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-legacy-datetimezoneid
  * @package Bolt\protocol\v1\structures
  */
-class DateTimeZoneId implements IStructure
+readonly class DateTimeZoneId implements IStructure
 {
     /**
      * @param int $seconds seconds since the adjusted Unix epoch. This is not UTC
@@ -27,9 +24,9 @@ class DateTimeZoneId implements IStructure
      * @param string $tz_id identifier for a specific time zone
      */
     public function __construct(
-        public readonly int $seconds,
-        public readonly int $nanoseconds,
-        public readonly string $tz_id,
+        public int $seconds,
+        public int $nanoseconds,
+        public string $tz_id,
     ) {}
 
     public function __toString(): string

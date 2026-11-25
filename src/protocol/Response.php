@@ -5,12 +5,11 @@ namespace Bolt\protocol;
 use Bolt\enum\{Message, Signature};
 
 /**
- * Class Response
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @package Bolt\protocol
  */
-class Response
+readonly class Response
 {
     /**
      * @param Message $message Requested bolt message name
@@ -18,8 +17,8 @@ class Response
      * @param array $content Response content
      */
     public function __construct(
-        public readonly Message $message,
-        public readonly Signature $signature,
-        public readonly array $content = [],
+        public Message $message,
+        public Signature $signature,
+        public array $content = [],
     ) {}
 }

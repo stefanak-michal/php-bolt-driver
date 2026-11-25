@@ -5,9 +5,6 @@ namespace Bolt\protocol\v5\structures;
 use Bolt\protocol\v1\structures\DateTimeZoneId as v1_DateTimeZoneId;
 
 /**
- * Class DateTimeZoneId
- * Immutable
- *
  * An instant capturing the date, the time, and the time zone.
  * The time zone information is specified with a zone identification number.
  *
@@ -16,7 +13,7 @@ use Bolt\protocol\v1\structures\DateTimeZoneId as v1_DateTimeZoneId;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-legacy-datetimezoneid
  * @package Bolt\protocol\v5\structures
  */
-class DateTimeZoneId extends v1_DateTimeZoneId
+readonly class DateTimeZoneId extends v1_DateTimeZoneId
 {
     public function __toString(): string
     {

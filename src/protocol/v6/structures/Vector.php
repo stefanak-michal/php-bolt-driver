@@ -6,19 +6,16 @@ use Bolt\packstream\v1\Bytes;
 use Bolt\protocol\IStructure;
 
 /**
- * Class Vector
- * Immutable
- *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-vector
  * @package Bolt\protocol\v6\structures
  */
-class Vector implements IStructure
+readonly class Vector implements IStructure
 {
     public function __construct(
-        public readonly Bytes $type_marker,
-        public readonly Bytes $data,
+        public Bytes $type_marker,
+        public Bytes $data,
     ) {}
 
     public function __toString(): string
@@ -26,7 +23,7 @@ class Vector implements IStructure
         return json_encode([(string) $this->type_marker, (string) $this->data]);
     }
 
-    private static array $endiannessFormats = ['s', 'l', 'q'];
+    private const array ENDIANNESS_FORMATS = ['s', 'l', 'q'];
 
     /**
      * Encode array as vector structure
@@ -79,7 +76,7 @@ class Vector implements IStructure
         $littleEndian = unpack('S', "\x01\x00")[1] === 1;
         foreach ($data as $entry) {
             $value = pack($packFormat, $anyFloat ? (float) $entry : (int) $entry);
-            $packed[] = in_array($packFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value;
+            $packed[] = in_array($packFormat, self::ENDIANNESS_FORMATS) && $littleEndian ? strrev($value) : $value;
         }
 
         return new self(new Bytes([chr($type->value)]), new Bytes($packed));
@@ -147,7 +144,7 @@ class Vector implements IStructure
         foreach (mb_str_split((string) $this->data, $size, '8bit') as $value) {
             $output[] = unpack(
                 $unpackFormat,
-                in_array($unpackFormat, self::$endiannessFormats) && $littleEndian ? strrev($value) : $value,
+                in_array($unpackFormat, self::ENDIANNESS_FORMATS) && $littleEndian ? strrev($value) : $value,
             )[1];
         }
 

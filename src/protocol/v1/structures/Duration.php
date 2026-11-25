@@ -5,9 +5,6 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class Duration
- * Immutable
- *
  * A temporal amount. This captures the difference in time between two instants. It only captures the amount of time
  * between two instants, it does not capture a start time and end time. A unit capturing the start time and end time
  * would be a Time Interval and is out of scope for this proposal.
@@ -17,13 +14,13 @@ use Bolt\protocol\IStructure;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-duration
  * @package Bolt\protocol\v1\structures
  */
-class Duration implements IStructure
+readonly class Duration implements IStructure
 {
     public function __construct(
-        public readonly int $months,
-        public readonly int $days,
-        public readonly int $seconds,
-        public readonly int $nanoseconds,
+        public int $months,
+        public int $days,
+        public int $seconds,
+        public int $nanoseconds,
     ) {}
 
     public function __toString(): string
