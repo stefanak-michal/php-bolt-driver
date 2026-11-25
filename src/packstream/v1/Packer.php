@@ -18,7 +18,10 @@ class Packer implements IPacker
     private const int SMALL = 16;
     private const int MEDIUM = 256;
     private const int LARGE = 65536;
-    private const int HUGE = 4294967295;
+    /**
+     * float to allow the library to load on 32 bit
+     */
+    private const int|float HUGE = 4294967295;
 
     private bool $littleEndian;
 
