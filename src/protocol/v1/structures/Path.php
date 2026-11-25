@@ -5,27 +5,24 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class Path
- * Immutable
- *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-path
  * @package Bolt\protocol\v1\structures
  */
-class Path implements IStructure
+readonly class Path implements IStructure
 {
     /**
      * List of integers describing how to construct the path from nodes and rels
      * @var int[]
      */
-    public readonly array $indices;
+    public array $indices;
 
     /**
      * @deprecated use $indices instead. For some reason originally I named it ids, but the correct name is indices.
      * @var int[]
      */
-    public readonly array $ids;
+    public array $ids;
 
     /**
      * @param Node[] $nodes List of nodes
@@ -33,8 +30,8 @@ class Path implements IStructure
      * @param int[] $indices Relationship id and node id to represent the path
      */
     public function __construct(
-        public readonly array $nodes,
-        public readonly array $rels,
+        public array $nodes,
+        public array $rels,
         array $indices,
     ) {
         $this->ids = $indices;

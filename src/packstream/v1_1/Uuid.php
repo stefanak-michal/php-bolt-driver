@@ -5,16 +5,14 @@ namespace Bolt\packstream\v1_1;
 use InvalidArgumentException;
 
 /**
- * Class Uuid
- *
  * @author Michal Stefanak
  * @link https://github.com/stefanak-michal/php-bolt-driver
  * @link https://neo4j.com/docs/bolt/current/packstream/#data-type-uuid
  * @package Bolt\packstream\v1_1
  */
-class Uuid
+readonly class Uuid
 {
-    public readonly string $value;
+    public string $value;
 
     /**
      * @throws InvalidArgumentException In case of invalid UUID format

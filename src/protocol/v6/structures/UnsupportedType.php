@@ -5,8 +5,6 @@ namespace Bolt\protocol\v6\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class UnsupportedType
- * Immutable
  * A placeholder value for the server to represent a value of a type not supported
  * by the currently negotiated protocol version.
  *
@@ -15,7 +13,7 @@ use Bolt\protocol\IStructure;
  * @link https://neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-unsupported-type
  * @package Bolt\protocol\v6\structures
  */
-class UnsupportedType implements IStructure
+readonly class UnsupportedType implements IStructure
 {
     /**
      * @param string $name The name of the type that could not be transmitted (e.g, "QuantumFloat").
@@ -26,10 +24,10 @@ class UnsupportedType implements IStructure
      * @param string[] $extra Contains additional information.
      */
     public function __construct(
-        public readonly string $name,
-        public readonly int $minimum_protocol_major,
-        public readonly int $minimum_protocol_minor,
-        public readonly array $extra,
+        public string $name,
+        public int $minimum_protocol_major,
+        public int $minimum_protocol_minor,
+        public array $extra,
     ) {}
 
     public function __toString(): string

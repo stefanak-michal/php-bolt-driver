@@ -5,9 +5,6 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class LocalDateTime
- * Immutable
- *
  * An instant capturing the date and the time, but not the time zone
  *
  * @author Michal Stefanak
@@ -15,15 +12,15 @@ use Bolt\protocol\IStructure;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-localdatetime
  * @package Bolt\protocol\v1\structures
  */
-class LocalDateTime implements IStructure
+readonly class LocalDateTime implements IStructure
 {
     /**
      * @param int $seconds seconds since the Unix epoch
      * @param int $nanoseconds
      */
     public function __construct(
-        public readonly int $seconds,
-        public readonly int $nanoseconds,
+        public int $seconds,
+        public int $nanoseconds,
     ) {}
 
     public function __toString(): string

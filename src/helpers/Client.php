@@ -7,6 +7,7 @@ use Bolt\protocol\Response;
 use Bolt\enum\Signature;
 use Exception;
 use Closure;
+use SensitiveParameter;
 
 /**
  * Class Client
@@ -40,6 +41,7 @@ class Client
      */
     public function __construct(
         public readonly AProtocol $protocol,
+        #[SensitiveParameter]
         array $auth = ['scheme' => 'none'],
         private readonly ?Closure $logHandler = null,
         private readonly ?Closure $errorHandler = null,
@@ -328,12 +330,14 @@ class Client
             }
         }
 
-        throw new Exception(sprintf(
-            '[%s] %s\r\n%s',
-            $code,
-            $response->content['message'] ?? '',
-            $response->content['description'] ?? '',
-        ));
+        throw new Exception(
+            sprintf(
+                '[%s] %s\r\n%s',
+                $code,
+                $response->content['message'] ?? '',
+                $response->content['description'] ?? '',
+            ),
+        );
     }
 
     /**

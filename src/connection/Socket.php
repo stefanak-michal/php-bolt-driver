@@ -2,7 +2,6 @@
 
 namespace Bolt\connection;
 
-use Bolt\Bolt;
 use Bolt\error\ConnectException;
 use Bolt\error\ConnectionTimeoutException;
 
@@ -15,12 +14,9 @@ use Bolt\error\ConnectionTimeoutException;
  */
 class Socket extends AConnection
 {
-    /**
-     * @var \Socket|bool
-     */
-    private $socket = false;
+    private \Socket|false $socket = false;
 
-    private const POSSIBLE_RETRY_CODES = [
+    private const array POSSIBLE_RETRY_CODES = [
         SOCKET_EINTR,
         SOCKET_EWOULDBLOCK,
     ];

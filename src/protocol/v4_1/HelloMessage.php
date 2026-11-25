@@ -3,6 +3,7 @@
 namespace Bolt\protocol\v4_1;
 
 use Bolt\error\BoltException;
+use SensitiveParameter;
 
 trait HelloMessage
 {
@@ -18,7 +19,7 @@ trait HelloMessage
      * @param array $extra
      * @throws BoltException
      */
-    public function hello(array $extra): static
+    public function hello(#[SensitiveParameter] array $extra): static
     {
         if (isset($extra['routing']) && is_array($extra['routing'])) {
             $extra['routing'] = (object) $extra['routing'];

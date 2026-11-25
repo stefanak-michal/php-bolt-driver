@@ -5,9 +5,6 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class DateTime
- * Immutable
- *
  * An instant capturing the date, the time, and the time zone.
  * The time zone information is specified with a zone offset.
  *
@@ -19,7 +16,7 @@ use Bolt\protocol\IStructure;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-legacy-datetime
  * @package Bolt\protocol\v1\structures
  */
-class DateTime implements IStructure
+readonly class DateTime implements IStructure
 {
     /**
      * @param int $seconds seconds since the adjusted Unix epoch. This is not UTC
@@ -27,9 +24,9 @@ class DateTime implements IStructure
      * @param int $tz_offset_seconds specifies the offset in seconds from UTC
      */
     public function __construct(
-        public readonly int $seconds,
-        public readonly int $nanoseconds,
-        public readonly int $tz_offset_seconds,
+        public int $seconds,
+        public int $nanoseconds,
+        public int $tz_offset_seconds,
     ) {}
 
     public function __toString(): string

@@ -5,9 +5,6 @@ namespace Bolt\protocol\v1\structures;
 use Bolt\protocol\IStructure;
 
 /**
- * Class Point3D
- * Immutable
- *
  * Represents a single location in space.
  *
  * @author Michal Stefanak
@@ -15,7 +12,7 @@ use Bolt\protocol\IStructure;
  * @link https://www.neo4j.com/docs/bolt/current/bolt/structure-semantics/#structure-point3d
  * @package Bolt\protocol\v1\structures
  */
-class Point3D implements IStructure
+readonly class Point3D implements IStructure
 {
     /**
      * @param int $srid Spatial Reference System Identifier
@@ -24,10 +21,10 @@ class Point3D implements IStructure
      * @param float $z
      */
     public function __construct(
-        public readonly int $srid,
-        public readonly float $x,
-        public readonly float $y,
-        public readonly float $z,
+        public int $srid,
+        public float $x,
+        public float $y,
+        public float $z,
     ) {}
 
     public function __toString(): string

@@ -4,6 +4,7 @@ namespace Bolt\protocol\v5_1;
 
 use Bolt\enum\Message;
 use Bolt\error\BoltException;
+use SensitiveParameter;
 
 trait LogonMessage
 {
@@ -14,7 +15,7 @@ trait LogonMessage
      * @link https://www.neo4j.com/docs/bolt/current/bolt/message/#messages-logon
      * @throws BoltException
      */
-    public function logon(array $auth): static
+    public function logon(#[SensitiveParameter] array $auth): static
     {
         $this->write($this->packer->pack(0x6A, (object) $auth));
         $this->pipelinedMessages[] = Message::LOGON;

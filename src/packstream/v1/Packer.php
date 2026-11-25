@@ -15,10 +15,13 @@ use Bolt\protocol\IStructure;
  */
 class Packer implements IPacker
 {
-    private const SMALL = 16;
-    private const MEDIUM = 256;
-    private const LARGE = 65536;
-    private const HUGE = 4294967295;
+    private const int SMALL = 16;
+    private const int MEDIUM = 256;
+    private const int LARGE = 65536;
+    /**
+     * float to allow the library to load on 32 bit
+     */
+    private const int|float HUGE = 4294967295;
 
     private bool $littleEndian;
 

@@ -4,6 +4,7 @@ namespace Bolt\protocol\v3;
 
 use Bolt\enum\Message;
 use Bolt\error\BoltException;
+use SensitiveParameter;
 
 trait HelloMessage
 {
@@ -15,7 +16,7 @@ trait HelloMessage
      * @param array $extra
      * @throws BoltException
      */
-    public function hello(array $extra): static
+    public function hello(#[SensitiveParameter] array $extra): static
     {
         if (empty($extra['user_agent'])) {
             $extra['user_agent'] = 'bolt-php';
